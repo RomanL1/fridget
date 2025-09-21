@@ -5,6 +5,10 @@
 Follow these steps before running the project
 
 - Follow [Tauri Prerequisites](https://v2.tauri.app/start/prerequisites/) (Installs Rust, Node.js and Android Studio)
+- Install dependencies
+  ```bash
+  npm clean-install
+  ```
 
 ## Run the Project
 
