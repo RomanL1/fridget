@@ -25,3 +25,5 @@ Running the following command will serve up a Tauri application inside an Androi
 ```bash
 npm run tauri android dev
 ```
+
+> This command will take a few minutes when performed for the first time
