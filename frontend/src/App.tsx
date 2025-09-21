@@ -1,6 +1,8 @@
+import { Button, TextField } from "@radix-ui/themes";
+import { invoke } from "@tauri-apps/api/core";
 import { useState } from "react";
 import reactLogo from "./assets/react.svg";
-import { invoke } from "@tauri-apps/api/core";
+
 import "./App.css";
 
 function App() {
@@ -36,12 +38,13 @@ function App() {
           greet();
         }}
       >
-        <input
+        <TextField.Root
           id="greet-input"
-          onChange={(e) => setName(e.currentTarget.value)}
           placeholder="Enter a name..."
+          onChange={(e) => setName(e.currentTarget.value)}
         />
-        <button type="submit">Greet</button>
+
+        <Button type="submit">Greet</Button>
       </form>
       <p>{greetMsg}</p>
     </main>

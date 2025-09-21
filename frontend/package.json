@@ -10,17 +10,18 @@
     "tauri": "tauri"
   },
   "dependencies": {
-    "react": "19.1.1",
-    "react-dom": "19.1.1",
+    "@radix-ui/themes": "3.2.1",
     "@tauri-apps/api": "2.8",
-    "@tauri-apps/plugin-opener": "2.5"
+    "@tauri-apps/plugin-opener": "2.5",
+    "react": "19.1.1",
+    "react-dom": "19.1.1"
   },
   "devDependencies": {
+    "@tauri-apps/cli": "2.8.4",
     "@types/react": "19.1.13",
     "@types/react-dom": "19.1.9",
     "@vitejs/plugin-react": "4.7.0",
     "typescript": "5.8.3",
-    "vite": "7.1.6",
-    "@tauri-apps/cli": "2.8.4"
+    "vite": "7.1.6"
   }
 }
