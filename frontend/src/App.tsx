@@ -1,9 +1,22 @@
 import { Button, TextField } from "@radix-ui/themes";
 import { invoke } from "@tauri-apps/api/core";
+import { platform } from "@tauri-apps/plugin-os";
 import { useState } from "react";
+import "./App.css";
 import reactLogo from "./assets/react.svg";
 
-import "./App.css";
+function BarcodeScanner() {
+  const currentPlatform = platform();
+  const isAndroid = currentPlatform === "android" || currentPlatform === "ios";
+
+  async function openBarcodeScanner() {}
+
+  if (isAndroid) {
+    return <Button onClick={() => openBarcodeScanner()}>Scan Product</Button>;
+  }
+
+  return <></>;
+}
 
 function App() {
   const [greetMsg, setGreetMsg] = useState("");
@@ -47,6 +60,8 @@ function App() {
         <Button type="submit">Greet</Button>
       </form>
       <p>{greetMsg}</p>
+
+      <BarcodeScanner />
     </main>
   );
 }
