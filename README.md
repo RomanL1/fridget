@@ -1,5 +1,9 @@
 # fridget
 
+Please use prefixes from this guide here for commit messages:
+https://github.com/RefactoringCombos/ArlosCommitNotation
+
+
 ## Prerequisites
 
 Follow these steps before running the project
