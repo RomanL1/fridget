@@ -1,13 +1,13 @@
-import { Button } from "@radix-ui/themes";
-import { cancel, Format, scan } from "@tauri-apps/plugin-barcode-scanner";
-import { useEffect } from "react";
-import { useNavigate } from "react-router";
+import { Button } from '@radix-ui/themes';
+import { cancel, Format, scan } from '@tauri-apps/plugin-barcode-scanner';
+import { useEffect } from 'react';
+import { useNavigate } from 'react-router';
 
-import "./BarcodeScanner.css";
+import './BarcodeScanner.css';
 
 export function BarcodeScanner() {
   const navigate = useNavigate();
-  
+
   /*
   The barcode scanner will be displayed behind the WebView.
   We render the background transparent to allow the camera view to be seen.
@@ -15,7 +15,7 @@ export function BarcodeScanner() {
   useEffect(() => setBackgroundTransparent());
 
   // Open the scanner as soon as the component is mounted
-  useEffect(() => { 
+  useEffect(() => {
     scanBarcode();
   });
 
@@ -24,26 +24,26 @@ export function BarcodeScanner() {
       const result = await scan({
         windowed: true,
         formats: [Format.EAN13],
-        cameraDirection: "back",
+        cameraDirection: 'back',
       });
       console.log(result);
     } catch (error) {
       console.error(error);
     }
 
-    await navigate("/");
+    await navigate('/');
   };
 
   async function cancelScanner() {
     await cancel();
-    await navigate("/");
+    await navigate('/');
   }
 
-  return <>
+  return (
     <Button type="button" onClick={() => cancelScanner()}>
       Cancel
     </Button>
-  </>;
+  );
 }
 
 function setBackgroundTransparent(): () => void {

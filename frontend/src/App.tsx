@@ -1,17 +1,17 @@
-import { Button, TextField } from "@radix-ui/themes";
-import { invoke } from "@tauri-apps/api/core";
-import { useState } from "react";
-import "./App.css";
-import reactLogo from "./assets/react.svg";
-import { BarcodeScannerToggle } from "./BarcodeScanner/BarcodeScannerToggle";
+import { Button, TextField } from '@radix-ui/themes';
+import { invoke } from '@tauri-apps/api/core';
+import { useState } from 'react';
+import './App.css';
+import reactLogo from './assets/react.svg';
+import { BarcodeScannerToggle } from './BarcodeScanner/BarcodeScannerToggle';
 
 function App() {
-  const [greetMsg, setGreetMsg] = useState("");
-  const [name, setName] = useState("");
+  const [greetMsg, setGreetMsg] = useState('');
+  const [name, setName] = useState('');
 
   async function greet() {
     // Learn more about Tauri commands at https://tauri.app/develop/calling-rust/
-    setGreetMsg(await invoke("greet", { name }));
+    setGreetMsg(await invoke('greet', { name }));
   }
 
   return (
