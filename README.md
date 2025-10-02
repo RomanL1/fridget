@@ -29,6 +29,7 @@ npm run tauri dev
 ### Android
 
 Running the following command will serve up a Tauri application inside an Android emulator.
+On windows, it is recommended to open a terminal in Administrator-mode.
 
 ```bash
 npm run tauri android dev
