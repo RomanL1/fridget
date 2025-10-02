@@ -1,17 +1,14 @@
-import { Button } from "@radix-ui/themes";
-import {
-  checkPermissions,
-  requestPermissions,
-} from "@tauri-apps/plugin-barcode-scanner";
-import { platform } from "@tauri-apps/plugin-os";
-import { useNavigate } from "react-router";
+import { Button } from '@radix-ui/themes';
+import { checkPermissions, requestPermissions } from '@tauri-apps/plugin-barcode-scanner';
+import { platform } from '@tauri-apps/plugin-os';
+import { useNavigate } from 'react-router';
 
 export function BarcodeScannerToggle() {
   const navigate = useNavigate();
 
   async function openBarcodeScanner() {
     await ensurePermissions();
-    await navigate("/scan");
+    await navigate('/scan');
   }
 
   if (!supportsBarcodeScanning()) {
@@ -26,19 +23,19 @@ export function BarcodeScannerToggle() {
 }
 
 function supportsBarcodeScanning() {
-  return platform && platform() === "android" || platform() === "ios";
+  return (platform && platform() === 'android') || platform() === 'ios';
 }
 
 async function ensurePermissions() {
   let permissionState = await checkPermissions();
 
-  if (permissionState === "granted") {
+  if (permissionState === 'granted') {
     return;
   }
 
   try {
     permissionState = await requestPermissions();
-    if (permissionState === "granted") {
+    if (permissionState === 'granted') {
       return;
     }
   } catch (error) {
