@@ -11,7 +11,7 @@ export function BarcodeScannerToggle() {
 
   async function openBarcodeScanner() {
     await ensurePermissions();
-    navigate("/scan");
+    await navigate("/scan");
   }
 
   if (!supportsBarcodeScanning()) {
@@ -26,8 +26,7 @@ export function BarcodeScannerToggle() {
 }
 
 function supportsBarcodeScanning() {
-  const currentPlatform = platform();
-  return currentPlatform === "android" || currentPlatform === "ios";
+  return platform && platform() === "android" || platform() === "ios";
 }
 
 async function ensurePermissions() {

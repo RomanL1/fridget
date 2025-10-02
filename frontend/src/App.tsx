@@ -3,7 +3,7 @@ import { invoke } from "@tauri-apps/api/core";
 import { useState } from "react";
 import "./App.css";
 import reactLogo from "./assets/react.svg";
-import { BarcodeScannerToggle } from "./BarcodeScannerToggle";
+import { BarcodeScannerToggle } from "./BarcodeScanner/BarcodeScannerToggle";
 
 function App() {
   const [greetMsg, setGreetMsg] = useState("");
