@@ -1,3 +1,5 @@
 node_modules/
-src-tauri/
+src-tauri/gen
+src-tauri/target
+
 package-lock.json

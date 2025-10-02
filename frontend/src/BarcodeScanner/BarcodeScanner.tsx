@@ -19,7 +19,7 @@ export function BarcodeScanner() {
     scanBarcode();
   });
 
-  const scanBarcode = async () => {
+  async function scanBarcode() {
     try {
       const result = await scan({
         windowed: true,
@@ -32,7 +32,7 @@ export function BarcodeScanner() {
     }
 
     await navigate('/');
-  };
+  }
 
   async function cancelScanner() {
     await cancel();
