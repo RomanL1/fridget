@@ -12,6 +12,9 @@ on:
 jobs:
   build:
     runs-on: ubuntu-latest
+    defaults:
+      run:
+        working-directory: ./frontend
 
     steps:
       - name: Checkout code
@@ -39,20 +42,15 @@ jobs:
 
       - name: Install node dependencies
         run: npm ci
-        working-directory: ./frontend
 
       - name: Lint with ESLint
         run: npx eslint .
-        working-directory: ./frontend
 
       - name: Lint with Prettier
         run: npx prettier . --check
-        working-directory: ./frontend
 
       - name: Build Tauri for Desktop
         run: npx tauri build --ci
-        working-directory: ./frontend
 
       - name: Build Tauri for Android
         run: npx tauri android build --ci
-        working-directory: ./frontend
