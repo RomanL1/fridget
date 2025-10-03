@@ -30,10 +30,13 @@ jobs:
         with:
           workspaces: './frontend/src-tauri -> target'
 
+      - name: Setup Java
+        uses: actions/setup-java@v5
+
       - name: Setup Android SDK
         uses: android-actions/setup-android@v3
 
-      - name: Install NDK
+      - name: Setup NDK
         run: sdkmanager "ndk;29.0.14033849"
 
       - name: Setup Node.js
