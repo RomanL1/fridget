@@ -46,7 +46,8 @@ jobs:
 
       - name: Build Tauri for Desktop
         run: npx tauri build --ci
+        working-directory: ./frontend
 
       - name: Build Tauri for Android
         run: npx tauri android build --ci
-
+        working-directory: ./frontend
