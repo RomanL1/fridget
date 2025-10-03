@@ -22,6 +22,7 @@ jobs:
         with:
           fetch-depth: 0
 
+      # Install dependencies
       - name: Setup Rust
         uses: dtolnay/rust-toolchain@stable
 
@@ -55,14 +56,15 @@ jobs:
       - name: Install node dependencies
         run: npm ci
 
+      # Lint frontend application
       - name: Lint with ESLint
         run: npx eslint .
 
       - name: Lint with Prettier
         run: npx prettier . --check
 
-      # - name: Build Tauri for Desktop
-      #   run: npx tauri build --ci
-
+      # Build application
       - name: Build Tauri for Android
         run: npx tauri android build --ci
+        env:
+          NDK_HOME: ${{ env.ANDROID_HOME }}/ndk/29.0.14033849
