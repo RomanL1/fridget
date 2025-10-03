@@ -37,16 +37,16 @@ jobs:
         working-directory: ./frontend
 
       - name: Lint with ESLint
-        run: eslint .
+        run: npx eslint .
         working-directory: ./frontend
 
       - name: Lint with Prettier
-        run: prettier . --check
+        run: npx prettier . --check
         working-directory: ./frontend
 
       - name: Build Tauri for Desktop
-        run: tauri build --ci
+        run: npx tauri build --ci
 
       - name: Build Tauri for Android
-        run: tauri android build --ci
+        run: npx tauri android build --ci
 
