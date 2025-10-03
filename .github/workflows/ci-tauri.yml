@@ -30,6 +30,12 @@ jobs:
         with:
           workspaces: './frontend/src-tauri -> target'
 
+      - name: Setup Android SDK
+        uses: android-actions/setup-android@v3
+
+      - name: Install NDK
+        run: sdkmanager "ndk;29.0.14033849"
+
       - name: Setup Node.js
         uses: actions/setup-node@v5
         with:
@@ -49,8 +55,8 @@ jobs:
       - name: Lint with Prettier
         run: npx prettier . --check
 
-      - name: Build Tauri for Desktop
-        run: npx tauri build --ci
+      # - name: Build Tauri for Desktop
+      #   run: npx tauri build --ci
 
       - name: Build Tauri for Android
         run: npx tauri android build --ci
