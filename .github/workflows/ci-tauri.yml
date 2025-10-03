@@ -1,0 +1,52 @@
+name: Tauri CI Build
+
+on:
+  push:
+    branches:
+      - main
+
+  pull_request:
+    branches:
+      - main
+
+jobs:
+  build:
+    runs-on: ubuntu-latest
+
+    steps:
+      - name: Checkout code
+        uses: actions/checkout@v5
+        with:
+          fetch-depth: 0
+
+      - name: Setup Rust
+        uses: dtolnay/rust-toolchain@stable
+
+      - name: Setup Rust cache
+        uses: swatinem/rust-cache@v2
+        with:
+          workspaces: './frontend/src-tauri -> target'
+
+      - name: Setup Node.js
+        uses: actions/setup-node@v5
+        with:
+          node-version: '22'
+
+      - name: Install node dependencies
+        run: npm ci
+        working-directory: ./frontend
+
+      - name: Lint with ESLint
+        run: eslint .
+        working-directory: ./frontend
+
+      - name: Lint with Prettier
+        run: prettier . --check
+        working-directory: ./frontend
+
+      - name: Build Tauri for Desktop
+        run: tauri build --ci
+
+      - name: Build Tauri for Android
+        run: tauri android build --ci
+
