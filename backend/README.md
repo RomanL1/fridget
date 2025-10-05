@@ -29,3 +29,14 @@ brew install gradle
 Windows:
 https://gradle.org/install/
 https://gradle.org/releases/
+
+
+## create file application.properties
+create the file "application.properties" under "backend/src/main/resources/"
+
+I sent you the openai-key.
+
+minimal content (look here for future updates):
+spring.application.name=fridget
+spring.ai.openai.api-key=<insert-openai-key-here>
+
