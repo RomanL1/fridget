@@ -36,7 +36,8 @@ create the file "application.properties" under "backend/src/main/resources/"
 
 I sent you the openai-key.
 
-minimal content (look here for future updates):
-spring.application.name=fridget
-spring.ai.openai.api-key=<insert-openai-key-here>
+minimal content:
+look at example.application.properties file
 
+## open the project in your IDE
+open the project in vscode or intellij idea with folder "backend"
