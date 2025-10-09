@@ -23,7 +23,11 @@ export function BarcodeScannerToggle() {
 }
 
 function supportsBarcodeScanning() {
-  return (platform && platform() === 'android') || platform() === 'ios';
+  try {
+    return (platform && platform() === 'android') || platform() === 'ios';
+  } catch {
+    return false;
+  }
 }
 
 async function ensurePermissions() {
