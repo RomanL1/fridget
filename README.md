@@ -38,6 +38,7 @@ npm run tauri android dev
 > On windows, open the terminal as an Administrator
 
 #### Run on a Physical Device
+- Make sure the device runs on the same network as your computer
 - Connect the device to your computer via USB
 - Enable Developer mode on the device
 - Enable USB Debugging inside the Developer settings
@@ -48,3 +49,8 @@ npm run tauri android dev
 ```
 > On windows, open the terminal as an Administrator
 
+
+#### Debugging
+Open [chrome://inspect/#devices](chrome://inspect/#devices) in your chrome-based browser to debug open Chrome Developer Tools.
+
+> For physical devices, this only works as long as the device is connected via USB
