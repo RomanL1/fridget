@@ -31,6 +31,9 @@ public class Product implements UniqueIdentifiable
 	@Column(name = "ean13")
 	private String ean13;
 
+	@Column(name = "brand_name")
+	private String brandName;
+
 	@Column(name = "name", nullable = false)
 	private String name;
 
@@ -38,10 +41,18 @@ public class Product implements UniqueIdentifiable
 	@Builder.Default
 	private boolean manuallyAddedByUser = false;
 
-	@Column(name = "category", nullable = false)
+	@Column(name = "incomplete", nullable = false)
+	@Builder.Default
+	private boolean incomplete = false;
+
+	@Column(name = "quantity", nullable = false)
+	@Builder.Default
+	private String quantity = "UNKNOWN";
+
+	@Column(name = "category")
 	private String category;
 
-	@Column(name = "sub_category", nullable = false)
+	@Column(name = "sub_category")
 	private String subCategory;
 
 	@Column(name = "common_best_before_time_range")

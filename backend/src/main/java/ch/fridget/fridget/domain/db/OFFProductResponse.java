@@ -15,6 +15,7 @@ import lombok.Setter;
 import java.time.Instant;
 import java.util.UUID;
 
+//off = open food facts
 @Getter
 @Setter
 @NoArgsConstructor
@@ -22,7 +23,7 @@ import java.util.UUID;
 @Builder
 @EqualsAndHashCode(of = "id")
 @Entity
-@Table(name = "off_product_respons")
+@Table(name = "off_product_response")
 public class OFFProductResponse implements UniqueIdentifiable
 {
 	@Id
