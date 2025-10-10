@@ -1,3 +1,4 @@
+[![CI Build](https://github.com/RomanL1/fridget/actions/workflows/ci-tauri.yml/badge.svg)](https://github.com/RomanL1/fridget/actions/workflows/ci-tauri.yml)
 # fridget
 
 Please use prefixes from this guide here for commit messages:
