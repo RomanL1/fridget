@@ -38,7 +38,7 @@ public class InventoryItem implements UniqueIdentifiable
 
 	@ManyToOne(fetch = FetchType.LAZY, optional = false)
 	@JoinColumn(name = "user_id", nullable = false)
-	private FridgetUser user;
+	private User user;
 
 	@Column(name = "quantity", nullable = false)
 	private String quantity;

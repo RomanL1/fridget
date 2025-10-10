@@ -12,6 +12,7 @@ import lombok.Getter;
 import lombok.NoArgsConstructor;
 import lombok.Setter;
 
+import java.time.Instant;
 import java.util.UUID;
 
 @Getter
@@ -21,32 +22,19 @@ import java.util.UUID;
 @Builder
 @EqualsAndHashCode(of = "id")
 @Entity
-@Table(name = "product")
-public class Product implements UniqueIdentifiable
+@Table(name = "off_product_respons")
+public class OFFProductResponse implements UniqueIdentifiable
 {
 	@Id
 	@Column(name = "id", nullable = false, updatable = false)
 	private UUID id;
 
-	@Column(name = "ean13")
+	@Column(name = "ean13", nullable = false)
 	private String ean13;
 
-	@Column(name = "name", nullable = false)
-	private String name;
+	@Column(name = "raw_response", nullable = false)
+	private String rawResponse;
 
-	@Column(name = "manually_added_by_user", nullable = false)
-	@Builder.Default
-	private boolean manuallyAddedByUser = false;
-
-	@Column(name = "category", nullable = false)
-	private String category;
-
-	@Column(name = "sub_category", nullable = false)
-	private String subCategory;
-
-	@Column(name = "common_best_before_time_range")
-	private Integer commonBestBeforeTimeRange;
-
-	@Column(name = "picture_url")
-	private String pictureUrl;
+	@Column(name = "created_at", nullable = false, updatable = false)
+	private Instant createdAt;
 }

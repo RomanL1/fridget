@@ -24,8 +24,8 @@ import java.util.UUID;
 @Builder
 @EqualsAndHashCode(of = "id")
 @Entity
-@Table(name = "shopping_list")
-public class ShoppingList implements UniqueIdentifiable
+@Table(name = "shopping_list_item")
+public class ShoppingListItem implements UniqueIdentifiable
 {
 	@Id
 	@Column(name = "id", nullable = false, updatable = false)
@@ -33,7 +33,7 @@ public class ShoppingList implements UniqueIdentifiable
 
 	@ManyToOne(fetch = FetchType.LAZY, optional = false)
 	@JoinColumn(name = "user_id", nullable = false)
-	private FridgetUser user;
+	private User user;
 
 	@ManyToOne(fetch = FetchType.LAZY)
 	@JoinColumn(name = "product_id")

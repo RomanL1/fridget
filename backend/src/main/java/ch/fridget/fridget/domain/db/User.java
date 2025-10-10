@@ -22,7 +22,7 @@ import java.util.UUID;
 @EqualsAndHashCode(of = "id")
 @Entity
 @Table(name = "user")
-public class FridgetUser implements UniqueIdentifiable
+public class User implements UniqueIdentifiable
 {
 	@Id
 	@Column(name = "id", nullable = false, updatable = false)
