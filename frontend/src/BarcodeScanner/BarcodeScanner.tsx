@@ -3,8 +3,6 @@ import { cancel, Format, scan } from '@tauri-apps/plugin-barcode-scanner';
 import { useEffect } from 'react';
 import { useNavigate } from 'react-router';
 
-import './BarcodeScanner.css';
-
 export function BarcodeScanner() {
   const navigate = useNavigate();
 
@@ -12,7 +10,7 @@ export function BarcodeScanner() {
   The barcode scanner will be displayed behind the WebView.
   We render the background transparent to allow the camera view to be seen.
   */
-  useEffect(() => setBackgroundTransparent());
+  useEffect(setBackgroundTransparent);
 
   // Open the scanner as soon as the component is mounted
   useEffect(() => {
