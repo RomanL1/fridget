@@ -1,5 +1,6 @@
 package ch.fridget.fridget.repository;
 
+import java.util.Optional;
 import java.util.UUID;
 
 import org.springframework.data.jpa.repository.JpaRepository;
@@ -10,4 +11,5 @@ import ch.fridget.fridget.domain.db.User;
 @Repository
 public interface UserRepository extends JpaRepository<User, UUID>
 {
+	Optional<User> findUserByUserCode ( String userCode );
 }

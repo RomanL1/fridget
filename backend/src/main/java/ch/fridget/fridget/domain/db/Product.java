@@ -1,5 +1,7 @@
 package ch.fridget.fridget.domain.db;
 
+import java.util.UUID;
+
 import ch.fridget.fridget.domain.UniqueIdentifiable;
 import jakarta.persistence.Column;
 import jakarta.persistence.Entity;
@@ -12,52 +14,50 @@ import lombok.Getter;
 import lombok.NoArgsConstructor;
 import lombok.Setter;
 
-import java.util.UUID;
-
 @Getter
 @Setter
 @NoArgsConstructor
 @AllArgsConstructor
 @Builder
-@EqualsAndHashCode(of = "id")
+@EqualsAndHashCode( of = "id" )
 @Entity
-@Table(name = "product")
+@Table( name = "product" )
 public class Product implements UniqueIdentifiable
 {
 	@Id
-	@Column(name = "id", nullable = false, updatable = false)
+	@Column( name = "id", nullable = false, updatable = false )
 	private UUID id;
 
-	@Column(name = "ean13")
+	@Column( name = "ean13" )
 	private String ean13;
 
-	@Column(name = "brand_name")
+	@Column( name = "brand_name" )
 	private String brandName;
 
-	@Column(name = "name", nullable = false)
+	@Column( name = "name", nullable = false )
 	private String name;
 
-	@Column(name = "manually_added_by_user", nullable = false)
+	@Column( name = "manually_added_by_user", nullable = false )
 	@Builder.Default
 	private boolean manuallyAddedByUser = false;
 
-	@Column(name = "incomplete", nullable = false)
+	@Column( name = "incomplete", nullable = false )
 	@Builder.Default
 	private boolean incomplete = false;
 
-	@Column(name = "quantity", nullable = false)
+	@Column( name = "quantity", nullable = false )
 	@Builder.Default
 	private String quantity = "UNKNOWN";
 
-	@Column(name = "category")
+	@Column( name = "category" )
 	private String category;
 
-	@Column(name = "sub_category")
+	@Column( name = "sub_category" )
 	private String subCategory;
 
-	@Column(name = "common_best_before_time_range")
+	@Column( name = "common_best_before_time_range" )
 	private Integer commonBestBeforeTimeRange;
 
-	@Column(name = "picture_url")
-	private String pictureUrl;
+	@Column( name = "image_url" )
+	private String imageUrl;
 }

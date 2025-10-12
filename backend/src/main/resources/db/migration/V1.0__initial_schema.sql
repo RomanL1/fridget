@@ -20,7 +20,7 @@ CREATE TABLE "product"
     "name"                          TEXT NOT NULL,
     "type"                          TEXT NOT NULL,
     "common_best_before_time_range" int,
-    "picture_url"                   TEXT
+    "image_url"                   TEXT
 );
 
 CREATE TABLE "recipe"
@@ -32,7 +32,7 @@ CREATE TABLE "recipe"
     "dish_type"    TEXT,
     "complexity"   float,
     "rating"       float,
-    "picture_url"  TEXT,
+    "image_url"  TEXT,
     "external_url" TEXT
 );
 

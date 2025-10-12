@@ -2,7 +2,7 @@ plugins {
     id 'java'
     id 'org.springframework.boot' version '3.5.6'
     id 'io.spring.dependency-management' version '1.1.7'
-    id("org.flywaydb.flyway") version "11.13.2"
+    id 'org.flywaydb.flyway' version '11.13.2'
 }
 
 group = 'ch.fridget'
@@ -34,24 +34,26 @@ dependencies {
     implementation 'org.springframework.boot:spring-boot-starter-data-jdbc'
     implementation 'org.springframework.boot:spring-boot-starter-data-jpa'
     implementation 'org.springframework.boot:spring-boot-starter-web'
+    implementation 'org.springframework.boot:spring-boot-starter-security'
     implementation 'org.springframework.ai:spring-ai-starter-model-openai'
-    implementation 'org.flywaydb:flyway-core'
-    implementation 'org.flywaydb:flyway-database-postgresql'
-
     developmentOnly 'org.springframework.boot:spring-boot-devtools'
     developmentOnly 'org.springframework.boot:spring-boot-docker-compose'
     developmentOnly 'org.springframework.ai:spring-ai-spring-boot-docker-compose'
-
-    annotationProcessor 'org.projectlombok:lombok'
-
     testImplementation 'org.springframework.boot:spring-boot-starter-test'
+
+    implementation 'org.flywaydb:flyway-core'
+    implementation 'org.flywaydb:flyway-database-postgresql'
+    runtimeOnly 'org.flywaydb:flyway-gradle-plugin:11.13.2'
+
+    implementation 'com.konghq:unirest-java-core:4.5.1'
+    implementation 'com.konghq:unirest-modules-gson:4.5.1'
+
+    compileOnly 'org.projectlombok:lombok'
+    annotationProcessor 'org.projectlombok:lombok'
 
     testRuntimeOnly 'org.junit.platform:junit-platform-launcher'
 
-    compileOnly 'org.projectlombok:lombok'
-
     runtimeOnly 'org.postgresql:postgresql'
-    runtimeOnly 'org.flywaydb:flyway-gradle-plugin:11.13.2'
 
 }
 

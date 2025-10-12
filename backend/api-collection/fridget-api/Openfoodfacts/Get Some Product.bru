@@ -1,0 +1,19 @@
+meta {
+  name: Get Some Product
+  type: http
+  seq: 1
+}
+
+get {
+  url: https://world.openfoodfacts.net/api/v3/product/:barcode
+  body: none
+  auth: inherit
+}
+
+params:path {
+  barcode: 5449000131836
+}
+
+settings {
+  encodeUrl: true
+}
