@@ -32,7 +32,7 @@ public class AddInventoryItemController implements APIController
 	private final InventoryItemRepository inventoryItemRepository;
 	private final UserRepository userRepository;
 
-	@PostMapping
+	@PostMapping("addInventoryItem")
 	public ResponseEntity<AddInventoryItemResponseDto> addInventoryItem (
 			@RequestHeader( "userCode" ) String userCode,
 			@RequestBody AddInventoryItemRequestDto requestDto )
@@ -62,7 +62,7 @@ public class AddInventoryItemController implements APIController
 				return ResponseEntity.notFound().build();
 			}
 
-			if ( !isEmptyString( requestDto.getProductName() ) || !isEmptyString( requestDto.getProductBrandName() ) )
+			if ( isEmptyString( requestDto.getProductName() ) || isEmptyString( requestDto.getProductBrandName() ) )
 			{
 				return ResponseEntity.badRequest().build();
 			}
@@ -74,8 +74,9 @@ public class AddInventoryItemController implements APIController
 			product = productRepository.save( product );
 		}
 
-		Instant bestBefore = Optional.of( Instant.parse( requestDto.getBestBefore() ) ).orElse( null );
+		Instant bestBefore = requestDto.getBestBefore() != null ? Instant.parse( requestDto.getBestBefore() ) : null;
 		InventoryItem inventoryItem = InventoryItem.builder()
+				.id( UUID.randomUUID() )
 				.user( user.get() )
 				.product( product )
 				.name( product.getBrandName() + " " + product.getName() )
@@ -93,7 +94,7 @@ public class AddInventoryItemController implements APIController
 				.brandName( product.getBrandName() )
 				.quantity( product.getQuantity() )
 				.imageUrl( product.getImageUrl() )
-				.bestBefore( bestBefore.toString() )
+				.bestBefore( bestBefore == null ? null : bestBefore.toString() )
 				.build();
 
 		return ResponseEntity.ok( responseDto );
@@ -102,8 +103,9 @@ public class AddInventoryItemController implements APIController
 	private Product convertAddInventoryItemRequestDtoToProduct ( AddInventoryItemRequestDto requestDto,
 			boolean manuallyAddedByUser )
 	{
+		UUID uuid = requestDto.getProductId() == null ? UUID.randomUUID(): UUID.fromString( requestDto.getProductId() );
 		return Product.builder()
-				.id( UUID.fromString( requestDto.getProductId() ) )
+				.id( uuid )
 				.name( requestDto.getProductName() )
 				.brandName( requestDto.getProductBrandName() )
 				.quantity( requestDto.getProductQuantity() )

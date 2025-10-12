@@ -21,8 +21,8 @@ ALTER TABLE product
     ADD COLUMN manually_added_by_user BOOL NOT NULL,
     ADD COLUMN incomplete             BOOL NOT NULL,
     ADD COLUMN quantity               TEXT NOT NULL,
-    ADD COLUMN category               TEXT NOT NULL,
-    ADD COLUMN sub_category           TEXT NOT NULL;
+    ADD COLUMN category               TEXT NULL,
+    ADD COLUMN sub_category           TEXT NULL;
 
 -- new table raw response from off_product_response
 CREATE TABLE IF NOT EXISTS off_product_response

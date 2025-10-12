@@ -53,7 +53,7 @@ public class InventoryItem implements UniqueIdentifiable
 	@Column( name = "date_consumed_at" )
 	private Instant dateConsumedAt;
 
-	@Column( name = "best_before_date", nullable = false )
+	@Column( name = "best_before_date" )
 	private Instant bestBeforeDate;
 
 	@Column( name = "is_stored_in_fridge", nullable = false )

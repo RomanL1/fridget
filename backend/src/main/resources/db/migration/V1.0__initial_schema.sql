@@ -8,7 +8,7 @@ CREATE TABLE "inventory_item"
     "quanitity_type"      TEXT,
     "date_added_at"       timestamp NOT NULL,
     "date_consumed_at"    timestamp,
-    "best_before_date"    timestamp NOT NULL,
+    "best_before_date"    timestamp NULL,
     "is_stored_in_fridge" boolean   NOT NULL,
     "is_opened"           boolean   NOT NULL
 );
@@ -20,7 +20,7 @@ CREATE TABLE "product"
     "name"                          TEXT NOT NULL,
     "type"                          TEXT NOT NULL,
     "common_best_before_time_range" int,
-    "image_url"                   TEXT
+    "image_url"                     TEXT
 );
 
 CREATE TABLE "recipe"
@@ -32,7 +32,7 @@ CREATE TABLE "recipe"
     "dish_type"    TEXT,
     "complexity"   float,
     "rating"       float,
-    "image_url"  TEXT,
+    "image_url"    TEXT,
     "external_url" TEXT
 );
 
@@ -57,7 +57,7 @@ CREATE TABLE "shopping_list_item"
     "quanitity_type"  TEXT
 );
 
-CREATE TABLE "user"
+CREATE TABLE "fridget_user"
 (
     "id"        uuid PRIMARY KEY,
     "user_code" TEXT NOT NULL
@@ -76,7 +76,7 @@ ALTER TABLE "shopping_list_item"
     ADD FOREIGN KEY ("product_id") REFERENCES "product" ("id");
 
 ALTER TABLE "shopping_list_item"
-    ADD FOREIGN KEY ("user_id") REFERENCES "user" ("id");
+    ADD FOREIGN KEY ("user_id") REFERENCES "fridget_user" ("id");
 
 ALTER TABLE "inventory_item"
-    ADD FOREIGN KEY ("user_id") REFERENCES "user" ("id");
+    ADD FOREIGN KEY ("user_id") REFERENCES "fridget_user" ("id");

@@ -21,7 +21,7 @@ import lombok.Setter;
 @Builder
 @EqualsAndHashCode( of = "id" )
 @Entity
-@Table( name = "user" )
+@Table( name = "fridget_user" )
 public class User implements UniqueIdentifiable
 {
 	@Id

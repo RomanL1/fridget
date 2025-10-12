@@ -1,0 +1,32 @@
+meta {
+  name: addInventoryItem
+  type: http
+  seq: 4
+}
+
+post {
+  url: http://localhost:8080/api/addInventoryItem
+  body: json
+  auth: inherit
+}
+
+headers {
+  userCode: 018e565dcc754082a7116c22ff8f2ec7
+}
+
+body:json {
+  {
+    "productId": "46b84690-534f-4f98-837c-4c06df1e62a2", // optional
+    "productBarcode": null, // optional
+    "productName": "Coca Coal",
+    "productBrandName": "Zero sugar",
+    "productImageUrl": null, // optional
+    "productQuantity": "1L", //optional
+    "quantity": "3",
+    "bestBefore": null  // optional
+  }
+}
+
+settings {
+  encodeUrl: true
+}

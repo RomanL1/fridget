@@ -6,6 +6,7 @@ import java.util.Optional;
 import org.springframework.core.annotation.Order;
 import org.springframework.stereotype.Component;
 
+import ch.fridget.fridget.common.Util;
 import ch.fridget.fridget.domain.db.User;
 import ch.fridget.fridget.repository.UserRepository;
 import jakarta.servlet.Filter;
@@ -39,12 +40,18 @@ public class UserCodeFilter implements Filter
 		// Allow /api/register always, no matter what
 		if ( path.equals( "/api/register" ) )
 		{
+			if ( !Util.isEmptyString( userCode ) )
+			{
+				httpRes.setStatus( HttpServletResponse.SC_METHOD_NOT_ALLOWED );
+				httpRes.getWriter().write( "UserCode already set" );
+				return;
+			}
 			chain.doFilter( request, response );
 			return;
 		}
 
 		// For all other paths: block if userCode is missing
-		if ( userCode == null || userCode.isEmpty() )
+		if ( Util.isEmptyString( userCode ) )
 		{
 			httpRes.setStatus( HttpServletResponse.SC_UNAUTHORIZED );
 			httpRes.getWriter().write( "Missing userCode header" );

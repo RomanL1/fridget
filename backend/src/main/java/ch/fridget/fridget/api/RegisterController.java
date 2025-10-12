@@ -4,10 +4,8 @@ import java.util.UUID;
 
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.PostMapping;
-import org.springframework.web.bind.annotation.RequestHeader;
 import org.springframework.web.bind.annotation.RestController;
 
-import ch.fridget.fridget.common.Util;
 import ch.fridget.fridget.domain.db.User;
 import ch.fridget.fridget.domain.dto.UserCodeResponseDto;
 import ch.fridget.fridget.repository.UserRepository;
@@ -22,15 +20,13 @@ public class RegisterController implements APIController
 	private final UserRepository userRepository;
 
 	@PostMapping( "register" )
-	public ResponseEntity<UserCodeResponseDto> register ( @RequestHeader( "userCode" ) String userCode )
+	public ResponseEntity<UserCodeResponseDto> register ()
 	{
-		if ( !Util.isEmptyString( userCode ) )
-		{
-			return ResponseEntity.unprocessableEntity().build();
-		}
-
-		String newUserCode = UUID.randomUUID().toString();
-		User user = User.builder().userCode( newUserCode ).build();
+		String newUserCode = UUID.randomUUID().toString().replaceAll("-", "");
+		User user = User.builder()
+				.id( UUID.randomUUID() )
+				.userCode( newUserCode )
+				.build();
 
 		userRepository.save( user );
 

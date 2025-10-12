@@ -1,6 +1,7 @@
 package ch.fridget.fridget.api;
 
 import java.util.Optional;
+import java.util.UUID;
 
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.PathVariable;
@@ -28,7 +29,7 @@ public class ScanProductController implements APIController
 	private final ProductRepository productRepository;
 	private final OFFProductResponseRepository oFFProductResponseRepository;
 
-	@PostMapping( "scanProduct/{barcode}" )
+	@PostMapping( "scanProduct/{ean13Barcode}" )
 	public ResponseEntity<ScanProductResponseDto> scanProduct ( @PathVariable String ean13Barcode )
 	{
 		Optional<Product> existingProduct = productRepository.findProductByEan13( ean13Barcode );
@@ -36,7 +37,8 @@ public class ScanProductController implements APIController
 		{
 			//product found
 			log.info( "Product with ean13 barcode: {} found", ean13Barcode );
-			return ResponseEntity.ok( convertFoundProductToResponseDto( existingProduct.get() ) );
+			return ResponseEntity.ok( convertFoundProductToResponseDto( existingProduct.get(),
+					ScanProductResponseDto.ESTATUS.PRODUCT_FOUND ) );
 		}
 
 		String uri = "https://world.openfoodfacts.net/api/v3/product/" + ean13Barcode + ".json";
@@ -55,6 +57,7 @@ public class ScanProductController implements APIController
 		}
 
 		OFFProductResponse offProductResponse = OFFProductResponse.builder()
+				.id( UUID.randomUUID() )
 				.ean13( ean13Barcode )
 				.rawResponse( response.getBody().toString() )
 				.build();
@@ -67,7 +70,7 @@ public class ScanProductController implements APIController
 				? ScanProductResponseDto.ESTATUS.PRODUCT_INCOMPLETE
 				: ScanProductResponseDto.ESTATUS.PRODUCT_CREATED;
 
-		if ( !offProduct.incomplete() )
+		if ( offProduct.incomplete() )
 		{
 			log.warn( "Product with ean13 barcode: {} found on OFF but incomplete", ean13Barcode );
 		}
@@ -75,6 +78,7 @@ public class ScanProductController implements APIController
 		//TODO category, subCategory, commonBestBeforeTimeRange
 
 		Product newProduct = Product.builder()
+				.id( UUID.randomUUID() )
 				.ean13( ean13Barcode )
 				.name( offProduct.productName() )
 				.brandName( offProduct.brandName() )
@@ -86,13 +90,15 @@ public class ScanProductController implements APIController
 		Product saved = productRepository.save( newProduct );
 		log.info( "Created new Product with ean13 barcode: {} from OFF", ean13Barcode );
 
-		return ResponseEntity.ok( convertFoundProductToResponseDto( saved ) );
+		ScanProductResponseDto responseDto = convertFoundProductToResponseDto( saved, status );
+		return ResponseEntity.ok( responseDto );
 	}
 
-	private ScanProductResponseDto convertFoundProductToResponseDto ( Product product )
+	private ScanProductResponseDto convertFoundProductToResponseDto ( Product product,
+			ScanProductResponseDto.ESTATUS status )
 	{
 		return ScanProductResponseDto.builder()
-				.status( ScanProductResponseDto.ESTATUS.PRODUCT_FOUND )
+				.status( status )
 				.productId( product.getId() )
 				.brandName( product.getBrandName() )
 				.productName( product.getName() )
