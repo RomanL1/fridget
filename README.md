@@ -1,4 +1,6 @@
-[![CI Build](https://github.com/RomanL1/fridget/actions/workflows/ci-tauri.yml/badge.svg)](https://github.com/RomanL1/fridget/actions/workflows/ci-tauri.yml)
+[![CI Build](https://github.com/RomanL1/fridget/actions/workflows/ci-tauri.yml/badge.svg)](https://github.com/RomanL1/fridget/actions/workflows/ci-tauri.yml) 
+[![Backend CI Build](https://github.com/RomanL1/fridget/actions/workflows/backend.yml/badge.svg)](https://github.com/RomanL1/fridget/actions/workflows/backend.yml)
+
 # fridget
 - [Project Backlog](https://github.com/users/RomanL1/projects/2/views/1)
 - [Design Mockups](https://www.figma.com/design/PTd7Ux0Pg6AlYBZMUGL41i/Fridget-UI?node-id=3437-870&p=f&t=SlxmbiDBc71RR49D-0)
