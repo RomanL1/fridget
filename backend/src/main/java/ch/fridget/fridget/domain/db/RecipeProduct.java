@@ -1,5 +1,7 @@
 package ch.fridget.fridget.domain.db;
 
+import java.util.UUID;
+
 import ch.fridget.fridget.domain.UniqueIdentifiable;
 import jakarta.persistence.Column;
 import jakarta.persistence.Entity;
@@ -15,36 +17,34 @@ import lombok.Getter;
 import lombok.NoArgsConstructor;
 import lombok.Setter;
 
-import java.util.UUID;
-
 @Getter
 @Setter
 @NoArgsConstructor
 @AllArgsConstructor
 @Builder
-@EqualsAndHashCode(of = "id")
+@EqualsAndHashCode( of = "id" )
 @Entity
-@Table(name = "recipe_product")
+@Table( name = "recipe_product" )
 public class RecipeProduct implements UniqueIdentifiable
 {
 	@Id
-	@Column(name = "id", nullable = false, updatable = false)
+	@Column( name = "id", nullable = false, updatable = false )
 	private UUID id;
 
-	@ManyToOne(fetch = FetchType.LAZY, optional = false)
-	@JoinColumn(name = "recipe_id", nullable = false)
+	@ManyToOne( fetch = FetchType.LAZY, optional = false )
+	@JoinColumn( name = "recipe_id", nullable = false )
 	private Recipe recipe;
 
-	@ManyToOne(fetch = FetchType.LAZY, optional = false)
-	@JoinColumn(name = "product_id", nullable = false)
+	@ManyToOne( fetch = FetchType.LAZY, optional = false )
+	@JoinColumn( name = "product_id", nullable = false )
 	private Product product;
 
-	@Column(name = "quantity", nullable = false)
+	@Column( name = "quantity", nullable = false )
 	private String quantity;
 
-	@Column(name = "quantity_number")
+	@Column( name = "quantity_number" )
 	private Integer quantityNumber;
 
-	@Column(name = "quanitity_type")
+	@Column( name = "quanitity_type" )
 	private String quantityType;
 }

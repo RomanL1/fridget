@@ -1,5 +1,8 @@
 package ch.fridget.fridget.domain.db;
 
+import java.time.Instant;
+import java.util.UUID;
+
 import ch.fridget.fridget.domain.UniqueIdentifiable;
 import jakarta.persistence.Column;
 import jakarta.persistence.Entity;
@@ -15,49 +18,47 @@ import lombok.Getter;
 import lombok.NoArgsConstructor;
 import lombok.Setter;
 
-import java.time.Instant;
-import java.util.UUID;
-
 @Getter
 @Setter
 @NoArgsConstructor
 @AllArgsConstructor
 @Builder
-@EqualsAndHashCode(of = "id")
+@EqualsAndHashCode( of = "id" )
 @Entity
-@Table(name = "inventory_item")
+@Table( name = "inventory_item" )
 public class InventoryItem implements UniqueIdentifiable
 {
 	@Id
-	@Column(name = "id", nullable = false, updatable = false)
+	@Column( name = "id", nullable = false, updatable = false )
 	private UUID id;
 
-	@ManyToOne(fetch = FetchType.LAZY, optional = false)
-	@JoinColumn(name = "product_id", nullable = false)
+	@ManyToOne( fetch = FetchType.LAZY, optional = false )
+	@JoinColumn( name = "product_id", nullable = false )
 	private Product product;
 
-	@ManyToOne(fetch = FetchType.LAZY, optional = false)
-	@JoinColumn(name = "user_id", nullable = false)
+	@ManyToOne( fetch = FetchType.LAZY, optional = false )
+	@JoinColumn( name = "user_id", nullable = false )
 	private User user;
 
-	@Column(name = "name")
+	@Column( name = "name" )
 	private String name;
 
-	@Column(name = "quantity", nullable = false)
+	@Column( name = "quantity", nullable = false )
 	private int quantity;
 
-	@Column(name = "date_added_at", nullable = false)
-	private Instant dateAddedAt;
+	@Column( name = "date_added_at", nullable = false )
+	@Builder.Default
+	private Instant dateAddedAt = Instant.now();
 
-	@Column(name = "date_consumed_at")
+	@Column( name = "date_consumed_at" )
 	private Instant dateConsumedAt;
 
-	@Column(name = "best_before_date", nullable = false)
+	@Column( name = "best_before_date" )
 	private Instant bestBeforeDate;
 
-	@Column(name = "is_stored_in_fridge", nullable = false)
+	@Column( name = "is_stored_in_fridge", nullable = false )
 	private boolean storedInFridge;
 
-	@Column(name = "is_opened", nullable = false)
+	@Column( name = "is_opened", nullable = false )
 	private boolean opened;
 }

@@ -1,0 +1,23 @@
+meta {
+  name: scanProduct
+  type: http
+  seq: 2
+}
+
+post {
+  url: http://localhost:8080/api/scanProduct/:ean13Barcode
+  body: none
+  auth: inherit
+}
+
+params:path {
+  ean13Barcode: 7613312504499
+}
+
+headers {
+  userCode: 018e565dcc754082a7116c22ff8f2ec7
+}
+
+settings {
+  encodeUrl: true
+}
