@@ -1,9 +1,7 @@
 [![CI Build](https://github.com/RomanL1/fridget/actions/workflows/ci-tauri.yml/badge.svg)](https://github.com/RomanL1/fridget/actions/workflows/ci-tauri.yml)
 # fridget
-
-Please use prefixes from this guide here for commit messages:
-https://github.com/RefactoringCombos/ArlosCommitNotation
-
+- [Project Backlog](https://github.com/users/RomanL1/projects/2/views/1)
+- [Design Mockups](https://www.figma.com/design/PTd7Ux0Pg6AlYBZMUGL41i/Fridget-UI?node-id=3437-870&p=f&t=SlxmbiDBc71RR49D-0)
 
 ## Prerequisites
 
@@ -55,3 +53,6 @@ npm run tauri android dev
 Open [chrome://inspect/#devices](chrome://inspect/#devices) in your chrome-based browser to debug open Chrome Developer Tools.
 
 > For physical devices, this only works as long as the device is connected via USB
+
+## Contributing
+Use [Arlos Commit Message Notation](https://github.com/RefactoringCombos/ArlosCommitNotation) when contributing to this repository.
