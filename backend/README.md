@@ -34,8 +34,6 @@ https://gradle.org/releases/
 ## create file application.properties
 create the file "application.properties" under "backend/src/main/resources/"
 
-I sent you the openai-key.
-
 minimal content:
 look at example.application.properties file
 
