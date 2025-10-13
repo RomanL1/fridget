@@ -41,7 +41,7 @@ public class ScanProductController implements APIController
 					ScanProductResponseDto.ESTATUS.PRODUCT_FOUND ) );
 		}
 
-		String uri = "https://world.openfoodfacts.net/api/v3/product/" + ean13Barcode + ".json";
+		String uri = "https://world.openfoodfacts.org/api/v2/product/" + ean13Barcode;
 		HttpResponse<JsonNode> response = Unirest.get( uri )
 				.header( "accept", "application/json" )
 				.asJson();
@@ -117,7 +117,7 @@ public class ScanProductController implements APIController
 
 		boolean incomplete = brandName.isEmpty() || productName.isEmpty() || quantity.isEmpty();
 
-		return new OpenFoodFactsProductResponse( incomplete, brandName, productName, imageUrl, quantity );
+		return new OpenFoodFactsProductResponse( incomplete, productName, brandName, imageUrl, quantity );
 	}
 
 	private record OpenFoodFactsProductResponse(
