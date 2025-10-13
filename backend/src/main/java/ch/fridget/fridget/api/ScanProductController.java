@@ -36,7 +36,7 @@ public class ScanProductController implements APIController
 		if ( existingProduct.isPresent() )
 		{
 			//product found
-			log.info( "Product with ean13 barcode: {} found", ean13Barcode );
+			log.info( "Product with ean13 barcode: {} found in our db", ean13Barcode );
 			return ResponseEntity.ok( convertFoundProductToResponseDto( existingProduct.get(),
 					ScanProductResponseDto.ESTATUS.PRODUCT_FOUND ) );
 		}
