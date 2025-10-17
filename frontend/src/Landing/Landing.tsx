@@ -1,4 +1,4 @@
-import { BarcodeScannerToggle } from '../BarcodeScanner/BarcodeScannerToggle';
+import { BarcodeScannerToggle } from '../barcode-scanner/BarcodeScannerToggle';
 
 export function Landing() {
   return (
