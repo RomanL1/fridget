@@ -1,7 +1,7 @@
-import { Button } from '@radix-ui/themes';
-import { cancel, Format, scan } from '@tauri-apps/plugin-barcode-scanner';
+import { Format, scan } from '@tauri-apps/plugin-barcode-scanner';
 import { useEffect } from 'react';
 import { useNavigate } from 'react-router';
+import { BarcodeScannerOverlay } from './overlay/BarcodeScannerOverlay';
 
 export function BarcodeScanner() {
   const navigate = useNavigate();
@@ -22,7 +22,7 @@ export function BarcodeScanner() {
       const result = await scan({
         windowed: true,
         formats: [Format.EAN13],
-        cameraDirection: 'back',
+        cameraDirection: 'front',
       });
       console.log(result);
     } catch (error) {
@@ -32,16 +32,7 @@ export function BarcodeScanner() {
     await navigate('/');
   }
 
-  async function cancelScanner() {
-    await cancel();
-    await navigate('/');
-  }
-
-  return (
-    <Button type="button" onClick={() => cancelScanner()}>
-      Cancel
-    </Button>
-  );
+  return <BarcodeScannerOverlay />;
 }
 
 function setBackgroundTransparent(): () => void {
