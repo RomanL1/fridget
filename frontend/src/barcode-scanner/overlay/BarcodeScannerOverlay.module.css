@@ -1,46 +1,47 @@
 :root {
-    --overlay-backdrop-color: rgba(0, 0, 0, .8);
+  --overlay-backdrop-color: rgba(0, 0, 0, 0.8);
 }
 
 .overlay {
-    height: 100vh;
-    overflow: hidden;
-    display: grid;
-    grid-auto-columns: 1fr; 
-    grid-template-columns: 2fr 1fr 2fr;
-    grid-template-rows: 1fr 1fr 2fr;
-    grid-template-areas: 
-        "backdrop-top backdrop-top backdrop-top"
-        "backdrop-left lens backdrop-right"
-        "backdrop-left actions backdrop-right"
+  height: 100vh;
+  overflow: hidden;
+  display: grid;
+  grid-auto-columns: 1fr;
+  grid-template-columns: 2fr 1fr 2fr;
+  grid-template-rows: 1fr 1fr 2fr;
+  grid-template-areas:
+    'backdrop-top backdrop-top backdrop-top'
+    'backdrop-left lens backdrop-right'
+    'backdrop-left actions backdrop-right';
 }
 
 .backdropTop {
-    grid-area: backdrop-top;
+  grid-area: backdrop-top;
 }
 
 .backdropLeft {
-    grid-area: backdrop-left;
+  grid-area: backdrop-left;
 }
 
 .backdropRight {
-    grid-area: backdrop-right;
+  grid-area: backdrop-right;
 }
 
 .lens {
-    grid-area: lens;
-    position: relative;
-    background-color: transparent;
-    aspect-ratio: 1 / 1;
+  grid-area: lens;
+  position: relative;
+  background-color: transparent;
+  aspect-ratio: 1 / 1;
 }
 
 .actions {
-    grid-area: actions;
-    display: grid;
-    place-items: top center;
-    padding: 2rem;
+  grid-area: actions;
+  display: grid;
+  place-items: top center;
+  padding: 2rem;
 }
 
-.backdrop, .actions {
-    background-color: var(--overlay-backdrop-color);
+.backdrop,
+.actions {
+  background-color: var(--overlay-backdrop-color);
 }

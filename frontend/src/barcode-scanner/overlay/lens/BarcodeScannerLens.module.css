@@ -1,57 +1,60 @@
 :root {
-    --corner-length: 2rem;
-    --corner-thickness: .5rem;
-    --corner-positioning-offset: calc(var(--corner-thickness) * -1);
+  --corner-length: 2rem;
+  --corner-thickness: 0.5rem;
+  --corner-positioning-offset: calc(var(--corner-thickness) * -1);
 }
 
 .corner {
-    width: var(--corner-thickness);
-    height: var(--corner-thickness);
-    position: absolute;
+  width: var(--corner-thickness);
+  height: var(--corner-thickness);
+  position: absolute;
 }
 
 .corner::before {
-    height: var(--corner-thickness);
-    width: var(--corner-length);
+  height: var(--corner-thickness);
+  width: var(--corner-length);
 }
 
 .corner::after {
-    height: var(--corner-length);
-    width: var(--corner-thickness);
+  height: var(--corner-length);
+  width: var(--corner-thickness);
 }
 
-.corner::before, .corner::after {
-    content: '';
-    position: absolute;
+.corner::before,
+.corner::after {
+  content: '';
+  position: absolute;
 }
 
-.corner, .corner::before, .corner::after {
-    background-color: var(--accent-8);
+.corner,
+.corner::before,
+.corner::after {
+  background-color: var(--accent-8);
 }
 
 /* Top left corner */
 .corner:nth-child(1) {
-    top: var(--corner-positioning-offset);
-    left: var(--corner-positioning-offset);
+  top: var(--corner-positioning-offset);
+  left: var(--corner-positioning-offset);
 }
 
 /* Top right corner */
 .corner:nth-child(2) {
-    top: var(--corner-positioning-offset);
-    right: var(--corner-positioning-offset);
-    transform: rotate(90deg);
+  top: var(--corner-positioning-offset);
+  right: var(--corner-positioning-offset);
+  transform: rotate(90deg);
 }
 
 /* Bottom right corner */
 .corner:nth-child(3) {
-    bottom: var(--corner-positioning-offset);
-    right: var(--corner-positioning-offset);
-    transform: rotate(180deg);
+  bottom: var(--corner-positioning-offset);
+  right: var(--corner-positioning-offset);
+  transform: rotate(180deg);
 }
 
 /* Bottom left corner */
 .corner:nth-child(4) {
-    bottom: var(--corner-positioning-offset);
-    left: var(--corner-positioning-offset);
-    transform: rotate(270deg);
+  bottom: var(--corner-positioning-offset);
+  left: var(--corner-positioning-offset);
+  transform: rotate(270deg);
 }
