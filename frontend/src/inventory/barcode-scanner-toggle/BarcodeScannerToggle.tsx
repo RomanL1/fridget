@@ -1,7 +1,10 @@
-import { Button } from '@radix-ui/themes';
+import { IconButton } from '@radix-ui/themes';
 import { checkPermissions, requestPermissions } from '@tauri-apps/plugin-barcode-scanner';
 import { platform } from '@tauri-apps/plugin-os';
+import { ScanBarcodeIcon } from 'lucide-react';
 import { useNavigate } from 'react-router';
+
+import styles from './BarcodeScannerToggle.module.css';
 
 export function BarcodeScannerToggle() {
   const navigate = useNavigate();
@@ -16,9 +19,15 @@ export function BarcodeScannerToggle() {
   }
 
   return (
-    <Button type="button" onClick={() => openBarcodeScanner()}>
-      Scan Product
-    </Button>
+    <IconButton
+      className={styles.iconButton}
+      type="button"
+      radius="full"
+      variant="solid"
+      onClick={() => openBarcodeScanner()}
+    >
+      <ScanBarcodeIcon className={styles.icon} />
+    </IconButton>
   );
 }
 
