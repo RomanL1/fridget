@@ -1,4 +1,4 @@
-import { PropsWithChildren, RefObject, useImperativeHandle, useState } from 'react';
+import { PropsWithChildren, RefObject, useEffect, useImperativeHandle, useState } from 'react';
 
 import styles from './BottomSheet.module.css';
 
@@ -21,6 +21,13 @@ export function BottomSheet({ ref, children }: BottomSheetProps) {
     open: () => setVisible(true),
     close: () => setVisible(false),
   }));
+
+  // Clear ref when component is un-mounted
+  useEffect(() => {
+    return () => {
+      ref.current = null;
+    };
+  }, [ref]);
 
   return (
     <div className={styles.container}>
