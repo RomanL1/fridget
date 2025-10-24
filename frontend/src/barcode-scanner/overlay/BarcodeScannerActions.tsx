@@ -7,7 +7,7 @@ export function BarcodeScannerActions() {
 
   async function cancelScanner() {
     await cancel();
-    await navigate('/');
+    await navigate(-1);
   }
 
   return (
