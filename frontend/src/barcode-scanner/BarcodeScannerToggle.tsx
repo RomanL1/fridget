@@ -24,7 +24,7 @@ export function BarcodeScannerToggle() {
 
 function supportsBarcodeScanning() {
   try {
-    return (platform && platform() === 'android') || platform() === 'ios';
+    return platform() === 'android';
   } catch {
     return false;
   }
