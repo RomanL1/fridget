@@ -1,0 +1,9 @@
+.iconButton {
+  width: calc(6rem * var(--scaling));
+  height: calc(6rem * var(--scaling));
+}
+
+.icon {
+  width: calc(3rem * var(--scaling));
+  height: calc(3rem * var(--scaling));
+}
