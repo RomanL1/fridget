@@ -1,5 +1,4 @@
 .iconButton {
-  margin: 3rem;
   width: calc(6rem * var(--scaling));
   height: calc(6rem * var(--scaling));
 }
