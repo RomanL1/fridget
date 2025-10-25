@@ -8,3 +8,7 @@ services:
       - 'POSTGRES_USER=fridget'
     ports:
       - '5432:5432'
+  recipe-api:
+    build: ./chefkoch-api/src
+    ports: 
+      - "5001:5001"

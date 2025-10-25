@@ -35,6 +35,7 @@ def get_random_recipes(req: RandomRecipeRequest):
     return getRecipeResponse(recipes, req.limit)
     
 
+# for debugging purposes
 if __name__ == '__main__':
     import uvicorn
     uvicorn.run("server:app", host="0.0.0.0", port=5001)
