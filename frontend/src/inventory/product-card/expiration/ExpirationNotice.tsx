@@ -9,10 +9,7 @@ export function ExpirationNotice({ bestBeforeDate }: ExpirationNoticeProps) {
     return <span />;
   }
 
-  const aboutToExpireInDays = 3;
-  const millisecondsPerDay = 1000 * 60 * 60 * 24;
-  const now = new Date();
-  const daysUntilExpiration = (bestBeforeDate.getTime() - now.getTime()) / millisecondsPerDay;
+  const daysUntilExpiration = getDaysUntilExpiration(bestBeforeDate);
 
   if (daysUntilExpiration < 0) {
     return (
@@ -22,6 +19,7 @@ export function ExpirationNotice({ bestBeforeDate }: ExpirationNoticeProps) {
     );
   }
 
+  const aboutToExpireInDays = 3;
   if (daysUntilExpiration <= aboutToExpireInDays) {
     return (
       <Text size="2" weight="light" color="orange">
@@ -31,4 +29,10 @@ export function ExpirationNotice({ bestBeforeDate }: ExpirationNoticeProps) {
   }
 
   return <span />;
+}
+
+function getDaysUntilExpiration(expirationDate: Date): number {
+  const millisecondsPerDay = 1000 * 60 * 60 * 24;
+  const now = new Date();
+  return (expirationDate.getTime() - now.getTime()) / millisecondsPerDay;
 }
