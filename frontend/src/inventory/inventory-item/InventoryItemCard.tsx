@@ -8,12 +8,14 @@ import styles from './InventoryItemCard.module.css';
 
 interface InventoryItemCardProps {
   inventoryItem: InventoryItem;
+  onEditClick?: () => void;
+  onRemoveClick?: () => void;
 }
 
-export function InventoryItemCard({ inventoryItem }: InventoryItemCardProps) {
+export function InventoryItemCard({ inventoryItem, onEditClick, onRemoveClick }: InventoryItemCardProps) {
   return (
     <Card className={styles.card}>
-      <ProductImage imageUrl={inventoryItem.imageUrl} />
+      <ProductImage imageUrl={inventoryItem.imageUrl} onClick={onEditClick} />
       <Flex direction="column" className={styles.productInformation}>
         <Flex direction="column">
           <Heading size="4" weight="medium" as="h3" className={styles.productName}>
@@ -31,10 +33,10 @@ export function InventoryItemCard({ inventoryItem }: InventoryItemCardProps) {
         <Flex justify="between">
           <ExpirationNotice bestBeforeDate={inventoryItem.bestBeforeDate} />
           <Flex className={styles.actions}>
-            <IconButton variant="ghost">
+            <IconButton variant="ghost" onClick={onEditClick}>
               <PencilIcon />
             </IconButton>
-            <IconButton variant="ghost" color="gray">
+            <IconButton variant="ghost" color="gray" onClick={onRemoveClick}>
               <TrashIcon />
             </IconButton>
           </Flex>
