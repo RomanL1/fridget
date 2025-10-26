@@ -1,0 +1,21 @@
+.card {
+  max-height: max-content;
+  max-width: 18rem;
+}
+
+.productInformation {
+  gap: 1rem;
+  height: 6rem;
+  max-height: 6rem;
+}
+
+.productName {
+  white-space: nowrap;
+  overflow: hidden;
+  text-overflow: ellipsis;
+  max-width: max-content;
+}
+
+.actions {
+  gap: 1rem;
+}
