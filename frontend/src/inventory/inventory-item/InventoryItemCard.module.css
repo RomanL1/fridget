@@ -19,3 +19,7 @@
 .actions {
   gap: 1rem;
 }
+
+.actions button {
+  cursor: pointer;
+}
