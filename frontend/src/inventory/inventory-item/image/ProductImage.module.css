@@ -1,7 +1,17 @@
 .image {
-  display: block;
+  object-fit: cover;
+}
+
+.placeholderImage {
+  align-items: center;
+  justify-content: center;
+  background-color: var(--gray-5);
+}
+
+.image,
+.placeholderImage {
+  display: flex;
   width: 100%;
   height: 12rem;
   aspect-ratio: 1.5 / 1;
-  object-fit: cover;
 }
