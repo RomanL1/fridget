@@ -18,4 +18,11 @@
   flex: 1;
   margin-left: var(--sidebar-width);
   padding: 2rem 4rem;
+  height: 100vh;
+}
+
+.pageContent {
+  position: relative;
+  height: 100%;
+  padding-top: 1rem;
 }
