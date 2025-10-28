@@ -11,12 +11,12 @@ import { ProductNameInput } from './product-name-input/ProductNameInput';
 import styles from './Inventory.module.css';
 
 export function Inventory() {
-  const sheetRef = useRef<BottomSheetRef>(null);
+  const detailSheetRef = useRef<BottomSheetRef>(null);
   const [selectedItem, setSelectedItem] = useState<InventoryItem | null>(null);
 
   function editItem(item: InventoryItem) {
     setSelectedItem(item);
-    sheetRef.current?.open();
+    detailSheetRef.current?.open();
   }
 
   function productNameEntered(productName: string) {
@@ -26,8 +26,12 @@ export function Inventory() {
     });
   }
 
+  function saveItem(item: InventoryItem) {
+    console.log(item);
+  }
+
   return (
-    <PageShell title="Produktübersicht">
+    <PageShell title="Mein Kühlschrank">
       {/* Iventory items  */}
       <InventoryItemGrid inventoryItems={sampleInventoryItems} onEditItem={editItem} onRemoveItem={() => {}} />
 
@@ -41,9 +45,13 @@ export function Inventory() {
         <BarcodeScannerToggle />
       </div>
 
-      {/* Bottom sheet for inventory item detail view */}
-      <BottomSheet ref={sheetRef}>
-        <InventoryItemDetail inventoryItem={selectedItem} />
+      {/* Bottom sheet for inventory item detail */}
+      <BottomSheet ref={detailSheetRef}>
+        <InventoryItemDetail
+          inventoryItem={selectedItem}
+          onSave={saveItem}
+          onCancel={() => detailSheetRef.current?.close()}
+        />
       </BottomSheet>
     </PageShell>
   );

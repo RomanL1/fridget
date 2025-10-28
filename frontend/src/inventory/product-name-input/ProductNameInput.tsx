@@ -24,8 +24,7 @@ export function ProductNameInput({ onSubmit }: ProductNameInputProps) {
         value={value}
         onChange={(event) => setValue(event.target.value)}
       >
-        <TextField.Slot />
-        <TextField.Slot pr="1">
+        <TextField.Slot side="right" pr="1">
           <IconButton disabled={!value}>
             <PlusIcon />
           </IconButton>
