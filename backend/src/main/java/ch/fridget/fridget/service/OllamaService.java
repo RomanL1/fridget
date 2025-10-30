@@ -1,14 +1,14 @@
-package ch.fridget.fridget.ollama;
+package ch.fridget.fridget.service;
 
 import java.util.HashMap;
 import java.util.Map;
-import java.util.Optional;
 
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.boot.context.event.ApplicationReadyEvent;
 import org.springframework.context.event.EventListener;
 import org.springframework.stereotype.Service;
 
+import ch.fridget.fridget.domain.dto.ProductInfoTask;
 import ch.fridget.fridget.domain.ollama.ProductCategoryInfo;
 import io.github.ollama4j.Ollama;
 import io.github.ollama4j.exceptions.OllamaException;
@@ -18,11 +18,11 @@ import lombok.extern.slf4j.Slf4j;
 
 @Service
 @Slf4j
-public class OllamaServer
+public class OllamaService
 {
 	public static final String OLLAMA_HOST = "http://0.0.0.0:11434/";
 
-	@Value("${ollama.model:}")
+	@Value("${ollama.model}")
 	private String model;
 
 	private static final String string_name = String.class.getSimpleName().toLowerCase();
@@ -32,22 +32,10 @@ public class OllamaServer
 	public void onStartup ()
 	{
 		ollama = new Ollama( OLLAMA_HOST );
+		ollama.setRequestTimeoutSeconds( 120 );
 	}
 
-	public boolean serverAvailable ()
-	{
-		try
-		{
-			return pingServer();
-		}
-		catch ( OllamaException e )
-		{
-			log.error( "Could not ping server", e );
-			return false;
-		}
-	}
-
-	public ProductCategoryInfo generate ( String brandName, String productName ) throws OllamaException
+	public ProductCategoryInfo generateProductInfo ( ProductInfoTask task ) throws OllamaException
 	{
 		pingServer();
 
@@ -55,7 +43,7 @@ public class OllamaServer
 
 		OllamaGenerateRequest request = OllamaGenerateRequest.builder()
 				.withModel( model )
-				.withPrompt( getPrompt( brandName, productName ) )
+				.withPrompt( getPrompt( task ))
 				.withFormat( getCategoryFormat() )
 				.build();
 
@@ -79,7 +67,7 @@ public class OllamaServer
 		return format;
 	}
 
-	private String getPrompt ( String brandName, String productName )
+	private String getPrompt ( ProductInfoTask task )
 	{
 		return "You are a food classification assistant.\n"
 				+ "\n"
@@ -103,7 +91,7 @@ public class OllamaServer
 				+ "6. Keep results consistent — similar products should map to the same broader type.\n"
 				+ "\n"
 				+ "### Input\n"
-				+ "brandname: \"" + brandName + "\"\n"
-				+ "productname: \"" + productName + "\"\n";
+				+ "brandname: \"" + task.brandName() + "\"\n"
+				+ "productname: \"" + task.productName() + "\"\n";
 	}
 }

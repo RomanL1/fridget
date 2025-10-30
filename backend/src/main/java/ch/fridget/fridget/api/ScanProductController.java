@@ -10,9 +10,11 @@ import org.springframework.web.bind.annotation.RestController;
 
 import ch.fridget.fridget.domain.db.OFFProductResponse;
 import ch.fridget.fridget.domain.db.Product;
-import ch.fridget.fridget.domain.dto.ScanProductResponseDto;
+import ch.fridget.fridget.domain.dto.ProductInfoTask;
+import ch.fridget.fridget.domain.dto.response.ScanProductResponseDto;
 import ch.fridget.fridget.repository.OFFProductResponseRepository;
 import ch.fridget.fridget.repository.ProductRepository;
+import ch.fridget.fridget.service.ProductInfoService;
 import kong.unirest.core.HttpResponse;
 import kong.unirest.core.JsonNode;
 import kong.unirest.core.Unirest;
@@ -28,6 +30,7 @@ public class ScanProductController implements APIController
 
 	private final ProductRepository productRepository;
 	private final OFFProductResponseRepository oFFProductResponseRepository;
+	private final ProductInfoService productInfoService;
 
 	@PostMapping( "scanProduct/{ean13Barcode}" )
 	public ResponseEntity<ScanProductResponseDto> scanProduct ( @PathVariable String ean13Barcode )
@@ -75,8 +78,6 @@ public class ScanProductController implements APIController
 			log.warn( "Product with ean13 barcode: {} found on OFF but incomplete", ean13Barcode );
 		}
 
-		//TODO category, subCategory, commonBestBeforeTimeRange
-
 		Product newProduct = Product.builder()
 				.id( UUID.randomUUID() )
 				.ean13( ean13Barcode )
@@ -88,7 +89,16 @@ public class ScanProductController implements APIController
 				.manuallyAddedByUser( false )
 				.build();
 		Product saved = productRepository.save( newProduct );
+
 		log.info( "Created new Product with ean13 barcode: {} from OFF", ean13Barcode );
+
+		final ProductInfoTask task = ProductInfoTask.builder()
+				.productId( saved.getId() )
+				.brandName( saved.getBrandName() )
+				.productName( saved.getName() )
+				.build();
+
+		productInfoService.submitProductForProcessing( task );
 
 		ScanProductResponseDto responseDto = convertFoundProductToResponseDto( saved, status );
 		return ResponseEntity.ok( responseDto );

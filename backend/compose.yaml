@@ -1,10 +1,36 @@
 name: 'fridget-backend'
 services:
-  postgres:
-    image: 'postgres:latest'
-    environment:
-      - 'POSTGRES_DB=fridget'
-      - 'POSTGRES_PASSWORD=secret'
-      - 'POSTGRES_USER=fridget'
+  ollama:
+    image: ollama/ollama:latest
+    container_name: ollama
+    restart: unless-stopped
     ports:
-      - '5432:5432'
+      - "11434:11434"
+    volumes:
+      - ollama_data:/root/.ollama
+    environment:
+      - OLLAMA_KEEP_ALIVE=-1
+      - OLLAMA_NO_GPU=true
+
+  postgres:
+    image: postgres:latest
+    container_name: postgres
+    restart: unless-stopped
+    environment:
+      POSTGRES_DB: fridget
+      POSTGRES_USER: fridget
+      POSTGRES_PASSWORD: secret
+    ports:
+      - "5432:5432"
+    volumes:
+      - postgres_data:/var/lib/postgresql
+    healthcheck:
+      test: ["CMD-SHELL", "pg_isready -h 127.0.0.1 -p 5432 -U fridget -d fridget -q || exit 1"]
+      interval: 10s
+      retries: 5
+      start_period: 60s
+      timeout: 10s
+
+volumes:
+  ollama_data:
+  postgres_data:
