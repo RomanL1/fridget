@@ -1,8 +1,8 @@
 import { Heading } from '@radix-ui/themes';
 import { InventoryItem } from '../inventory-items/card/inventory-item';
+import { InventoryItemDetailForm } from './form/InventoryItemDetailForm';
 
 import styles from './InventoryItemDetail.module.css';
-import { InventoryItemDetailForm } from './form/InventoryItemDetailForm';
 
 interface InventoryItemDetailProps {
   inventoryItem: InventoryItem | null;

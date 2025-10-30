@@ -13,20 +13,21 @@ interface InventoryItemDetailFormProps {
 }
 
 export function InventoryItemDetailForm({ inventoryItem, onSave, onCancel }: InventoryItemDetailFormProps) {
-  const [productName, setProductName] = useState<string>(inventoryItem.productName);
-  const [brandName, setBrandName] = useState<string>(inventoryItem.brandName || '');
-  const [quantity, setQuantity] = useState<string>(inventoryItem.quantity || '');
-  const [bestBeforeDate, setBestBeforeDate] = useState<Date | null>(inventoryItem.bestBeforeDate ?? null);
+  const [productName, setProductName] = useState('');
+  const [brandName, setBrandName] = useState('');
+  const [quantity, setQuantity] = useState('');
+  const [bestBeforeDate, setBestBeforeDate] = useState<Date | null>(null);
 
   useEffect(() => {
     setProductName(inventoryItem.productName);
-    setBrandName(inventoryItem.brandName || '');
-    setQuantity(inventoryItem.quantity || '');
+    setBrandName(inventoryItem.brandName ?? '');
+    setQuantity(inventoryItem.quantity ?? '');
     setBestBeforeDate(inventoryItem.bestBeforeDate ?? null);
-  }, [inventoryItem]);
+  }, [inventoryItem.inventoryItemId]);
 
-  function submitForm(event: FormEvent) {
+  function submitForm(event: FormEvent<HTMLFormElement>) {
     event.preventDefault();
+
     onSave({
       inventoryItemId: 0,
       productName,
@@ -39,50 +40,14 @@ export function InventoryItemDetailForm({ inventoryItem, onSave, onCancel }: Inv
   return (
     <form className={styles.form} onSubmit={submitForm}>
       <fieldset className={styles.fields}>
-        <div className={styles.field}>
-          <Text as="label" htmlFor="productName">
-            Produktname
-          </Text>
-          <TextField.Root
-            id="productName"
-            size="3"
-            className={styles.field}
-            placeholder="Produktname"
-            value={productName}
-            onChange={(e) => setProductName(e.target.value)}
-            required
-          />
-        </div>
-        <div className={styles.field}>
-          <Text as="label" htmlFor="brandName">
-            Marke
-          </Text>
-          <TextField.Root
-            id="brandName"
-            size="3"
-            className={styles.field}
-            value={brandName}
-            onChange={(e) => setBrandName(e.target.value)}
-          />
-        </div>
-        <div className={styles.field}>
-          <Text as="label" htmlFor="quantity">
-            Menge
-          </Text>
-          <TextField.Root
-            id="quantity"
-            size="3"
-            className={styles.field}
-            value={quantity}
-            onChange={(e) => setQuantity(e.target.value)}
-          />
-        </div>
-
-        <ExpirationDateFormField initialValue={bestBeforeDate} onChange={setBestBeforeDate} />
+        <ProductNameFormField value={productName} onChange={setProductName} />
+        <BrandNameFormField value={brandName} onChange={setBrandName} />
+        <QuantityFormField value={quantity} onChange={setQuantity} />
+        <ExpirationDateFormField value={bestBeforeDate} onChange={setBestBeforeDate} />
       </fieldset>
 
       <div className={styles.actions}>
-        <Button type="button" variant="ghost" color="gray" onClick={() => onCancel()}>
+        <Button type="button" variant="ghost" color="gray" onClick={onCancel}>
           Abbrechen
         </Button>
         <Button type="submit">Speichern</Button>
@@ -92,28 +57,72 @@ export function InventoryItemDetailForm({ inventoryItem, onSave, onCancel }: Inv
 }
 
 interface FormFieldProps<V> {
-  initialValue: V | null;
-  onChange: (value: V | null) => void;
+  value: V;
+  onChange: (value: V) => void;
 }
 
-function ExpirationDateFormField({ initialValue, onChange }: FormFieldProps<Date>) {
-  const [value, setValue] = useState(initialValue);
+function ProductNameFormField({ value, onChange }: FormFieldProps<string>) {
+  return (
+    <div className={styles.field}>
+      <Text as="label" htmlFor="productName">
+        Produktname
+      </Text>
+      <TextField.Root
+        id="productName"
+        size="3"
+        className={styles.field}
+        placeholder="Produktname"
+        value={value}
+        onChange={(e) => onChange(e.target.value)}
+        required
+      />
+    </div>
+  );
+}
 
-  function onDateSelected(date: Date | null) {
-    setValue(date);
-    onChange(date);
-  }
+function BrandNameFormField({ value, onChange }: FormFieldProps<string>) {
+  return (
+    <div className={styles.field}>
+      <Text as="label" htmlFor="brandName">
+        Marke
+      </Text>
+      <TextField.Root
+        id="brandName"
+        size="3"
+        className={styles.field}
+        value={value}
+        onChange={(e) => onChange(e.target.value)}
+      />
+    </div>
+  );
+}
 
-  console.log(value);
+function QuantityFormField({ value, onChange }: FormFieldProps<string>) {
+  return (
+    <div className={styles.field}>
+      <Text as="label" htmlFor="quantity">
+        Menge
+      </Text>
+      <TextField.Root
+        id="quantity"
+        size="3"
+        className={styles.field}
+        value={value}
+        onChange={(e) => onChange(e.target.value)}
+      />
+    </div>
+  );
+}
 
+function ExpirationDateFormField({ value, onChange }: FormFieldProps<Date | null>) {
   return (
     <div className={styles.field}>
       <Text as="label" htmlFor="expiryDate">
         Ablaufdatum
       </Text>
       <Datepicker
-        initialValue={value}
-        onChange={onDateSelected}
+        value={value}
+        onChange={onChange}
         inputElement={
           <TextField.Root className={styles.field} id="expiryDate" size="3" autoComplete="off">
             <TextField.Slot side="right">

@@ -13,7 +13,7 @@ const fresh: InventoryItem = {
 const custom: InventoryItem = {
   productId: 2,
   inventoryItemId: 2,
-  productName: 'Schokokuchen (Selbstgebacken)',
+  productName: 'Marmorkuchen (Selbstgebacken)',
   quantity: '2 Stk.',
   // bestBeforeDate: new Date(2025, 11, 27),
 };

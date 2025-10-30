@@ -30,6 +30,15 @@ export function Inventory() {
     console.log(item);
   }
 
+  function cancelEdit() {
+    detailSheetRef.current?.close();
+    resetSelectedItem();
+  }
+
+  function resetSelectedItem() {
+    setSelectedItem(null);
+  }
+
   return (
     <PageShell title="Mein Kühlschrank">
       {/* Iventory items  */}
@@ -46,12 +55,8 @@ export function Inventory() {
       </div>
 
       {/* Bottom sheet for inventory item detail */}
-      <BottomSheet ref={detailSheetRef}>
-        <InventoryItemDetail
-          inventoryItem={selectedItem}
-          onSave={saveItem}
-          onCancel={() => detailSheetRef.current?.close()}
-        />
+      <BottomSheet ref={detailSheetRef} onClose={resetSelectedItem}>
+        <InventoryItemDetail inventoryItem={selectedItem} onSave={saveItem} onCancel={cancelEdit} />
       </BottomSheet>
     </PageShell>
   );
