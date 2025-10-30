@@ -32,11 +32,12 @@ export function Inventory() {
 
   function cancelEdit() {
     detailSheetRef.current?.close();
-    resetSelectedItem();
   }
 
   function resetSelectedItem() {
-    setSelectedItem(null);
+    // Reset selected item after the bottom sheet animation is over
+    const animationDurationInMilliseconds = 200;
+    setTimeout(() => setSelectedItem(null), animationDurationInMilliseconds);
   }
 
   return (

@@ -1,6 +1,7 @@
 import { Heading } from '@radix-ui/themes';
 import { InventoryItem } from '../inventory-items/card/inventory-item';
 import { InventoryItemDetailForm } from './form/InventoryItemDetailForm';
+import { InventoryItemDetailImage } from './image/InventoryItemDetailImage';
 
 import styles from './InventoryItemDetail.module.css';
 
@@ -17,7 +18,10 @@ export function InventoryItemDetail({ inventoryItem, onSave, onCancel }: Invento
 
   return (
     <div className={styles.detail}>
-      <div className={styles.image} />
+      <div className={styles.image}>
+        <InventoryItemDetailImage imageUrl={inventoryItem.imageUrl} />
+      </div>
+
       <Heading as="h2">Details</Heading>
 
       <div className={styles.form}>

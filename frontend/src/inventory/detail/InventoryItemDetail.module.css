@@ -1,9 +1,7 @@
-.detail {
-}
-
-.heading {
+.image:not(:empty) {
+  margin-bottom: 1rem;
 }
 
 .form {
-  padding-top: 1rem;
+  margin-top: 1rem;
 }
