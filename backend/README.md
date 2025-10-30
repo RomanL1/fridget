@@ -39,3 +39,13 @@ look at example.application.properties file
 
 ## open the project in your IDE
 open the project in vscode or intellij idea with folder "backend"
+
+## building docker image
+docker buildx create --name multi --use
+
+docker buildx inspect --bootstrap
+
+docker buildx build \ 
+  --platform linux/amd64,linux/arm64 \
+  -t romanl1/fridget:latest \
+  --push

@@ -1,5 +1,5 @@
 # Uses official Gradle image with JDK 21
-FROM gradle:8.14.3-jdk21
+FROM gradle:8.14.3-jdk21-alpine
 
 # App workdir (use Gradle user's home for cache friendliness)
 WORKDIR /home/gradle/app

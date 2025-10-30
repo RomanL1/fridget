@@ -5,7 +5,7 @@ meta {
 }
 
 post {
-  url: http://localhost:8080/api/scanProduct/:ean13Barcode
+  url: {{base_url}}/api/scanProduct/:ean13Barcode
   body: none
   auth: inherit
 }
@@ -15,9 +15,10 @@ params:path {
 }
 
 headers {
-  userCode: 018e565dcc754082a7116c22ff8f2ec7
+  userCode: b695ac709012470fa031fa360a38fd3d
 }
 
 settings {
   encodeUrl: true
+  timeout: 0
 }
