@@ -11,7 +11,7 @@ interface DatepickerProps {
 }
 
 export function Datepicker({ initialValue, inputElement, onChange }: DatepickerProps) {
-  const [value, setValue] = useState<Date | null>(initialValue);
+  const [value, setValue] = useState(initialValue);
 
   function selectDate(date: Date | null) {
     setValue(date);
@@ -20,10 +20,10 @@ export function Datepicker({ initialValue, inputElement, onChange }: DatepickerP
 
   return (
     <ReactDatePicker
+      {...inputElement.props}
       showPopperArrow={false}
-      popperPlacement="bottom-start"
+      popperPlacement="top-start"
       customInput={inputElement}
-      placeholderText="Select date"
       dateFormat="dd.MM.yyyy"
       selected={value}
       onChange={selectDate}

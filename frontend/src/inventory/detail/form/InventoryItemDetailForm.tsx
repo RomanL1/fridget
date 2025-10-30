@@ -1,7 +1,9 @@
-import { Button, IconButton, Text, TextField } from '@radix-ui/themes';
+import { Button, Text, TextField } from '@radix-ui/themes';
 import { CalendarDaysIcon } from 'lucide-react';
 import { FormEvent, useEffect, useState } from 'react';
+import { Datepicker } from '../../../shared/datepicker/Datepicker';
 import { InventoryItem } from '../../inventory-items/card/inventory-item';
+
 import styles from './InventoryItemDetailForm.module.css';
 
 interface InventoryItemDetailFormProps {
@@ -11,16 +13,16 @@ interface InventoryItemDetailFormProps {
 }
 
 export function InventoryItemDetailForm({ inventoryItem, onSave, onCancel }: InventoryItemDetailFormProps) {
-  const [productName, setProductName] = useState<string>('');
-  const [brandName, setBrandName] = useState<string | undefined>('');
-  const [quantity, setQuantity] = useState<string | undefined>('');
-  const [bestBeforeDate, setBestBeforeDate] = useState<string | undefined>('');
+  const [productName, setProductName] = useState<string>(inventoryItem.productName);
+  const [brandName, setBrandName] = useState<string>(inventoryItem.brandName || '');
+  const [quantity, setQuantity] = useState<string>(inventoryItem.quantity || '');
+  const [bestBeforeDate, setBestBeforeDate] = useState<Date | null>(inventoryItem.bestBeforeDate ?? null);
 
   useEffect(() => {
     setProductName(inventoryItem.productName);
     setBrandName(inventoryItem.brandName || '');
     setQuantity(inventoryItem.quantity || '');
-    setBestBeforeDate(inventoryItem.bestBeforeDate?.toString() || '');
+    setBestBeforeDate(inventoryItem.bestBeforeDate ?? null);
   }, [inventoryItem]);
 
   function submitForm(event: FormEvent) {
@@ -30,6 +32,7 @@ export function InventoryItemDetailForm({ inventoryItem, onSave, onCancel }: Inv
       productName,
       brandName,
       quantity,
+      bestBeforeDate: bestBeforeDate ?? undefined,
     });
   }
 
@@ -70,30 +73,12 @@ export function InventoryItemDetailForm({ inventoryItem, onSave, onCancel }: Inv
             id="quantity"
             size="3"
             className={styles.field}
-            placeholder="Menge"
             value={quantity}
             onChange={(e) => setQuantity(e.target.value)}
           />
         </div>
-        <div className={styles.field}>
-          <Text as="label" htmlFor="expiryDate">
-            Ablaufdatum
-          </Text>
-          <TextField.Root
-            id="expiryDate"
-            size="3"
-            className={styles.field}
-            placeholder="Ablaufdatum"
-            value={bestBeforeDate}
-            onChange={(e) => setBestBeforeDate(e.target.value)}
-          >
-            <TextField.Slot side="right">
-              <IconButton type="button" variant="ghost" color="gray">
-                <CalendarDaysIcon />
-              </IconButton>
-            </TextField.Slot>
-          </TextField.Root>
-        </div>
+
+        <ExpirationDateFormField initialValue={bestBeforeDate} onChange={setBestBeforeDate} />
       </fieldset>
 
       <div className={styles.actions}>
@@ -103,5 +88,40 @@ export function InventoryItemDetailForm({ inventoryItem, onSave, onCancel }: Inv
         <Button type="submit">Speichern</Button>
       </div>
     </form>
+  );
+}
+
+interface FormFieldProps<V> {
+  initialValue: V | null;
+  onChange: (value: V | null) => void;
+}
+
+function ExpirationDateFormField({ initialValue, onChange }: FormFieldProps<Date>) {
+  const [value, setValue] = useState(initialValue);
+
+  function onDateSelected(date: Date | null) {
+    setValue(date);
+    onChange(date);
+  }
+
+  console.log(value);
+
+  return (
+    <div className={styles.field}>
+      <Text as="label" htmlFor="expiryDate">
+        Ablaufdatum
+      </Text>
+      <Datepicker
+        initialValue={value}
+        onChange={onDateSelected}
+        inputElement={
+          <TextField.Root className={styles.field} id="expiryDate" size="3" autoComplete="off">
+            <TextField.Slot side="right">
+              <CalendarDaysIcon />
+            </TextField.Slot>
+          </TextField.Root>
+        }
+      />
+    </div>
   );
 }

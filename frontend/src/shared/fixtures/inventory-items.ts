@@ -15,7 +15,7 @@ const custom: InventoryItem = {
   inventoryItemId: 2,
   productName: 'Schokokuchen (Selbstgebacken)',
   quantity: '2 Stk.',
-  bestBeforeDate: new Date(2025, 11, 27),
+  // bestBeforeDate: new Date(2025, 11, 27),
 };
 
 const soonExpiring: InventoryItem = {

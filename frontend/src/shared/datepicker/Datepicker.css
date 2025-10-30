@@ -6,6 +6,10 @@
   border-radius: var(--radius-6);
 }
 
+.react-datepicker-wrapper {
+  width: 100%;
+}
+
 .react-datepicker__header {
   background-color: var(--color-background);
   border: none;
