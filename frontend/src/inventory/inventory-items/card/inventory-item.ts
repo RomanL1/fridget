@@ -1,6 +1,6 @@
 export interface InventoryItem {
-  inventoryItemId: number;
-  productId?: number;
+  inventoryItemId: string;
+  productId?: string;
   productName: string;
   brandName?: string;
   imageUrl?: string;
