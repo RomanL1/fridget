@@ -1,0 +1,13 @@
+# Gradle / build output
+.gradle/
+build/
+
+# IDE/OS
+.idea/
+.vscode/
+*.iml
+.DS_Store
+
+# (If you have a frontend)
+node_modules/
+dist/
