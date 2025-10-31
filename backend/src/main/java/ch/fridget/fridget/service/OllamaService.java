@@ -26,13 +26,13 @@ public class OllamaService
 	private String model;
 
 	private static final String string_name = String.class.getSimpleName().toLowerCase();
-	private static Ollama ollama;
+	private Ollama ollama;
 
 	@EventListener( ApplicationReadyEvent.class )
 	public void onStartup ()
 	{
-		ollama = new Ollama( OLLAMA_HOST );
-		ollama.setRequestTimeoutSeconds( 120 );
+		this.ollama = new Ollama( OLLAMA_HOST );
+		this.ollama.setRequestTimeoutSeconds( 120 );
 	}
 
 	public ProductCategoryInfo generateProductInfo ( ProductInfoTask task ) throws OllamaException
