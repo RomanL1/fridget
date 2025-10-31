@@ -45,7 +45,7 @@ docker buildx create --name multi --use
 
 docker buildx inspect --bootstrap
 
-docker buildx build \ 
+docker buildx build \
   --platform linux/amd64,linux/arm64 \
   -t romanl1/fridget:latest \
   --push
