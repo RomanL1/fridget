@@ -57,4 +57,4 @@ Open [chrome://inspect/#devices](chrome://inspect/#devices) in your chrome-based
 > For physical devices, this only works as long as the device is connected via USB
 
 ## Contributing
-Use [Arlos Commit Message Notation](https://github.com/RefactoringCombos/ArlosCommitNotation) when contributing to this repository.
+Use [Conventional Commits](https://www.conventionalcommits.org/) when contributing to this repository.
