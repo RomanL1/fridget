@@ -20,7 +20,8 @@ import lombok.extern.slf4j.Slf4j;
 @Slf4j
 public class OllamaService
 {
-	public static final String OLLAMA_HOST = "http://0.0.0.0:11434/";
+	@Value("${ollama.host}")
+	private String ollamaHost;
 
 	@Value("${ollama.model}")
 	private String model;
@@ -31,7 +32,7 @@ public class OllamaService
 	@EventListener( ApplicationReadyEvent.class )
 	public void onStartup ()
 	{
-		this.ollama = new Ollama( OLLAMA_HOST );
+		this.ollama = new Ollama( ollamaHost );
 		this.ollama.setRequestTimeoutSeconds( 120 );
 	}
 
