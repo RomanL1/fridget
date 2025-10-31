@@ -18,7 +18,6 @@ public class ScanProductResponseDto
 	public enum ESTATUS
 	{
 		PRODUCT_FOUND,
-		PRODUCT_NOT_FOUND,
 		PRODUCT_CREATED,
 		PRODUCT_INCOMPLETE,
 	}

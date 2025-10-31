@@ -38,6 +38,13 @@ public class ScanProductController implements APIController
 		Optional<Product> existingProduct = productRepository.findProductByEan13( ean13Barcode );
 		if ( existingProduct.isPresent() )
 		{
+			if ( existingProduct.get().isIncomplete() )
+			{
+				//product incomplete
+				log.info( "Product with ean13 barcode: {} found in our db but incomplete", ean13Barcode );
+				return ResponseEntity.ok( convertFoundProductToResponseDto( existingProduct.get(),
+						ScanProductResponseDto.ESTATUS.PRODUCT_INCOMPLETE ) );
+			}
 			//product found
 			log.info( "Product with ean13 barcode: {} found in our db", ean13Barcode );
 			return ResponseEntity.ok( convertFoundProductToResponseDto( existingProduct.get(),
@@ -49,15 +56,19 @@ public class ScanProductController implements APIController
 				.header( "accept", "application/json" )
 				.asJson();
 
-		if ( response.getStatus() != 200 || response.getBody() == null )
+		if ( response.getStatus() != 200 || response.getBody() == null || response.getBody().getObject().get( "status" ).equals( 0 ) )
 		{
-			//TODO send product with incomplete, save barcode
-			//product not found
+			//product not found on OFF, save incomplete product
 			log.warn( "Product with ean13 barcode: {} NOT found on OFF", ean13Barcode );
-			ScanProductResponseDto responseDto = ScanProductResponseDto.builder()
-					.status( ScanProductResponseDto.ESTATUS.PRODUCT_NOT_FOUND )
+			Product product = Product.builder()
+					.id( UUID.randomUUID() )
+					.ean13( ean13Barcode )
+					.incomplete( true )
+					.manuallyAddedByUser( true )
 					.build();
-			return ResponseEntity.ok( responseDto );
+			Product saved = productRepository.save( product );
+			return ResponseEntity.ok( convertFoundProductToResponseDto( saved,
+					ScanProductResponseDto.ESTATUS.PRODUCT_INCOMPLETE ) );
 		}
 
 		OFFProductResponse offProductResponse = OFFProductResponse.builder()
