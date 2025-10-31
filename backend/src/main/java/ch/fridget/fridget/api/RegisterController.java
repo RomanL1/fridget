@@ -7,7 +7,7 @@ import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RestController;
 
 import ch.fridget.fridget.domain.db.User;
-import ch.fridget.fridget.domain.dto.response.UserCodeResponseDto;
+import ch.fridget.fridget.domain.dto.api.UserCodeResponseDto;
 import ch.fridget.fridget.repository.UserRepository;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;

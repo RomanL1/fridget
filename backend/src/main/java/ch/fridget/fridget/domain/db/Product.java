@@ -34,7 +34,7 @@ public class Product implements UniqueIdentifiable
 	@Column( name = "brand_name" )
 	private String brandName;
 
-	@Column( name = "name", nullable = false )
+	@Column( name = "name" )
 	private String name;
 
 	@Column( name = "manually_added_by_user", nullable = false )

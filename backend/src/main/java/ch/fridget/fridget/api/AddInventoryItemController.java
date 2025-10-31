@@ -15,8 +15,8 @@ import org.springframework.web.bind.annotation.RestController;
 import ch.fridget.fridget.domain.db.InventoryItem;
 import ch.fridget.fridget.domain.db.Product;
 import ch.fridget.fridget.domain.db.User;
-import ch.fridget.fridget.domain.dto.response.AddInventoryItemRequestDto;
-import ch.fridget.fridget.domain.dto.response.AddInventoryItemResponseDto;
+import ch.fridget.fridget.domain.dto.api.AddInventoryItemRequestDto;
+import ch.fridget.fridget.domain.dto.api.AddInventoryItemResponseDto;
 import ch.fridget.fridget.repository.InventoryItemRepository;
 import ch.fridget.fridget.repository.ProductRepository;
 import ch.fridget.fridget.repository.UserRepository;
@@ -51,7 +51,7 @@ public class AddInventoryItemController implements APIController
 		Product product;
 		if ( requestDto.getProductId() == null )
 		{
-			product = convertAddInventoryItemRequestDtoToProduct( requestDto, true );
+			product = convertAddInventoryItemRequestDtoToManualProduct( requestDto );
 			product = productRepository.save( product );
 		}
 		else
@@ -83,7 +83,9 @@ public class AddInventoryItemController implements APIController
 				.id( UUID.randomUUID() )
 				.user( user.get() )
 				.product( product )
-				.name( product.getBrandName() + " " + product.getName() )
+				.productName( product.getName() )
+				.brandName( product.getBrandName() )
+				.quantity( product.getQuantity() )
 				.bestBeforeDate( bestBefore )
 				.storedInFridge( true ) //default for now
 				.opened( false )
@@ -104,8 +106,7 @@ public class AddInventoryItemController implements APIController
 		return ResponseEntity.ok( responseDto );
 	}
 
-	private Product convertAddInventoryItemRequestDtoToProduct ( AddInventoryItemRequestDto requestDto,
-			boolean manuallyAddedByUser )
+	private Product convertAddInventoryItemRequestDtoToManualProduct ( AddInventoryItemRequestDto requestDto )
 	{
 		UUID uuid = requestDto.getProductId() == null ? UUID.randomUUID() : UUID.fromString( requestDto.getProductId() );
 		return Product.builder()
@@ -115,7 +116,7 @@ public class AddInventoryItemController implements APIController
 				.quantity( requestDto.getProductQuantity() )
 				.ean13( requestDto.getProductBarcode() )
 				.imageUrl( requestDto.getProductImageUrl() )
-				.manuallyAddedByUser( manuallyAddedByUser )
+				.manuallyAddedByUser( true )
 				.build();
 	}
 

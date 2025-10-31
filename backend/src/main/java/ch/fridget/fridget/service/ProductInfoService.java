@@ -1,29 +1,32 @@
 package ch.fridget.fridget.service;
 
-import java.util.UUID;
-
+import org.springframework.beans.factory.annotation.Value;
 import org.springframework.stereotype.Service;
 
 import ch.fridget.fridget.domain.dto.ProductInfoTask;
 import lombok.RequiredArgsConstructor;
 
-/**
- * Example service demonstrating how to use the AsyncProductInfoWorker singleton.
- * This shows best practices for enqueuing product information tasks.
- */
+
 @Service
 @RequiredArgsConstructor
 public class ProductInfoService
 {
 	private final AsyncProductInfoWorker asyncProductInfoWorker;
 
-	public boolean submitProductForProcessing ( final ProductInfoTask productInfoTask )
+	@Value("${ollama.run.enabled}")
+	private boolean runEnabled;
+
+	public void submitProductForProcessing ( final ProductInfoTask productInfoTask )
 	{
+		if ( !runEnabled )
+		{
+			return;
+		}
+
 		if ( asyncProductInfoWorker.getRemainingSize() > 0 )
 		{
-			return asyncProductInfoWorker.enqueue( productInfoTask );
+			asyncProductInfoWorker.enqueue( productInfoTask );
 		}
-		return false;
 	}
 }
 

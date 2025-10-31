@@ -1,4 +1,4 @@
-package ch.fridget.fridget.domain.dto.response;
+package ch.fridget.fridget.domain.dto.api;
 
 import java.util.UUID;
 

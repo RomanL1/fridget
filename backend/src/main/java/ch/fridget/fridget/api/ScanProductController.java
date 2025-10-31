@@ -11,7 +11,7 @@ import org.springframework.web.bind.annotation.RestController;
 import ch.fridget.fridget.domain.db.OFFProductResponse;
 import ch.fridget.fridget.domain.db.Product;
 import ch.fridget.fridget.domain.dto.ProductInfoTask;
-import ch.fridget.fridget.domain.dto.response.ScanProductResponseDto;
+import ch.fridget.fridget.domain.dto.api.ScanProductResponseDto;
 import ch.fridget.fridget.repository.OFFProductResponseRepository;
 import ch.fridget.fridget.repository.ProductRepository;
 import ch.fridget.fridget.service.ProductInfoService;
@@ -51,6 +51,7 @@ public class ScanProductController implements APIController
 
 		if ( response.getStatus() != 200 || response.getBody() == null )
 		{
+			//TODO send product with incomplete, save barcode
 			//product not found
 			log.warn( "Product with ean13 barcode: {} NOT found on OFF", ean13Barcode );
 			ScanProductResponseDto responseDto = ScanProductResponseDto.builder()
