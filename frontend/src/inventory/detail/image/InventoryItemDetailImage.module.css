@@ -1,0 +1,11 @@
+.container {
+  display: flex;
+  justify-content: center;
+}
+
+.image {
+  object-fit: cover;
+  aspect-ratio: 1.5 / 1;
+  max-height: 15rem;
+  min-height: 13rem;
+}

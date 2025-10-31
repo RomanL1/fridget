@@ -9,17 +9,18 @@ export interface BottomSheetRef {
 
 export type BottomSheetProps = PropsWithChildren<{
   ref: RefObject<BottomSheetRef | null>;
+  onClose: () => void;
 }>;
 
-export function BottomSheet({ ref, children }: BottomSheetProps) {
+export function BottomSheet({ ref, onClose, children }: BottomSheetProps) {
   const [isVisible, setVisible] = useState(false);
   const backdropAnimationClass = isVisible ? styles.backdropEntered : styles.backdropExited;
   const bottomSheetAnimationClass = isVisible ? styles.bottomSheetEntered : styles.bottomSheetExited;
 
   // Expose control methods to the consumer
   useImperativeHandle(ref, () => ({
-    open: () => setVisible(true),
-    close: () => setVisible(false),
+    open: () => openSheet(),
+    close: () => closeSheet(),
   }));
 
   // Clear ref when component is un-mounted
@@ -29,9 +30,38 @@ export function BottomSheet({ ref, children }: BottomSheetProps) {
     };
   }, [ref]);
 
+  // Close the sheet when escape is pressed
+  useEffect(() => {
+    const keydownHandler = (event: KeyboardEvent) => {
+      if (event.key === 'Escape' && isVisible) {
+        closeSheet();
+      }
+    };
+
+    if (isVisible) {
+      window.addEventListener('keydown', keydownHandler);
+      return () => {
+        window.removeEventListener('keydown', keydownHandler);
+      };
+    }
+  }, [isVisible]);
+
+  function openSheet() {
+    if (!isVisible) {
+      setVisible(true);
+    }
+  }
+
+  function closeSheet() {
+    if (isVisible) {
+      setVisible(false);
+      onClose();
+    }
+  }
+
   return (
     <div className={styles.container}>
-      <div className={`${styles.backdrop} ${backdropAnimationClass}`} onClick={() => ref.current?.close()}>
+      <div className={`${styles.backdrop} ${backdropAnimationClass}`} onClick={closeSheet}>
         <div className={`${styles.bottomSheet} ${bottomSheetAnimationClass}`} onClick={(e) => e.stopPropagation()}>
           <div className={styles.bottomSheetContent}>{children}</div>
         </div>

@@ -1,32 +1,25 @@
-import { JSX, useState } from 'react';
+import { JSX } from 'react';
 import { DatePicker as ReactDatePicker } from 'react-datepicker';
 
 import 'react-datepicker/dist/react-datepicker.css';
 import './Datepicker.css';
 
 interface DatepickerProps {
-  initialValue: Date | null;
+  value?: Date | null;
   inputElement: JSX.Element;
   onChange: (date: Date | null) => void;
 }
 
-export function Datepicker({ initialValue, inputElement, onChange }: DatepickerProps) {
-  const [value, setValue] = useState<Date | null>(initialValue);
-
-  function selectDate(date: Date | null) {
-    setValue(date);
-    onChange(date);
-  }
-
+export function Datepicker({ value = null, inputElement, onChange }: DatepickerProps) {
   return (
     <ReactDatePicker
+      {...inputElement.props}
       showPopperArrow={false}
-      popperPlacement="bottom-start"
+      popperPlacement="top-start"
       customInput={inputElement}
-      placeholderText="Select date"
       dateFormat="dd.MM.yyyy"
       selected={value}
-      onChange={selectDate}
+      onChange={onChange}
     />
   );
 }
