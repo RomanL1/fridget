@@ -17,6 +17,7 @@
     "@radix-ui/themes": "3.2.1",
     "@tauri-apps/api": "2.8",
     "@tauri-apps/plugin-barcode-scanner": "2.4.0",
+    "@tauri-apps/plugin-http": "2.5.4",
     "@tauri-apps/plugin-opener": "2.5",
     "@tauri-apps/plugin-os": "2.3.1",
     "lucide-react": "0.546.0",
