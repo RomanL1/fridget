@@ -26,6 +26,9 @@ public class OllamaService
 	@Value("${ollama.model}")
 	private String model;
 
+	@Value("${ollama.request.timeout.seconds}")
+	private int requestTimeoutSeconds;
+
 	private static final String string_name = String.class.getSimpleName().toLowerCase();
 	private Ollama ollama;
 
@@ -33,7 +36,7 @@ public class OllamaService
 	public void onStartup ()
 	{
 		this.ollama = new Ollama( ollamaHost );
-		this.ollama.setRequestTimeoutSeconds( 120 );
+		this.ollama.setRequestTimeoutSeconds( requestTimeoutSeconds );
 	}
 
 	public ProductCategoryInfo generateProductInfo ( ProductInfoTask task ) throws OllamaException
