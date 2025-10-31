@@ -166,7 +166,9 @@ public class AsyncProductInfoWorker
 		}
 		catch ( Exception e )
 		{
-			taskQueue.add( task );
+			if (!taskQueue.offer(task)) {
+				logger.error("Failed to re-queue product info task: queue is full. Product ID: {}", task.productId());
+			}
 			logger.error( "Error processing product info", e );
 		}
 
