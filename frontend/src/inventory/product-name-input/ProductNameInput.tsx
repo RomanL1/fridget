@@ -3,6 +3,7 @@ import { PlusIcon } from 'lucide-react';
 import { FormEvent, useState } from 'react';
 
 import styles from './ProductNameInput.module.css';
+import { Autocomplete } from '../../shared/autocomplete/Autocomplete';
 
 interface ProductNameInputProps {
   onSubmit: (productName: string) => void;
@@ -16,20 +17,22 @@ export function ProductNameInput({ onSubmit }: ProductNameInputProps) {
     onSubmit(value);
   }
 
-  return (
-    <form className={styles.background} onSubmit={onProductNameEntered}>
-      <TextField.Root
-        size="3"
-        placeholder="Produkt hinzufügen..."
-        value={value}
-        onChange={(event) => setValue(event.target.value)}
-      >
-        <TextField.Slot side="right" pr="1">
-          <IconButton disabled={!value}>
-            <PlusIcon />
-          </IconButton>
-        </TextField.Slot>
-      </TextField.Root>
-    </form>
-  );
+  // return (
+  //   <form className={styles.background} onSubmit={onProductNameEntered}>
+  //     <TextField.Root
+  //       size="3"
+  //       placeholder="Produkt hinzufügen..."
+  //       value={value}
+  //       onChange={(event) => setValue(event.target.value)}
+  //     >
+  //       <TextField.Slot side="right" pr="1">
+  //         <IconButton disabled={!value}>
+  //           <PlusIcon />
+  //         </IconButton>
+  //       </TextField.Slot>
+  //     </TextField.Root>
+  //   </form>
+  // );
+
+  return <Autocomplete />;
 }
