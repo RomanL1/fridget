@@ -1,0 +1,47 @@
+@startuml
+title Manuelle Produkteingabe
+
+skinparam dpi 140
+skinparam activity {
+  BackgroundColor White
+  ArrowColor Black
+  BorderColor Black
+  DiamondBackgroundColor White
+  DiamondBorderColor Black
+}
+
+start
+
+partition UI {
+    :Produktname in
+    Eingabefeld eingeben;
+}
+
+partition API {
+    :Passende `Products` aus DB laden;
+}
+
+partition UI {
+    :Autocomplete Optionen anzeigen;
+    :"Hinzufügen" klicken;
+    :Detailangaben eingeben;
+    :Speichern;
+}
+
+if (Produkt bereits mal eingescannt) then (Ja)
+else (Nein)
+    partition API {
+        :`Product` in DB erzeugen;
+    }
+endif
+
+partition API {
+    :`InventoryItem` in DB erzeugen;
+}
+
+partition UI {
+    :Neues `InventoryItem` wird angezeigt;
+}
+
+stop
+@enduml

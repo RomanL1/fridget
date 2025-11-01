@@ -1,0 +1,73 @@
+@startuml
+title Produkt scannen
+
+skinparam dpi 140
+skinparam activity {
+  BackgroundColor White
+  ArrowColor Black
+  BorderColor Black
+  DiamondBackgroundColor White
+  DiamondBorderColor Black
+}
+
+start
+
+partition "UI" {
+  :Barcode scannen;
+}
+
+if (Schonmal gescannt?) then (Ja)
+  partition "API" {
+    :`Product` laden;
+  }
+
+  if (Produktdaten vollständig?) then (Ja)
+    partition "UI" {
+      :Detail ändern;
+      :Speichern;
+    }
+
+    partition "API" {
+      :`InventoryItem` in DB erzeugen;
+    }
+  else (Nein)
+    partition "UI" {
+      :Detailangaben vervollständigen;
+      :Speichern;
+    }
+    partition "API" {
+      :`Product` in DB vervollständigen;
+      :`Product` → "Complete";
+      :`InventoryItem` in DB erzeugen;
+      :Kategorisierung auslösen;
+      note right: asynchron
+    }
+  endif
+
+else (Nein)
+  partition "API" {
+    :Request an OFF;
+    :`Product` in DB erzeugen;
+    note right: Status "incomplete"
+  }
+
+  partition "UI" {
+    :Detailangaben vervollständigen;
+    :Speichern;
+  }
+
+  partition "API" {
+    :`Product` in DB vervollständigen;
+    :`Product` → "Complete";
+    :`InventoryItem` in DB erzeugen;
+    :Kategorisierung auslösen;
+    note right: asynchron
+  }
+endif
+
+partition "UI" {
+  :Neues `InventoryItem` anzeigen;
+}
+
+stop
+@enduml
