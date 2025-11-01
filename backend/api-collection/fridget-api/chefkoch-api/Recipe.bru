@@ -1,0 +1,22 @@
+meta {
+  name: Recipe
+  type: http
+  seq: 1
+}
+
+post {
+  url: http://localhost:5001/recipes
+  body: json
+  auth: none
+}
+
+body:json {
+  {
+    "ingredients": ["Tomate"],
+    "limit": 3
+  }
+}
+
+docs {
+  This request retrieves a list of users from the JSONPlaceholder API.
+}
