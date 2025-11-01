@@ -1,0 +1,20 @@
+.form {
+  display: flex;
+  flex-direction: column;
+  gap: 2rem;
+}
+
+.fields {
+  all: unset;
+  display: grid;
+  gap: 2rem;
+  grid-template-columns: repeat(2, 1fr);
+  grid-template-rows: repeat(2, 1fr);
+}
+
+.actions {
+  display: flex;
+  gap: 2rem;
+  justify-content: flex-end;
+  align-items: baseline;
+}

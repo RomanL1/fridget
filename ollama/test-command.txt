@@ -1,0 +1,8 @@
+curl http://localhost:11434/api/generate \
+  -H "Content-Type: application/json" \
+  -d '{
+    "model": "llama3.1:8b",
+    "prompt": "You are a food classification assistant.\n\n### Goal\nGiven a product name, classify it into:\n- \"category\" → broad group (fruit, vegetable, meat, dairy, beverage, etc.)\n- \"productType\" → generic cooking item (milk, oil, tomato, rice, etc.)\n\nRespond ONLY with JSON: { \"category\": \"...\", \"productType\": \"...\" }\nUse German terms.\n\nProduct: \"Nutty Almond – alpro – 1 l\"",
+    "format": "json",
+    "stream": false
+  }'

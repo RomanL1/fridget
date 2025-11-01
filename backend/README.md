@@ -30,12 +30,19 @@ Windows:
 https://gradle.org/install/
 https://gradle.org/releases/
 
-
-## create file application.properties
-create the file "application.properties" under "backend/src/main/resources/"
-
-minimal content:
-look at example.application.properties file
-
 ## open the project in your IDE
 open the project in vscode or intellij idea with folder "backend"
+
+## environment variables while running the application
+set the following environment variables in your IDE run configuration
+DOCKER_COMPOSE_ENABLED=true;SPRING_DATASOURCE_USERNAME=fridget;SPRING_DATASOURCE_PASSWORD=secret;
+
+## building docker image
+docker buildx create --name multi --use
+
+docker buildx inspect --bootstrap
+
+docker buildx build \
+  --platform linux/amd64,linux/arm64 \
+  -t romanl1/fridget:latest \
+  --push

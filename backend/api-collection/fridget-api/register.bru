@@ -5,11 +5,12 @@ meta {
 }
 
 post {
-  url: http://localhost:8080/api/register
+  url: {{base_url}}/api/register
   body: none
   auth: inherit
 }
 
 settings {
   encodeUrl: true
+  timeout: 0
 }

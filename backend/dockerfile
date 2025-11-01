@@ -1,0 +1,33 @@
+# Uses official Gradle image with JDK 21
+FROM gradle:8.14.3-jdk21-alpine
+
+# App workdir (use Gradle user's home for cache friendliness)
+WORKDIR /home/gradle/app
+
+# Copy only files needed for dependency resolution first (cache!)
+COPY --chown=gradle:gradle settings.gradle settings.gradle
+COPY --chown=gradle:gradle build.gradle build.gradle
+COPY --chown=gradle:gradle gradle gradle
+
+# Warm up Gradle dependencies cache (fast rebuilds)
+RUN gradle --no-daemon help || true
+
+# Now copy sources and build the fat jar
+COPY --chown=gradle:gradle src src
+# Skip tests for faster container builds; remove -x test if you want to run them
+RUN gradle --no-daemon bootJar -x test
+
+# Make a stable jar name for runtime
+RUN ls build/libs && cp build/libs/*.jar app.jar
+
+# Non-root user is already configured in base image
+USER gradle
+
+# Spring Boot default port
+EXPOSE 8080
+
+# Optional JVM flags via env
+ENV JAVA_OPTS=""
+
+# Start the app
+ENTRYPOINT ["sh","-c","java $JAVA_OPTS -jar app.jar"]

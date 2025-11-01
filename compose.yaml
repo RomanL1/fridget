@@ -1,0 +1,55 @@
+version: "3.9"
+
+services:
+  fridget:
+    image: romanl1/fridget:latest
+    # container_name: fridget_backend
+    restart: unless-stopped
+    ports:
+      - "80:8080"
+    environment:
+      - SPRING_PROFILES_ACTIVE=prod
+      # Falls nötig, setze deine DB-URL so:
+      # - SPRING_DATASOURCE_URL=jdbc:postgresql://postgres:5432/fridget
+      # - SPRING_DATASOURCE_USERNAME=fridget
+      # - SPRING_DATASOURCE_PASSWORD=secret
+    depends_on:
+      ollama:
+        condition: service_started
+      postgres:
+        condition: service_healthy
+
+  ollama:
+    image: ollama/ollama:latest
+    container_name: ollama
+    restart: unless-stopped
+    ports:
+      - "11434:11434"
+    volumes:
+      - ollama_data:/root/.ollama
+    environment:
+      - OLLAMA_KEEP_ALIVE=-1
+      - OLLAMA_NO_GPU=true
+
+  postgres:
+    image: postgres:latest
+    container_name: postgres
+    restart: unless-stopped
+    environment:
+      POSTGRES_DB: fridget
+      POSTGRES_USER: fridget
+      POSTGRES_PASSWORD: secret
+    ports:
+      - "5432:5432"   # nur nötig, wenn der Host zugreifen soll
+    volumes:
+      - postgres_data:/var/lib/postgresql
+    healthcheck:
+      test: ["CMD-SHELL", "pg_isready -h 127.0.0.1 -p 5432 -U fridget -d fridget -q || exit 1"]
+      interval: 10s
+      retries: 5
+      start_period: 60s
+      timeout: 10s
+
+volumes:
+  ollama_data:
+  postgres_data:

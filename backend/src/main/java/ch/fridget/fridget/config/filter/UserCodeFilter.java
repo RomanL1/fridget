@@ -40,12 +40,6 @@ public class UserCodeFilter implements Filter
 		// Allow /api/register always, no matter what
 		if ( path.equals( "/api/register" ) )
 		{
-			if ( !Util.isEmptyString( userCode ) )
-			{
-				httpRes.setStatus( HttpServletResponse.SC_METHOD_NOT_ALLOWED );
-				httpRes.getWriter().write( "UserCode already set" );
-				return;
-			}
 			chain.doFilter( request, response );
 			return;
 		}

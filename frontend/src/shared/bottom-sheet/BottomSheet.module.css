@@ -1,0 +1,48 @@
+.container {
+  position: fixed;
+  inset: 0;
+  pointer-events: none;
+}
+
+.backdrop {
+  position: absolute;
+  inset: 0;
+  background-color: var(--black-a10);
+  transition: opacity 200ms ease-in;
+}
+
+.backdropEntered {
+  opacity: 1;
+  pointer-events: auto;
+}
+
+.backdropExited {
+  opacity: 0;
+}
+
+.bottomSheet {
+  position: absolute;
+  bottom: 0;
+  right: 0;
+  left: 50%;
+  border-radius: 3rem 3rem 0 0;
+  background-color: var(--color-panel-solid);
+  transition: transform 200ms cubic-bezier(0, 0, 0.2, 1);
+  pointer-events: auto;
+  height: fit-content;
+  width: fit-content;
+  min-width: 25rem;
+  transform: translateY(100%) translateX(-50%);
+}
+
+.bottomSheetEntered {
+  transform: translateY(0) translateX(-50%);
+}
+
+.bottomSheetExited {
+  transform: translateY(100%) translateX(-50%);
+}
+
+.bottomSheetContent {
+  padding: 3rem;
+}

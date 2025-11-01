@@ -1,4 +1,4 @@
-package ch.fridget.fridget.domain.dto;
+package ch.fridget.fridget.domain.dto.response;
 
 import lombok.Builder;
 import lombok.Data;

@@ -5,18 +5,14 @@ meta {
 }
 
 post {
-  url: http://localhost:8080/api/addInventoryItem
+  url: {{base_url}}/api/addInventoryItem
   body: json
   auth: inherit
 }
 
-headers {
-  userCode: 018e565dcc754082a7116c22ff8f2ec7
-}
-
 body:json {
   {
-    "productId": "46b84690-534f-4f98-837c-4c06df1e62a2", // optional
+    "productId": "92ae5998-1ab2-4a58-94b2-c56800fea459", // optional
     "productBarcode": null, // optional
     "productName": "Coca Coal",
     "productBrandName": "Zero sugar",
@@ -29,4 +25,5 @@ body:json {
 
 settings {
   encodeUrl: true
+  timeout: 0
 }

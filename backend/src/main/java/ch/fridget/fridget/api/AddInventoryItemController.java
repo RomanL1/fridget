@@ -15,8 +15,8 @@ import org.springframework.web.bind.annotation.RestController;
 import ch.fridget.fridget.domain.db.InventoryItem;
 import ch.fridget.fridget.domain.db.Product;
 import ch.fridget.fridget.domain.db.User;
-import ch.fridget.fridget.domain.dto.AddInventoryItemRequestDto;
-import ch.fridget.fridget.domain.dto.AddInventoryItemResponseDto;
+import ch.fridget.fridget.domain.dto.response.AddInventoryItemRequestDto;
+import ch.fridget.fridget.domain.dto.response.AddInventoryItemResponseDto;
 import ch.fridget.fridget.repository.InventoryItemRepository;
 import ch.fridget.fridget.repository.ProductRepository;
 import ch.fridget.fridget.repository.UserRepository;
@@ -32,7 +32,7 @@ public class AddInventoryItemController implements APIController
 	private final InventoryItemRepository inventoryItemRepository;
 	private final UserRepository userRepository;
 
-	@PostMapping("addInventoryItem")
+	@PostMapping( "addInventoryItem" )
 	public ResponseEntity<AddInventoryItemResponseDto> addInventoryItem (
 			@RequestHeader( "userCode" ) String userCode,
 			@RequestBody AddInventoryItemRequestDto requestDto )
@@ -57,21 +57,25 @@ public class AddInventoryItemController implements APIController
 		else
 		{
 			Optional<Product> _product = productRepository.findById( UUID.fromString( requestDto.getProductId() ) );
-			if ( _product.isEmpty() || !_product.get().isIncomplete() )
+			if ( _product.isEmpty() )
 			{
 				return ResponseEntity.notFound().build();
 			}
 
-			if ( isEmptyString( requestDto.getProductName() ) || isEmptyString( requestDto.getProductBrandName() ) )
+			product = _product.get();
+
+			if ( product.isIncomplete() && ( isEmptyString( requestDto.getProductName() ) || isEmptyString(
+					requestDto.getProductBrandName() ) ) )
 			{
 				return ResponseEntity.badRequest().build();
 			}
 
-			product = _product.get();
+			if ( product.isIncomplete() )
+			{
+				overWriteProductWithDto( product, requestDto );
 
-			overWriteProductWithDto( product, requestDto );
-
-			product = productRepository.save( product );
+				product = productRepository.save( product );
+			}
 		}
 
 		Instant bestBefore = requestDto.getBestBefore() != null ? Instant.parse( requestDto.getBestBefore() ) : null;
@@ -103,7 +107,7 @@ public class AddInventoryItemController implements APIController
 	private Product convertAddInventoryItemRequestDtoToProduct ( AddInventoryItemRequestDto requestDto,
 			boolean manuallyAddedByUser )
 	{
-		UUID uuid = requestDto.getProductId() == null ? UUID.randomUUID(): UUID.fromString( requestDto.getProductId() );
+		UUID uuid = requestDto.getProductId() == null ? UUID.randomUUID() : UUID.fromString( requestDto.getProductId() );
 		return Product.builder()
 				.id( uuid )
 				.name( requestDto.getProductName() )
