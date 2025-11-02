@@ -30,7 +30,6 @@ public class ScanProductController implements APIController
 
 	private final ProductRepository productRepository;
 	private final OFFProductResponseRepository oFFProductResponseRepository;
-	private final ProductInfoService productInfoService;
 
 	@PostMapping( "scanProduct/{ean13Barcode}" )
 	public ResponseEntity<ScanProductResponseDto> scanProduct ( @PathVariable String ean13Barcode )
@@ -48,7 +47,7 @@ public class ScanProductController implements APIController
 			//product found
 			log.info( "Product with ean13 barcode: {} found in our db", ean13Barcode );
 			return ResponseEntity.ok( convertFoundProductToResponseDto( existingProduct.get(),
-					ScanProductResponseDto.ESTATUS.PRODUCT_FOUND ) );
+					ScanProductResponseDto.ESTATUS.PRODUCT_COMPLETE ) );
 		}
 
 		String uri = "https://world.openfoodfacts.org/api/v2/product/" + ean13Barcode;
@@ -81,15 +80,6 @@ public class ScanProductController implements APIController
 
 		OpenFoodFactsProductResponse offProduct = extractProductData( response.getBody() );
 
-		ScanProductResponseDto.ESTATUS status = offProduct.incomplete()
-				? ScanProductResponseDto.ESTATUS.PRODUCT_INCOMPLETE
-				: ScanProductResponseDto.ESTATUS.PRODUCT_CREATED;
-
-		if ( offProduct.incomplete() )
-		{
-			log.warn( "Product with ean13 barcode: {} found on OFF but incomplete", ean13Barcode );
-		}
-
 		Product newProduct = Product.builder()
 				.id( UUID.randomUUID() )
 				.ean13( ean13Barcode )
@@ -97,22 +87,14 @@ public class ScanProductController implements APIController
 				.brandName( offProduct.brandName() )
 				.imageUrl( offProduct.imageUrl() )
 				.quantity( offProduct.quantity() )
-				.incomplete( offProduct.incomplete() )
+				.incomplete( true )
 				.manuallyAddedByUser( false )
 				.build();
 		Product saved = productRepository.save( newProduct );
 
 		log.info( "Created new Product with ean13 barcode: {} from OFF", ean13Barcode );
 
-		final ProductInfoTask task = ProductInfoTask.builder()
-				.productId( saved.getId() )
-				.brandName( saved.getBrandName() )
-				.productName( saved.getName() )
-				.build();
-
-		productInfoService.submitProductForProcessing( task );
-
-		ScanProductResponseDto responseDto = convertFoundProductToResponseDto( saved, status );
+		ScanProductResponseDto responseDto = convertFoundProductToResponseDto( saved, ScanProductResponseDto.ESTATUS.PRODUCT_INCOMPLETE );
 		return ResponseEntity.ok( responseDto );
 	}
 
@@ -137,13 +119,10 @@ public class ScanProductController implements APIController
 		String imageUrl = object.getJSONObject( "product" ).optString( "image_url", "" );
 		String quantity = object.getJSONObject( "product" ).optString( "quantity", "" );
 
-		boolean incomplete = brandName.isEmpty() || productName.isEmpty() || quantity.isEmpty();
-
-		return new OpenFoodFactsProductResponse( incomplete, productName, brandName, imageUrl, quantity );
+		return new OpenFoodFactsProductResponse( productName, brandName, imageUrl, quantity );
 	}
 
 	private record OpenFoodFactsProductResponse(
-			boolean incomplete,
 			String productName,
 			String brandName,
 			String imageUrl,

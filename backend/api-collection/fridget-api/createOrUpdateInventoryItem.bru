@@ -1,11 +1,11 @@
 meta {
-  name: addInventoryItem
+  name: createOrUpdateInventoryItem
   type: http
   seq: 4
 }
 
-post {
-  url: {{base_url}}/api/addInventoryItem
+put {
+  url: {{base_url}}/api/inventory-item
   body: json
   auth: inherit
 }

@@ -5,7 +5,7 @@ import lombok.Data;
 
 @Data
 @Builder
-public class AddInventoryItemResponseDto
+public class CreateInventoryItemResponseDto
 {
 	private String inventoryItemId;
 	private String productName;

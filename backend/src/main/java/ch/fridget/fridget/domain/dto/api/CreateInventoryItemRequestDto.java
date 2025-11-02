@@ -5,15 +5,14 @@ import lombok.Data;
 
 @Data
 @Builder
-public class AddInventoryItemRequestDto
+public class CreateInventoryItemRequestDto
 {
 	private String productId; // optional
 	private String productBarcode; // optional
 	private String productName;
-	private String productBrandName;
+	private String productBrandName; // optional
 	private String productImageUrl; // optional
-	private String productQuantity; //optional
-	private String quantity;
+	private String quantity; // optional
 	//expected in utc iso 8601
 	private String bestBefore; // optional
 }

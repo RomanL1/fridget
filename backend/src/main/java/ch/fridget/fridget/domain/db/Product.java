@@ -43,7 +43,7 @@ public class Product implements UniqueIdentifiable
 
 	@Column( name = "incomplete", nullable = false )
 	@Builder.Default
-	private boolean incomplete = false;
+	private boolean incomplete = true;
 
 	@Column( name = "quantity", nullable = false )
 	@Builder.Default

@@ -17,8 +17,7 @@ public class ScanProductResponseDto
 	private String imageUrl; //optional
 	public enum ESTATUS
 	{
-		PRODUCT_FOUND,
-		PRODUCT_CREATED,
+		PRODUCT_COMPLETE,
 		PRODUCT_INCOMPLETE,
 	}
 }
