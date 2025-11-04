@@ -1,5 +1,4 @@
-[![CI Build](https://github.com/RomanL1/fridget/actions/workflows/ci-tauri.yml/badge.svg)](https://github.com/RomanL1/fridget/actions/workflows/ci-tauri.yml) 
-[![Backend CI Build](https://github.com/RomanL1/fridget/actions/workflows/backend.yml/badge.svg)](https://github.com/RomanL1/fridget/actions/workflows/backend.yml)
+
 
 <div align="center">
   <a href="https://github.com/RomanL1/fridget">
@@ -19,8 +18,23 @@
     <a href="https://github.com/users/RomanL1/projects/2/views/1">Project Backlog</a>
     &middot;
     <a href="https://www.figma.com/design/PTd7Ux0Pg6AlYBZMUGL41i/Fridget-UI">Design Mockups</a>
+    <br/>
   </p>
+
+  [![CI Build](https://github.com/RomanL1/fridget/actions/workflows/ci-tauri.yml/badge.svg)](https://github.com/RomanL1/fridget/actions/workflows/ci-tauri.yml) 
+  [![Backend CI Build](https://github.com/RomanL1/fridget/actions/workflows/backend.yml/badge.svg)](https://github.com/RomanL1/fridget/actions/workflows/backend.yml)
 </div>
+
+## Table of Contents
+- [About the project](https://github.com/RomanL1/fridget?tab=readme-ov-file#about-the-project)
+- [Installation](https://github.com/RomanL1/fridget?tab=readme-ov-file#installation)
+- [Run the project](https://github.com/RomanL1/fridget?tab=readme-ov-file#run-the-project)
+  - [Desktop & Web](https://github.com/RomanL1/fridget?tab=readme-ov-file#desktop--web)
+  - [Android](https://github.com/RomanL1/fridget?tab=readme-ov-file#android)
+    - [Run inside an emulator](https://github.com/RomanL1/fridget?tab=readme-ov-file#run-inside-an-emulator)
+    - [Run on a physical device](https://github.com/RomanL1/fridget?tab=readme-ov-file#run-on-a-physical-device)
+    - [Debugging](https://github.com/RomanL1/fridget?tab=readme-ov-file#debugging)
+- [Contributing](https://github.com/RomanL1/fridget?tab=readme-ov-file#contributing)
 
 ## About the project
 tbd
