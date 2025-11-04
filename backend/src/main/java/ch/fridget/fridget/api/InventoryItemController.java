@@ -4,6 +4,7 @@ import static ch.fridget.fridget.common.Util.isEmptyString;
 
 import java.time.Instant;
 import java.time.temporal.ChronoUnit;
+import java.util.ArrayList;
 import java.util.Comparator;
 import java.util.List;
 import java.util.Optional;
@@ -141,32 +142,43 @@ public class InventoryItemController implements APIController
 				.filter( item -> item.getDateConsumedAt() == null )
 				.toList();
 
-		/**
+		/*
 		 * Sort inventory items as follows:
 		 * 1. Expired items (best before date before now), sorted by best before date ascending
 		 * 2. Items expiring in the next 3 days (best before date after now and before now + 3 days), sorted by date added ascending
 		 * 3. Items not expired (best before date after now + 3 days), sorted by date added ascending
 		 */
 		List<InventoryItem> expired = activeInventoryItems.stream()
+				.filter( item -> item.getBestBeforeDate() != null )
 				.filter( item -> item.getBestBeforeDate().isBefore( now ) )
 				.sorted( Comparator.comparing( InventoryItem::getBestBeforeDate ) )
 				.toList();
 
 		List<InventoryItem> expiresIn3Days = activeInventoryItems.stream()
+				.filter( item -> item.getBestBeforeDate() != null )
 				.filter( item -> item.getBestBeforeDate().isAfter( now )
 						&& item.getBestBeforeDate().isBefore( now.plus( 3, ChronoUnit.DAYS ) ) )
 				.sorted( Comparator.comparing( InventoryItem::getDateAddedAt ) )
 				.toList();
 
+		List<InventoryItem> noExpiry = activeInventoryItems.stream()
+				.filter( item -> item.getBestBeforeDate() == null )
+				.sorted( Comparator.comparing( InventoryItem::getDateAddedAt ) )
+				.toList();
+
 		List<InventoryItem> notExpired = activeInventoryItems.stream()
+				.filter( item -> item.getBestBeforeDate() != null )
 				.filter( item -> item.getBestBeforeDate().isAfter( now.plus( 3, ChronoUnit.DAYS ) ) )
 				.sorted( Comparator.comparing( InventoryItem::getDateAddedAt ) )
 				.toList();
 
-		expired.addAll( expiresIn3Days );
-		expired.addAll( notExpired );
+		List<InventoryItem> sortedInventoryItems = new ArrayList<>();
+		sortedInventoryItems.addAll( expired );
+		sortedInventoryItems.addAll( expiresIn3Days );
+		sortedInventoryItems.addAll( noExpiry );
+		sortedInventoryItems.addAll( notExpired );
 
-		List<InventoryItemDto> inventoryItemDtos = expired.stream()
+		List<InventoryItemDto> inventoryItemDtos = sortedInventoryItems.stream()
 				.map( InventoryItemDto::of )
 				.toList();
 		return ResponseEntity.ok( inventoryItemDtos );
@@ -179,7 +191,7 @@ public class InventoryItemController implements APIController
 	{
 		Optional<InventoryItem> inventoryItem = inventoryItemRepository.findFirstByUserUserCodeAndId(
 				userCode, UUID.fromString( id ) );
-		if ( inventoryItem.isEmpty() )
+		if ( inventoryItem.isEmpty() || inventoryItem.get().getDateConsumedAt() != null )
 		{
 			log.warn( "No inventory item with id: {} found for user with userCode: {}", id, userCode );
 			return ResponseEntity.notFound().build();

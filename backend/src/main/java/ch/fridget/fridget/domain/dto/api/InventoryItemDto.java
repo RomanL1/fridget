@@ -14,6 +14,7 @@ public class InventoryItemDto
 	private String brandName;
 	private String quantity;
 	private String imageUrl;
+	private String dateAdded; // in utc iso 8601
 	private String bestBeforeDate; // in utc iso 8601
 
 	public static InventoryItemDto of ( InventoryItem inventoryItem )
@@ -25,6 +26,7 @@ public class InventoryItemDto
 				.brandName( inventoryItem.getProduct().getBrandName() )
 				.quantity( inventoryItem.getProduct().getQuantity() )
 				.imageUrl( inventoryItem.getProduct().getImageUrl() )
+				.dateAdded( inventoryItem.getDateAddedAt().toString() )
 				.bestBeforeDate( inventoryItem.getBestBeforeDate() != null ?
 						inventoryItem.getBestBeforeDate().toString() :
 						null )

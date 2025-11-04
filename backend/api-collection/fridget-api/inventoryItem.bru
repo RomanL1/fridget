@@ -1,0 +1,20 @@
+meta {
+  name: inventoryItem
+  type: http
+  seq: 8
+}
+
+delete {
+  url: {{base_url}}/api/inventory-item?id=eb399d49-354c-41a7-affd-860542e5e876
+  body: json
+  auth: inherit
+}
+
+params:query {
+  id: eb399d49-354c-41a7-affd-860542e5e876
+}
+
+settings {
+  encodeUrl: true
+  timeout: 0
+}
