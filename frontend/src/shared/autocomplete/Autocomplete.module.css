@@ -1,2 +1,9 @@
-.myCombobox {
+[role='dialog']:has(.option) {
+  /* padding: 0; */
+}
+
+.option {
+}
+
+:option {
 }

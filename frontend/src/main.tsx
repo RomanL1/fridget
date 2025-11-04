@@ -6,14 +6,16 @@ import { BarcodeScanner } from './barcode-scanner/BarcodeScanner';
 import { Inventory } from './inventory/Inventory';
 
 import './main.css';
+import { Whatever } from './Whatever';
 
 ReactDOM.createRoot(document.getElementById('root') as HTMLElement).render(
   <React.StrictMode>
     <Theme appearance="dark">
       <BrowserRouter>
         <Routes>
-          <Route path="/" element={<Inventory />} />
+          <Route path="/aa" element={<Inventory />} />
           <Route path="/scan" element={<BarcodeScanner />} />
+          <Route path="/" element={<Whatever />} />
         </Routes>
       </BrowserRouter>
     </Theme>
