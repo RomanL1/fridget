@@ -1,11 +1,31 @@
 [![CI Build](https://github.com/RomanL1/fridget/actions/workflows/ci-tauri.yml/badge.svg)](https://github.com/RomanL1/fridget/actions/workflows/ci-tauri.yml) 
 [![Backend CI Build](https://github.com/RomanL1/fridget/actions/workflows/backend.yml/badge.svg)](https://github.com/RomanL1/fridget/actions/workflows/backend.yml)
 
-# fridget
-- [Project Backlog](https://github.com/users/RomanL1/projects/2/views/1)
-- [Design Mockups](https://www.figma.com/design/PTd7Ux0Pg6AlYBZMUGL41i/Fridget-UI?node-id=3437-870&p=f&t=SlxmbiDBc71RR49D-0)
+<div align="center">
+  <a href="https://github.com/RomanL1/fridget">
+    <picture>
+      <source srcset="https://github.com/RomanL1/fridget/blob/main/frontend/public/app_icon_light_transparent.svg" media="(prefers-color-scheme: light)" />
+      <source srcset="https://github.com/RomanL1/fridget/blob/main/frontend/public/app_icon_dark_transparent.svg" media="(prefers-color-scheme: dark)" />
+      <img src="https://github.com/RomanL1/fridget/blob/main/frontend/public/app_icon_light_transparent.svg" width="80" height="80"/>
+    </picture>
+  </a>
 
-## Prerequisites
+<h3 align="center">Fridget</h3>
+
+  <p align="center">
+    Organize the contents of your fridge, create shopping lists <br>
+    and browse through recipes based on what you have at home
+    <br />
+    <a href="https://github.com/users/RomanL1/projects/2/views/1">Project Backlog</a>
+    &middot;
+    <a href="https://www.figma.com/design/PTd7Ux0Pg6AlYBZMUGL41i/Fridget-UI">Design Mockups</a>
+  </p>
+</div>
+
+## About the project
+tbd
+
+## Installation
 
 Follow these steps before running the project
 
