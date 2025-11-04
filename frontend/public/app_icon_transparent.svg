@@ -3,9 +3,10 @@
   viewBox="-18 0 165 165"
   role="img"
   aria-labelledby="logoTitle logoDesc"
+  style="background: transparent"
 >
   <title id="logoTitle">Fridget Logo</title>
-  <desc id="logoDesc">Rounded fridge outline with a smiling face on top and a green check on the bottom.</desc>
+  <desc id="logoDesc">Fridge icon with a smiling face on top and a green check on the bottom.</desc>
 
   <!-- Outer body -->
   <rect x="8" y="8" width="112" height="144" rx="13" fill="transparent" stroke="#08514c" stroke-width="7" />
