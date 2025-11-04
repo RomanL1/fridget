@@ -35,6 +35,7 @@
     - [Run on a physical device](https://github.com/RomanL1/fridget?tab=readme-ov-file#run-on-a-physical-device)
     - [Debugging](https://github.com/RomanL1/fridget?tab=readme-ov-file#debugging)
 - [Contributing](https://github.com/RomanL1/fridget?tab=readme-ov-file#contributing)
+- [License](https://github.com/RomanL1/fridget?tab=readme-ov-file#license)
 
 ## About the project
 tbd
@@ -92,3 +93,7 @@ Open [chrome://inspect/#devices](chrome://inspect/#devices) in your chrome-based
 
 ## Contributing
 Use [Conventional Commits](https://www.conventionalcommits.org/) when contributing to this repository.
+
+## License
+This project is [MIT](https://github.com/RomanL1/fridget/blob/main/LICENSE) licensed.<br>
+You are free to use, modify, and distribute this software, provided that the original copyright and license notice are included.
