@@ -1,4 +1,4 @@
-import { DropdownMenu, Popover, TextField, VisuallyHidden } from '@radix-ui/themes';
+import { TextField } from '@radix-ui/themes';
 import { JSX, Key, useEffect, useState } from 'react';
 
 import styles from './Autocomplete.module.css';
@@ -8,12 +8,19 @@ interface AutocompleteProps<O> {
   optionDisplayFn: (option: O) => JSX.Element;
   optionKeyFn: (option: O) => Key | null | undefined;
   onSearchTermChange: (searchTerm: string) => void;
+  onOptionSelected: (option: O) => unknown;
 }
 
-export function Autocomplete<O>({ options, optionDisplayFn, optionKeyFn, onSearchTermChange }: AutocompleteProps<O>) {
+export function Autocomplete<O>({
+  options,
+  optionDisplayFn,
+  optionKeyFn,
+  onSearchTermChange,
+  onOptionSelected,
+}: AutocompleteProps<O>) {
   const [isPopoverVisible, setIsPopoverVisible] = useState(false);
 
-  const popoverVisibility = isPopoverVisible ? 'inherit' : 'hidden';
+  const cssDisplay = isPopoverVisible ? 'inherit' : 'none';
 
   // Close popover when escape is pressed
   useEffect(() => {
@@ -22,50 +29,37 @@ export function Autocomplete<O>({ options, optionDisplayFn, optionKeyFn, onSearc
         setIsPopoverVisible(false);
       }
     };
-
     if (isPopoverVisible) {
-      window.addEventListener('keydown', keydownHandler);
+      document.addEventListener('keydown', keydownHandler);
       return () => {
-        window.removeEventListener('keydown', keydownHandler);
+        document.removeEventListener('keydown', keydownHandler);
       };
     }
   }, [isPopoverVisible]);
 
   return (
     <>
-      <TextField.Root
-        placeholder="Suchen..."
-        onFocus={() => setIsPopoverVisible(true)}
-        // onBlur={() => setIsPopoverVisible(false)}
-        onChange={(e) => onSearchTermChange(e.target.value)}
-      />
-
-      <Popover.Root open>
-        <Popover.Trigger>
-          <VisuallyHidden />
-        </Popover.Trigger>
-        <Popover.Content width="300px" style={{ visibility: popoverVisibility }}>
-          <AutocompleteOptions options={options} displayFn={optionDisplayFn} keyFn={optionKeyFn} />
-        </Popover.Content>
-      </Popover.Root>
-
-      <br></br>
-      <br></br>
-      <br></br>
-      <br></br>
-      <br></br>
-      <br></br>
-      <br></br>
-      <br></br>
-      <DropdownMenu.Root>
-        <DropdownMenu.Trigger>
-          <button style={{ cursor: 'pointer' }}>gugus</button>
-        </DropdownMenu.Trigger>
-        <DropdownMenu.Content>
-          <DropdownMenu.Item shortcut="Naturaplan">Champignons Bio braun</DropdownMenu.Item>
-          <DropdownMenu.Item shortcut="El Tony">El Tony Mate</DropdownMenu.Item>
-        </DropdownMenu.Content>
-      </DropdownMenu.Root>
+      <div className={styles.container}>
+        <div className={styles.textField}>
+          <TextField.Root
+            role="searchbox"
+            placeholder="Suchen..."
+            onFocus={() => setIsPopoverVisible(true)}
+            onBlur={() => setIsPopoverVisible(false)}
+            onChange={(e) => onSearchTermChange(e.target.value)}
+          />
+        </div>
+        <div className={styles.popover} style={{ display: cssDisplay }}>
+          <div className={styles.options}>
+            <AutocompleteOptions
+              options={options}
+              displayFn={optionDisplayFn}
+              keyFn={optionKeyFn}
+              onOptionSelected={onOptionSelected}
+            />
+          </div>
+        </div>
+      </div>
     </>
   );
 }
@@ -74,15 +68,16 @@ interface AutocompleteOptionProps<O> {
   options: O[];
   displayFn: (option: O) => JSX.Element;
   keyFn: (option: O) => Key | null | undefined;
+  onOptionSelected: (option: O) => unknown;
 }
 
-function AutocompleteOptions<O>({ options, displayFn, keyFn }: AutocompleteOptionProps<O>) {
+function AutocompleteOptions<O>({ options, displayFn, keyFn, onOptionSelected }: AutocompleteOptionProps<O>) {
   if (!options.length) {
     return <></>;
   }
 
   return options.map((option) => (
-    <div className={styles.option} key={keyFn(option)}>
+    <div className={styles.option} key={keyFn(option)} onClick={onOptionSelected}>
       {displayFn(option)}
     </div>
   ));
