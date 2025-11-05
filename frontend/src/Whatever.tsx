@@ -1,4 +1,4 @@
-import { Box } from '@radix-ui/themes';
+import { Box, TextField } from '@radix-ui/themes';
 import { Autocomplete } from './shared/autocomplete/Autocomplete';
 
 export function Whatever() {
@@ -10,7 +10,10 @@ export function Whatever() {
           optionDisplayFn={(o) => <p>{o}</p>}
           optionKeyFn={(o) => o}
           onSearchTermChange={console.log}
-        />
+          onOptionSelected={console.log}
+        >
+          <TextField.Root placeholder="Suchen..." />
+        </Autocomplete>
       </Box>
     </div>
   );

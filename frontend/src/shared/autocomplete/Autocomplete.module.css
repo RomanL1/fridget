@@ -5,6 +5,9 @@
   position: relative;
 }
 
+.textField {
+}
+
 .popover {
   border: 1px solid white;
   border-radius: var(--radius-3);
