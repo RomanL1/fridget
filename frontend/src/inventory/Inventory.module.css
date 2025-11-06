@@ -1,7 +1,7 @@
 .productNameInput {
   position: fixed;
   right: 50%;
-  bottom: 12rem;
+  bottom: 8rem;
   width: 32rem;
   transform: translateX(50%);
 }
