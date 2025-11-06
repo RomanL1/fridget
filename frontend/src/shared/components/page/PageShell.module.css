@@ -6,14 +6,6 @@
   display: flex;
 }
 
-.sidebar {
-  position: fixed;
-  width: var(--sidebar-width);
-  top: 0;
-  left: 0;
-  bottom: 0;
-}
-
 .main {
   flex: 1;
   margin-left: var(--sidebar-width);
