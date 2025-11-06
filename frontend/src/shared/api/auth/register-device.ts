@@ -2,7 +2,7 @@ import { fetch as tauriFetch } from '@tauri-apps/plugin-http';
 import { API_HOST } from '../../environment/environment';
 
 interface UserCodeResponse {
-  userId: string;
+  userCode: string;
 }
 
 export async function registerDevice(): Promise<UserCodeResponse> {

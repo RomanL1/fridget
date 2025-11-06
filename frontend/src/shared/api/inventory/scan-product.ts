@@ -1,4 +1,5 @@
 import { fetch as tauriFetch } from '@tauri-apps/plugin-http';
+import { getUserCode } from '../../auth';
 import { API_HOST } from '../../environment/environment';
 
 interface ScanProductResponse {
@@ -11,15 +12,15 @@ interface ScanProductResponse {
 }
 
 export enum ScanProductResponseStatus {
-  Found = 0,
-  Created = 1,
-  Incomplete = 2,
+  Complete,
+  Incomplete,
 }
 
 export async function scanProduct(barcode: string): Promise<ScanProductResponse> {
   const url = `${API_HOST}/scanProduct/${barcode}`;
   const response = tauriFetch(url, {
     method: 'POST',
+    headers: { userCode: getUserCode()! },
   });
 
   return await response.then((r) => r.json());
