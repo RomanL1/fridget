@@ -8,8 +8,6 @@ import { authenticate } from './shared/auth';
 
 import './main.css';
 
-await authenticate();
-
 ReactDOM.createRoot(document.getElementById('root') as HTMLElement).render(
   <React.StrictMode>
     <Theme appearance="dark">
@@ -22,3 +20,5 @@ ReactDOM.createRoot(document.getElementById('root') as HTMLElement).render(
     </Theme>
   </React.StrictMode>,
 );
+
+await authenticate();

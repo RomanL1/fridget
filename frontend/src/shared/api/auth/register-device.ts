@@ -6,7 +6,7 @@ interface UserCodeResponse {
 }
 
 export async function registerDevice(): Promise<UserCodeResponse> {
-  const url = `${API_HOST}/api/register`;
+  const url = `${API_HOST}/register`;
   const response = tauriFetch(url, {
     method: 'POST',
   });
