@@ -1,13 +1,5 @@
 import { Card } from '@radix-ui/themes';
-import {
-  Children,
-  cloneElement,
-  InputHTMLAttributes,
-  isValidElement,
-  JSX,
-  Key,
-  PropsWithChildren
-} from 'react';
+import { Children, cloneElement, InputHTMLAttributes, isValidElement, JSX, Key, PropsWithChildren } from 'react';
 import { AutocompleteOptions } from './AutocompleteOptions';
 
 import styles from './Autocomplete.module.css';
@@ -40,10 +32,10 @@ export function Autocomplete<O>({
     return cloneElement(child, {
       role: 'searchbox',
       autoComplete: 'off',
-      onChange: event => {
+      onChange: (event) => {
         child.props.onChange?.(event);
         onSearchTermChange(event.target.value);
-      }
+      },
     });
   });
 
