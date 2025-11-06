@@ -1,7 +1,7 @@
 import { useRef, useState } from 'react';
-import { BottomSheet, BottomSheetRef } from '../shared/bottom-sheet/BottomSheet';
+import { BottomSheet, BottomSheetRef } from '../shared/components/bottom-sheet/BottomSheet';
 import { sampleInventoryItems } from '../shared/fixtures/inventory-items';
-import { PageShell } from '../shared/page/PageShell';
+import { PageShell } from '../shared/components/page/PageShell';
 import { BarcodeScannerToggle } from './barcode-scanner-toggle/BarcodeScannerToggle';
 import { InventoryItemDetail } from './detail/InventoryItemDetail';
 import { InventoryItem } from './inventory-items/card/inventory-item';
@@ -43,7 +43,7 @@ export function Inventory() {
   return (
     <PageShell title="Mein Kühlschrank">
       {/* Iventory items  */}
-      <InventoryItemGrid inventoryItems={sampleInventoryItems} onEditItem={editItem} onRemoveItem={() => {}} />
+      <InventoryItemGrid inventoryItems={sampleInventoryItems} onEditItem={editItem} onRemoveItem={() => { }} />
 
       {/* Manual product input  */}
       <div className={styles.productNameInput}>
