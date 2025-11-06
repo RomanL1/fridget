@@ -20,6 +20,7 @@ export function Datepicker({ value = null, inputElement, onChange }: DatepickerP
       dateFormat="dd.MM.yyyy"
       selected={value}
       onChange={onChange}
+      fixedHeight
     />
   );
 }
