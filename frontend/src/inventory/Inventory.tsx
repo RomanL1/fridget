@@ -20,10 +20,7 @@ export function Inventory() {
   }
 
   function productNameEntered(productName: string) {
-    editItem({
-      productName,
-      inventoryItemId: 0,
-    });
+    editItem({ productName });
   }
 
   function saveItem(item: InventoryItem) {

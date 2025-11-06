@@ -4,6 +4,7 @@ import ReactDOM from 'react-dom/client';
 import { BrowserRouter, Route, Routes } from 'react-router';
 import { BarcodeScanner } from './barcode-scanner/BarcodeScanner';
 import { Inventory } from './inventory/Inventory';
+import { authenticate } from './shared/auth';
 
 import './main.css';
 
@@ -19,3 +20,5 @@ ReactDOM.createRoot(document.getElementById('root') as HTMLElement).render(
     </Theme>
   </React.StrictMode>,
 );
+
+await authenticate();
