@@ -1,3 +1,4 @@
+import { Card } from '@radix-ui/themes';
 import {
   Children,
   cloneElement,
@@ -5,9 +6,7 @@ import {
   isValidElement,
   JSX,
   Key,
-  PropsWithChildren,
-  useEffect,
-  useState,
+  PropsWithChildren
 } from 'react';
 import { AutocompleteOptions } from './AutocompleteOptions';
 
@@ -18,7 +17,7 @@ type AutocompleteProps<O> = PropsWithChildren<{
   optionDisplayFn: (option: O) => JSX.Element;
   optionKeyFn: (option: O) => Key | null | undefined;
   onSearchTermChange: (searchTerm: string) => void;
-  onOptionSelected: (option: O) => unknown;
+  onOptionSelected: (option: O) => void;
 }>;
 
 export function Autocomplete<O>({
@@ -29,23 +28,8 @@ export function Autocomplete<O>({
   onSearchTermChange,
   onOptionSelected,
 }: AutocompleteProps<O>) {
-  const [areOptionsVisible, setOptionsVisibility] = useState(false);
+  const areOptionsVisible = Boolean(options.length);
   const optionsDisplay = areOptionsVisible ? 'inherit' : 'none';
-
-  // Close popover when escape is pressed
-  useEffect(() => {
-    const keydownHandler = (event: KeyboardEvent) => {
-      if (event.key === 'Escape' && areOptionsVisible) {
-        setOptionsVisibility(false);
-      }
-    };
-    if (areOptionsVisible) {
-      document.addEventListener('keydown', keydownHandler);
-      return () => {
-        document.removeEventListener('keydown', keydownHandler);
-      };
-    }
-  }, [areOptionsVisible]);
 
   // Modify input field attributes and attach respective event handlers
   const textField = Children.map(children, (child) => {
@@ -56,16 +40,17 @@ export function Autocomplete<O>({
     return cloneElement(child, {
       role: 'searchbox',
       autoComplete: 'off',
-      onFocus: composeEventHandlers(child.props.onFocus, () => setOptionsVisibility(true)),
-      onBlur: composeEventHandlers(child.props.onBlur, () => setTimeout(() => setOptionsVisibility(false), 200)),
-      onChange: composeEventHandlers(child.props.onChange, (e) => onSearchTermChange(e.target.value)),
+      onChange: event => {
+        child.props.onChange?.(event);
+        onSearchTermChange(event.target.value);
+      }
     });
   });
 
   return (
     <div className={styles.container}>
       <div className={styles.textField}>{textField}</div>
-      <div className={styles.popover} style={{ display: optionsDisplay }}>
+      <Card className={styles.popover} style={{ display: optionsDisplay }}>
         <div className={styles.options}>
           <AutocompleteOptions
             options={options}
@@ -74,19 +59,7 @@ export function Autocomplete<O>({
             onOptionSelected={onOptionSelected}
           />
         </div>
-      </div>
+      </Card>
     </div>
   );
-}
-
-/**
- * Executes both the previous event handler registered on a child, as well as a composed event handler
- */
-function composeEventHandlers<E extends React.SyntheticEvent>(their?: (event: E) => void, ours?: (event: E) => void) {
-  return (event: E) => {
-    their?.(event);
-    if (!event.isPropagationStopped?.()) {
-      ours?.(event);
-    }
-  };
 }

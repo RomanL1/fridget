@@ -5,7 +5,7 @@ interface AutocompleteOptionProps<O> {
   options: O[];
   displayFn: (option: O) => JSX.Element;
   keyFn: (option: O) => Key | null | undefined;
-  onOptionSelected: (option: O) => unknown;
+  onOptionSelected: (option: O) => void;
 }
 
 export function AutocompleteOptions<O>({ options, displayFn, keyFn, onOptionSelected }: AutocompleteOptionProps<O>) {
