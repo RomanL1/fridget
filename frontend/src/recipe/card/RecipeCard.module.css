@@ -1,0 +1,13 @@
+.cardImage {
+    object-fit: cover;
+    height: 140px;
+    width: 100%;
+    display: block;
+}
+
+.rating {
+    position: absolute;
+    top: 0;
+    right: 0;
+    padding: 8px;
+}
