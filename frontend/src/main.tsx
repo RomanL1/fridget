@@ -8,6 +8,7 @@ import { authenticate } from './shared/auth';
 
 import './main.css';
 import Root from './Root';
+import RecipeView from './recipe/RecipeView';
 
 ReactDOM.createRoot(document.getElementById('root') as HTMLElement).render(
   <React.StrictMode>
@@ -16,7 +17,7 @@ ReactDOM.createRoot(document.getElementById('root') as HTMLElement).render(
         <Routes>
           <Route path="/" element={<Root />}>
             <Route index element={<Inventory />} />
-            <Route path="recipes" />
+            <Route path="recipes" element={<RecipeView />} />
             <Route path="grocery-list" />
           </Route>
           <Route path="/scan" element={<BarcodeScanner />} />
