@@ -2,7 +2,7 @@ from fastapi import FastAPI, Query, HTTPException
 from fastapi.responses import JSONResponse
 from typing import Annotated
 from pydantic import BaseModel
-from chefkoch.retrievers import RandomRetriever
+from chefkoch.retrievers import DailyRecipeRetriever
 from chefkoch.retrievers import SearchRetriever
 from chefkoch.recipe import Recipe
 
@@ -19,7 +19,9 @@ class ERROR_CODES:
 
 class RecipeResponse(BaseModel):
     title: str
-    ingredients: list[str]
+    rating: float
+    originURL: str
+    ratingCount: int
     
 class RecipeRequest(BaseModel):
     ingredients: list[str]
@@ -38,7 +40,7 @@ def getErrorResponse(message: str, code: int, status_code: int) -> dict:
 
     
 def getRecipeResponse(recipes: list[Recipe], limit=10):
-    return [RecipeResponse(title=r.title, ingredients=r.ingredients) for r in recipes][:limit]  
+    return [RecipeResponse(title=r.title, rating=r.rating, originURL=r.url, ratingCount=r.number_ratings) for r in recipes][:limit]  
     
 @app.post("/recipes")
 def get_recipes(req: RecipeRequest):
@@ -79,7 +81,7 @@ def get_recipes(req: RecipeRequest):
         )
 )
 
-@app.post("/random_recipes")
+@app.post("/daily_recipes")
 def get_random_recipes(req: RandomRecipeRequest):
     
     if req.limit <= 0:
@@ -93,8 +95,8 @@ def get_random_recipes(req: RandomRecipeRequest):
             )
     
     try: 
-        retriever = RandomRetriever()
-        recipes = retriever.get_recipes(n=req.limit)
+        retriever = DailyRecipeRetriever()
+        recipes = retriever.get_recipes(type="kochen")
         if not recipes or len(recipes) <= 0:
             raise HTTPException(
                 status_code=404,
@@ -106,7 +108,7 @@ def get_random_recipes(req: RandomRecipeRequest):
             )
         
         return getRecipeResponse(recipes, req.limit)
-    except:
+    except Exception as e:
         raise HTTPException(
             status_code=500,
             detail=getErrorResponse(
