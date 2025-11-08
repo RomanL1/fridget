@@ -1,6 +1,0 @@
-name: 'checfkoch-api'
-services:
-    recipe-api:
-      build: ./
-      ports: 
-      - "5001:5001"
