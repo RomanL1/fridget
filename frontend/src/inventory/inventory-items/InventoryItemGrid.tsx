@@ -18,7 +18,6 @@ export function InventoryItemGrid({ inventoryItems, onEditItem, onRemoveItem }: 
 }
 
 function InventoryItemList({ inventoryItems, onEditItem, onRemoveItem }: InventoryItemGridProps) {
-
   // TODO: for testing purposes to generate scrollable content
   const _inventoryItems = Array(4).fill(inventoryItems).flat();
 

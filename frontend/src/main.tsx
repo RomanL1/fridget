@@ -23,7 +23,7 @@ ReactDOM.createRoot(document.getElementById('root') as HTMLElement).render(
         </Routes>
       </BrowserRouter>
     </Theme>
-  </React.StrictMode>
+  </React.StrictMode>,
 );
 
 await authenticate();

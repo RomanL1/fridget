@@ -40,7 +40,7 @@ export function Inventory() {
   return (
     <PageShell title="Mein Kühlschrank">
       {/* Iventory items  */}
-      <InventoryItemGrid inventoryItems={sampleInventoryItems} onEditItem={editItem} onRemoveItem={() => { }} />
+      <InventoryItemGrid inventoryItems={sampleInventoryItems} onEditItem={editItem} onRemoveItem={() => {}} />
 
       {/* Manual product input  */}
       <div className={styles.productNameInput}>
