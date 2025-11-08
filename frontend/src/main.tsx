@@ -7,15 +7,15 @@ import { Inventory } from './inventory/Inventory';
 import { authenticate } from './shared/auth';
 
 import './main.css';
-import NavigationBar from './shared/components/navigation-bar/NavigationBar';
+import Root from './Root';
 
 ReactDOM.createRoot(document.getElementById('root') as HTMLElement).render(
   <React.StrictMode>
     <Theme appearance="dark">
       <BrowserRouter>
         <Routes>
-          <Route path="/" element={<NavigationBar />}>
-            <Route path="inventory" element={<Inventory />} />
+          <Route path="/" element={<Root />}>
+            <Route index element={<Inventory />} />
             <Route path="recipes" />
             <Route path="grocery-list" />
           </Route>
@@ -23,7 +23,7 @@ ReactDOM.createRoot(document.getElementById('root') as HTMLElement).render(
         </Routes>
       </BrowserRouter>
     </Theme>
-  </React.StrictMode>,
+  </React.StrictMode>
 );
 
 await authenticate();

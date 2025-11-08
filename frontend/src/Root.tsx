@@ -1,5 +1,5 @@
 import { Outlet } from "react-router";
-import NavigationBar from "../navigation-bar/NavigationBar";
+import NavigationBar from "./shared/components/navigation-bar/NavigationBar";
 import { ReactElement } from "react";
 
 const Root = (): ReactElement =>

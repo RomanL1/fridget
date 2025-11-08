@@ -18,7 +18,11 @@ export function InventoryItemGrid({ inventoryItems, onEditItem, onRemoveItem }: 
 }
 
 function InventoryItemList({ inventoryItems, onEditItem, onRemoveItem }: InventoryItemGridProps) {
-  return inventoryItems.map((item) => (
+
+  // TODO: for testing purposes to generate scrollable content
+  const _inventoryItems = Array(4).fill(inventoryItems).flat();
+
+  return _inventoryItems.map((item) => (
     <InventoryItemCard
       key={item.inventoryItemId}
       inventoryItem={item}
