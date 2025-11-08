@@ -9,10 +9,10 @@ type PageShellProps = PropsWithChildren<{
 export function PageShell({ title, children }: PageShellProps) {
   return (
     <div className={styles.layout}>
-      <main className={styles.main}>
+      <div className={styles.main}>
         <Heading>{title}</Heading>
         <div className={styles.pageContent}>{children}</div>
-      </main>
+      </div>
     </div>
   );
 }
