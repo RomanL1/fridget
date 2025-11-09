@@ -2,16 +2,20 @@ import { fetch as tauriFetch } from '@tauri-apps/plugin-http';
 import { getUserCode } from '../../auth';
 import { API_HOST } from '../../environment/environment';
 
+// TODO adjust in api
 interface SaveInventoryItemRequest {
+  productId?: string;
+  barcode?: string;
   inventoryItemId?: string;
   productName: string;
   brandName?: string;
   quantity?: string;
-  bestBefore?: Date;
+  bestBefore?: string;
 }
 
 interface SaveInventoryItemResponse {
   inventoryItemId: string;
+  productId: string;
   productName: string;
   brandName?: string;
   imageUrl?: string;
@@ -24,7 +28,10 @@ export async function saveInventoryItem(inventoryItem: SaveInventoryItemRequest)
   const response = tauriFetch(url, {
     method: 'PUT',
     body: JSON.stringify(inventoryItem),
-    headers: { userCode: getUserCode()! },
+    headers: {
+      userCode: getUserCode()!,
+      'Content-Type': 'application/json',
+    },
   });
 
   return await response.then((r) => r.json());
