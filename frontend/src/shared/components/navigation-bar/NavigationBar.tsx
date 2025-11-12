@@ -1,6 +1,6 @@
 import { ReactElement } from 'react';
 import styles from './NavigationBar.module.css';
-import Logo from '../../../assets/logo_light-dark.svg?react'
+import Logo from '../../../assets/logo_light-dark.svg?react';
 import { NavLink } from 'react-router';
 import { LucideRefrigerator } from 'lucide-react';
 import { LucideBookOpen } from 'lucide-react';
