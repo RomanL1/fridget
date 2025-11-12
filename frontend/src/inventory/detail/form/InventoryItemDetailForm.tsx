@@ -1,7 +1,7 @@
 import { Button, Text, TextField } from '@radix-ui/themes';
 import { CalendarDaysIcon } from 'lucide-react';
 import { FormEvent, useEffect, useState } from 'react';
-import { Datepicker } from '../../../shared/datepicker/Datepicker';
+import { Datepicker } from '../../../shared/components/datepicker/Datepicker';
 import { InventoryItem } from '../../inventory-items/card/inventory-item';
 
 import styles from './InventoryItemDetailForm.module.css';
