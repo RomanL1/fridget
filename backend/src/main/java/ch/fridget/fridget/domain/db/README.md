@@ -1,0 +1,1 @@
+if in the @Column tag is no "nullable = false", the column is nullable by default.

@@ -1,4 +1,4 @@
-package ch.fridget.fridget.domain.dto.response;
+package ch.fridget.fridget.domain.dto.api;
 
 import java.util.UUID;
 
@@ -17,9 +17,7 @@ public class ScanProductResponseDto
 	private String imageUrl; //optional
 	public enum ESTATUS
 	{
-		PRODUCT_FOUND,
-		PRODUCT_NOT_FOUND,
-		PRODUCT_CREATED,
+		PRODUCT_COMPLETE,
 		PRODUCT_INCOMPLETE,
 	}
 }

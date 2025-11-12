@@ -40,11 +40,14 @@ public class InventoryItem implements UniqueIdentifiable
 	@JoinColumn( name = "user_id", nullable = false )
 	private User user;
 
-	@Column( name = "name" )
-	private String name;
+	@Column( name = "product_name" )
+	private String productName;
 
-	@Column( name = "quantity", nullable = false )
-	private int quantity;
+	@Column( name = "brand_name" )
+	private String brandName;
+
+	@Column( name = "quantity" )
+	private String quantity;
 
 	@Column( name = "date_added_at", nullable = false )
 	@Builder.Default

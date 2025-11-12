@@ -1,0 +1,20 @@
+meta {
+  name: productList
+  type: http
+  seq: 7
+}
+
+get {
+  url: {{base_url}}/api/product?searchTerm=mate
+  body: json
+  auth: inherit
+}
+
+params:query {
+  searchTerm: mate
+}
+
+settings {
+  encodeUrl: true
+  timeout: 0
+}

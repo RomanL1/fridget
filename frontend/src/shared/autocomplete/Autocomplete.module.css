@@ -1,0 +1,23 @@
+.container {
+  display: flex;
+  flex-direction: column;
+  gap: 0.5rem;
+  position: relative;
+}
+
+.popover {
+  border-radius: var(--radius-3);
+  width: max-content;
+  min-width: 16rem;
+}
+
+.options {
+  display: flex;
+  flex-direction: column;
+  gap: 0.25rem;
+  flex: 1;
+}
+
+.option:hover {
+  background-color: var(--accent-6);
+}

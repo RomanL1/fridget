@@ -19,7 +19,7 @@ export function InventoryItemDetailForm({ inventoryItem, onSave, onCancel }: Inv
   const [bestBeforeDate, setBestBeforeDate] = useState<Date | null>(null);
 
   useEffect(() => {
-    setProductName(inventoryItem.productName);
+    setProductName(inventoryItem.productName ?? '');
     setBrandName(inventoryItem.brandName ?? '');
     setQuantity(inventoryItem.quantity ?? '');
     setBestBeforeDate(inventoryItem.bestBeforeDate ?? null);
@@ -29,7 +29,6 @@ export function InventoryItemDetailForm({ inventoryItem, onSave, onCancel }: Inv
     event.preventDefault();
 
     onSave({
-      inventoryItemId: 0,
       productName,
       brandName,
       quantity,
