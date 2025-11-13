@@ -47,7 +47,7 @@ public class Product implements UniqueIdentifiable
 
 	@Column( name = "quantity", nullable = false )
 	@Builder.Default
-	private String quantity = "UNKNOWN";
+	private String quantity = "";
 
 	@Column( name = "category" )
 	private String category;

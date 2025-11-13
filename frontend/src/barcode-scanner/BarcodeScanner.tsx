@@ -24,12 +24,13 @@ export function BarcodeScanner() {
         formats: [Format.EAN13],
         cameraDirection: 'front',
       });
-      console.log(result);
+
+      const barcode = result.content;
+      await navigate(`/?barcode=${barcode}`);
     } catch (error) {
       console.error(error);
+      await navigate('/');
     }
-
-    await navigate('/');
   }
 
   return <BarcodeScannerOverlay />;

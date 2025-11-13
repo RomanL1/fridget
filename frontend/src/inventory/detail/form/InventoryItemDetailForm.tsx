@@ -71,7 +71,6 @@ function ProductNameFormField({ value, onChange }: FormFieldProps<string>) {
         id="productName"
         size="3"
         className={styles.field}
-        placeholder="Produktname"
         value={value}
         onChange={(e) => onChange(e.target.value)}
         required

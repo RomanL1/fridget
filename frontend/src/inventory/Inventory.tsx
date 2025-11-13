@@ -7,6 +7,7 @@ import { InventoryItemDetail } from './detail/InventoryItemDetail';
 import { InventoryItem } from './inventory-items/card/inventory-item';
 import { InventoryItemGrid } from './inventory-items/InventoryItemGrid';
 import { ProductNameInput } from './product-name-input/ProductNameInput';
+import { useSearchParams } from 'react-router';
 
 import styles from './Inventory.module.css';
 
@@ -14,8 +15,12 @@ export function Inventory() {
   const [items, setItems] = useState<InventoryItem[]>([]);
   const [selectedItem, setSelectedItem] = useState<InventoryItem | null>(null);
 
+  const [searchParams, setSearchParams] = useSearchParams();
+  const scannedBarcode = searchParams.get('barcode');
+
   const detailSheetRef = useRef<BottomSheetRef>(null);
 
+  // Load inventory items
   useEffect(() => {
     let alreadyFetched = false;
     getInventoryItems().then((fetchedItems) => {
@@ -26,6 +31,15 @@ export function Inventory() {
       alreadyFetched = true;
     };
   }, []);
+
+  // Load scanned barcode
+  useEffect(() => {
+    if (!scannedBarcode) return;
+    scanProduct(scannedBarcode).then((scannedInventoryItem) => {
+      editItem(scannedInventoryItem);
+      setSearchParams('');
+    });
+  }, [scannedBarcode]);
 
   function editItem(item: InventoryItem) {
     setSelectedItem(item);
@@ -129,5 +143,17 @@ async function saveInventoryItem(item: InventoryItem) {
     quantity: response.quantity,
     imageUrl: response.imageUrl,
     bestBeforeDate: response.bestBefore ? new Date(response.bestBefore) : undefined,
+  } as InventoryItem;
+}
+
+async function scanProduct(barcode: string) {
+  const response = await api.scanProduct(barcode);
+
+  return {
+    productId: response.productId,
+    productName: response.productName,
+    brandName: response.brandName,
+    imageUrl: response.imageUrl,
+    quantity: response.quantity,
   } as InventoryItem;
 }
