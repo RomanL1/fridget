@@ -35,8 +35,12 @@ export function Inventory() {
   // Load scanned barcode
   useEffect(() => {
     if (!scannedBarcode) return;
-    scanProduct(scannedBarcode).then((scannedInventoryItem) => {
-      editItem(scannedInventoryItem);
+    scanProduct(scannedBarcode).then(({ requiresCompletion, inventoryItem }) => {
+      if (requiresCompletion) {
+        editItem(inventoryItem);
+      } else {
+        saveItem(inventoryItem);
+      }
       setSearchParams('');
     });
   }, [scannedBarcode]);
@@ -146,14 +150,22 @@ async function saveInventoryItem(item: InventoryItem) {
   } as InventoryItem;
 }
 
-async function scanProduct(barcode: string) {
+interface ScanResponse {
+  requiresCompletion: boolean;
+  inventoryItem: InventoryItem;
+}
+
+async function scanProduct(barcode: string): Promise<ScanResponse> {
   const response = await api.scanProduct(barcode);
 
   return {
-    productId: response.productId,
-    productName: response.productName,
-    brandName: response.brandName,
-    imageUrl: response.imageUrl,
-    quantity: response.quantity,
-  } as InventoryItem;
+    requiresCompletion: response.status === api.ScanProductResponseStatus.Incomplete,
+    inventoryItem: {
+      productId: response.productId,
+      productName: response.productName,
+      brandName: response.brandName,
+      imageUrl: response.imageUrl,
+      quantity: response.quantity,
+    },
+  };
 }
