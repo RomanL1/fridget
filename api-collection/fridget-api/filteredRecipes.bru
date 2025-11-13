@@ -1,0 +1,25 @@
+meta {
+  name: filteredRecipes
+  type: http
+  seq: 9
+}
+
+post {
+  url: {{base_url}}/api/recipe/filtered
+  body: json
+  auth: inherit
+}
+
+body:json {
+  {
+    "inventoryItemIds": [
+      "5d9818ef-0385-47f0-8989-5e1d864a2d83",
+      "38807d56-9956-4dde-b57c-03499d884b64"
+    ]
+  }
+}
+
+settings {
+  encodeUrl: true
+  timeout: 0
+}
