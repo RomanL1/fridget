@@ -153,49 +153,39 @@ public class InventoryItemController implements APIController
 			log.info( "No inventory items found for user with userCode: {}", userCode );
 			return ResponseEntity.ok( List.of() );
 		}
-		Instant now = Instant.now().truncatedTo( ChronoUnit.DAYS );
 
-		List<InventoryItem> activeInventoryItems = inventoryItems.stream()
-				.filter( item -> item.getDateConsumedAt() == null )
-				.toList();
+		final long DAYS_BEFORE_EXPIRATION = 3;
+		Instant now = Instant.now().truncatedTo( ChronoUnit.DAYS );
+		Instant soon = now.plus(DAYS_BEFORE_EXPIRATION, ChronoUnit.DAYS);
 
 		/*
 		 * Sort inventory items as follows:
-		 * 1. Expired items (best before date before now), sorted by best before date ascending
-		 * 2. Items expiring in the next 3 days (best before date after now and before now + 3 days), sorted by date added ascending
-		 * 3. Items not expired (best before date after now + 3 days), sorted by date added ascending
+		 * 1. Expired items
+		 * 2. Items expiring in the next 3 days
+		 * 3. Items not expiring anytime soon (or expiration date not specified)
 		 */
-		List<InventoryItem> expired = activeInventoryItems.stream()
-				.filter( item -> item.getBestBeforeDate() != null )
-				.filter( item -> item.getBestBeforeDate().isBefore( now ) )
-				.sorted( Comparator.comparing( InventoryItem::getBestBeforeDate ) )
+		List<InventoryItem> activeInventoryItems = inventoryItems.stream()
+				.filter( item -> item.getDateConsumedAt() == null )
+				.sorted(Comparator
+						.comparingInt((InventoryItem item) -> {
+							if (item.getBestBeforeDate() == null) {
+								return 3;
+							}
+
+							// Already expired
+							if (item.getBestBeforeDate().isBefore(now)) return 1;
+
+							// Expiring soon
+							if (item.getBestBeforeDate().isBefore(soon)) return 2;
+
+							// Not expiring anytime soon
+							return 3;
+						})
+						.thenComparing(Comparator.comparing(InventoryItem::getDateAddedAt).reversed())
+				)
 				.toList();
 
-		List<InventoryItem> expiresIn3Days = activeInventoryItems.stream()
-				.filter( item -> item.getBestBeforeDate() != null )
-				.filter( item -> item.getBestBeforeDate().isAfter( now )
-						&& item.getBestBeforeDate().isBefore( now.plus( 3, ChronoUnit.DAYS ) ) )
-				.sorted( Comparator.comparing( InventoryItem::getDateAddedAt ) )
-				.toList();
-
-		List<InventoryItem> noExpiry = activeInventoryItems.stream()
-				.filter( item -> item.getBestBeforeDate() == null )
-				.sorted( Comparator.comparing( InventoryItem::getDateAddedAt ) )
-				.toList();
-
-		List<InventoryItem> notExpired = activeInventoryItems.stream()
-				.filter( item -> item.getBestBeforeDate() != null )
-				.filter( item -> item.getBestBeforeDate().isAfter( now.plus( 3, ChronoUnit.DAYS ) ) )
-				.sorted( Comparator.comparing( InventoryItem::getDateAddedAt ) )
-				.toList();
-
-		List<InventoryItem> sortedInventoryItems = new ArrayList<>();
-		sortedInventoryItems.addAll( expired );
-		sortedInventoryItems.addAll( expiresIn3Days );
-		sortedInventoryItems.addAll( noExpiry );
-		sortedInventoryItems.addAll( notExpired );
-
-		List<InventoryItemDto> inventoryItemDtos = sortedInventoryItems.stream()
+		List<InventoryItemDto> inventoryItemDtos = activeInventoryItems.stream()
 				.map( InventoryItemDto::of )
 				.toList();
 		return ResponseEntity.ok( inventoryItemDtos );

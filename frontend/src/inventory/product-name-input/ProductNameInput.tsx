@@ -14,6 +14,7 @@ export function ProductNameInput({ onSubmit }: ProductNameInputProps) {
   function onProductNameEntered(event: FormEvent) {
     event.preventDefault();
     onSubmit(value);
+    setValue('');
   }
 
   return (

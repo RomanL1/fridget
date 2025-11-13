@@ -46,7 +46,7 @@ export function Inventory() {
 
     if (itemIndex === -1) {
       // Item is new --> add to list
-      setItems([...items, savedInventoryItem]);
+      setItems([savedInventoryItem, ...items]);
     } else {
       // Item already exists --> update in list
       const updatedItems = items.map((existingItem) =>
