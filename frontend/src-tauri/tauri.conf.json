@@ -18,7 +18,13 @@
       }
     ],
     "security": {
-      "csp": null
+      "csp": {
+        "default-src": "'self'",
+        "script-src": "'self'",
+        "style-src": "'self'",
+        "img-src": "'self'",
+        "connect-src": "'self' http://fridget-001.prod.projects.ls.eee.intern"
+      }
     }
   },
   "bundle": {

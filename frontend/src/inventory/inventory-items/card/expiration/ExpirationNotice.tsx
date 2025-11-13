@@ -11,7 +11,7 @@ export function ExpirationNotice({ bestBeforeDate }: ExpirationNoticeProps) {
 
   const daysUntilExpiration = getDaysUntilExpiration(bestBeforeDate);
 
-  if (daysUntilExpiration < 0) {
+  if (daysUntilExpiration < -1) {
     return <AlreadyExpired />;
   }
 

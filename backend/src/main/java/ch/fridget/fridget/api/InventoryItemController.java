@@ -23,8 +23,8 @@ import ch.fridget.fridget.domain.db.InventoryItem;
 import ch.fridget.fridget.domain.db.Product;
 import ch.fridget.fridget.domain.db.User;
 import ch.fridget.fridget.domain.dto.ProductInfoTask;
-import ch.fridget.fridget.domain.dto.api.CreateInventoryItemRequestDto;
-import ch.fridget.fridget.domain.dto.api.CreateInventoryItemResponseDto;
+import ch.fridget.fridget.domain.dto.api.CreateOrUpdateInventoryItemRequestDto;
+import ch.fridget.fridget.domain.dto.api.CreateOrUpdateInventoryItemResponseDto;
 import ch.fridget.fridget.domain.dto.api.InventoryItemDto;
 import ch.fridget.fridget.repository.InventoryItemRepository;
 import ch.fridget.fridget.repository.ProductRepository;
@@ -49,9 +49,9 @@ public class InventoryItemController implements APIController
 	 * Creates or updates an inventory item for a user.
 	 */
 	@PutMapping( PREFIX )
-	public ResponseEntity<CreateInventoryItemResponseDto> createOrUpdateInventoryItem (
+	public ResponseEntity<CreateOrUpdateInventoryItemResponseDto> createOrUpdateInventoryItem (
 			@RequestHeader( "userCode" ) String userCode,
-			@RequestBody CreateInventoryItemRequestDto requestDto )
+			@RequestBody CreateOrUpdateInventoryItemRequestDto requestDto )
 	{
 		if ( isEmptyString( requestDto.getProductName() ) )
 		{
@@ -97,8 +97,23 @@ public class InventoryItemController implements APIController
 			}
 		}
 
+		InventoryItem inventoryItem;
 		Instant bestBefore = requestDto.getBestBefore() != null ? Instant.parse( requestDto.getBestBefore() ) : null;
-		InventoryItem inventoryItem = InventoryItem.builder()
+
+		if (requestDto.getInventoryItemId() != null) {
+			// Edit existing inventory item
+			Optional<InventoryItem> storedInventoryItem = inventoryItemRepository.findById(UUID.fromString(requestDto.getInventoryItemId()));
+
+			if (storedInventoryItem.isEmpty()) {
+				return ResponseEntity.notFound().build();
+			}
+
+			inventoryItem = storedInventoryItem.get();
+
+			overWriteInventoryItemWithDto(inventoryItem, requestDto);
+		} else {
+			// Create new inventory item
+			inventoryItem = InventoryItem.builder()
 				.id( UUID.randomUUID() )
 				.product( product )
 				.user( user.get() )
@@ -110,11 +125,13 @@ public class InventoryItemController implements APIController
 				.storedInFridge( true ) //default for now
 				.opened( false )
 				.build();
+		}
 
 		inventoryItem = inventoryItemRepository.save( inventoryItem );
 
-		CreateInventoryItemResponseDto responseDto = CreateInventoryItemResponseDto.builder()
+		CreateOrUpdateInventoryItemResponseDto responseDto = CreateOrUpdateInventoryItemResponseDto.builder()
 				.inventoryItemId( inventoryItem.getId().toString() )
+				.productId( product.getId().toString() )
 				.productName( inventoryItem.getProductName() )
 				.brandName( inventoryItem.getBrandName() )
 				.quantity( inventoryItem.getQuantity() )
@@ -136,49 +153,39 @@ public class InventoryItemController implements APIController
 			log.info( "No inventory items found for user with userCode: {}", userCode );
 			return ResponseEntity.ok( List.of() );
 		}
-		Instant now = Instant.now().truncatedTo( ChronoUnit.DAYS );
 
-		List<InventoryItem> activeInventoryItems = inventoryItems.stream()
-				.filter( item -> item.getDateConsumedAt() == null )
-				.toList();
+		final long DAYS_BEFORE_EXPIRATION = 3;
+		Instant now = Instant.now().truncatedTo( ChronoUnit.DAYS );
+		Instant soon = now.plus(DAYS_BEFORE_EXPIRATION, ChronoUnit.DAYS);
 
 		/*
 		 * Sort inventory items as follows:
-		 * 1. Expired items (best before date before now), sorted by best before date ascending
-		 * 2. Items expiring in the next 3 days (best before date after now and before now + 3 days), sorted by date added ascending
-		 * 3. Items not expired (best before date after now + 3 days), sorted by date added ascending
+		 * 1. Expired items
+		 * 2. Items expiring in the next 3 days
+		 * 3. Items not expiring anytime soon (or expiration date not specified)
 		 */
-		List<InventoryItem> expired = activeInventoryItems.stream()
-				.filter( item -> item.getBestBeforeDate() != null )
-				.filter( item -> item.getBestBeforeDate().isBefore( now ) )
-				.sorted( Comparator.comparing( InventoryItem::getBestBeforeDate ) )
+		List<InventoryItem> activeInventoryItems = inventoryItems.stream()
+				.filter( item -> item.getDateConsumedAt() == null )
+				.sorted(Comparator
+						.comparingInt((InventoryItem item) -> {
+							if (item.getBestBeforeDate() == null) {
+								return 3;
+							}
+
+							// Already expired
+							if (item.getBestBeforeDate().isBefore(now)) return 1;
+
+							// Expiring soon
+							if (item.getBestBeforeDate().isBefore(soon)) return 2;
+
+							// Not expiring anytime soon
+							return 3;
+						})
+						.thenComparing(Comparator.comparing(InventoryItem::getDateAddedAt).reversed())
+				)
 				.toList();
 
-		List<InventoryItem> expiresIn3Days = activeInventoryItems.stream()
-				.filter( item -> item.getBestBeforeDate() != null )
-				.filter( item -> item.getBestBeforeDate().isAfter( now )
-						&& item.getBestBeforeDate().isBefore( now.plus( 3, ChronoUnit.DAYS ) ) )
-				.sorted( Comparator.comparing( InventoryItem::getDateAddedAt ) )
-				.toList();
-
-		List<InventoryItem> noExpiry = activeInventoryItems.stream()
-				.filter( item -> item.getBestBeforeDate() == null )
-				.sorted( Comparator.comparing( InventoryItem::getDateAddedAt ) )
-				.toList();
-
-		List<InventoryItem> notExpired = activeInventoryItems.stream()
-				.filter( item -> item.getBestBeforeDate() != null )
-				.filter( item -> item.getBestBeforeDate().isAfter( now.plus( 3, ChronoUnit.DAYS ) ) )
-				.sorted( Comparator.comparing( InventoryItem::getDateAddedAt ) )
-				.toList();
-
-		List<InventoryItem> sortedInventoryItems = new ArrayList<>();
-		sortedInventoryItems.addAll( expired );
-		sortedInventoryItems.addAll( expiresIn3Days );
-		sortedInventoryItems.addAll( noExpiry );
-		sortedInventoryItems.addAll( notExpired );
-
-		List<InventoryItemDto> inventoryItemDtos = sortedInventoryItems.stream()
+		List<InventoryItemDto> inventoryItemDtos = activeInventoryItems.stream()
 				.map( InventoryItemDto::of )
 				.toList();
 		return ResponseEntity.ok( inventoryItemDtos );
@@ -201,24 +208,24 @@ public class InventoryItemController implements APIController
 		return ResponseEntity.ok().build();
 	}
 
-	private Product convertInventoryItemRequestDtoToManualProduct ( CreateInventoryItemRequestDto requestDto )
+	private Product convertInventoryItemRequestDtoToManualProduct ( CreateOrUpdateInventoryItemRequestDto requestDto )
 	{
 		return Product.builder()
 				.id( UUID.randomUUID() )
 				.ean13( requestDto.getProductBarcode() )
-				.brandName( requestDto.getProductBrandName() )
+				.brandName( requestDto.getBrandName() )
 				.name( requestDto.getProductName() )
 				.manuallyAddedByUser( true )
 				.incomplete( false )
 				.quantity( requestDto.getQuantity() )
-				.imageUrl( requestDto.getProductImageUrl() )
+				.imageUrl( requestDto.getImageUrl() )
 				.build();
 	}
 
-	private void overWriteProductWithDto ( Product existingProduct, CreateInventoryItemRequestDto requestDto )
+	private void overWriteProductWithDto ( Product existingProduct, CreateOrUpdateInventoryItemRequestDto requestDto )
 	{
 		existingProduct.setName( requestDto.getProductName() );
-		existingProduct.setBrandName( requestDto.getProductBrandName() );
+		existingProduct.setBrandName( requestDto.getBrandName() );
 		if ( !isEmptyString( requestDto.getQuantity() ) )
 		{
 			existingProduct.setQuantity( requestDto.getQuantity() );
@@ -227,11 +234,20 @@ public class InventoryItemController implements APIController
 		{
 			existingProduct.setEan13( requestDto.getProductBarcode() );
 		}
-		if ( !isEmptyString( requestDto.getProductImageUrl() ) )
+		if ( !isEmptyString( requestDto.getImageUrl() ) )
 		{
-			existingProduct.setImageUrl( requestDto.getProductImageUrl() );
+			existingProduct.setImageUrl( requestDto.getImageUrl() );
 		}
 		existingProduct.setIncomplete( false );
 	}
 
+	private static void overWriteInventoryItemWithDto (InventoryItem existingInventoryItem, CreateOrUpdateInventoryItemRequestDto request )
+	{
+		existingInventoryItem.setProductName(request.getProductName());
+		existingInventoryItem.setBrandName(request.getBrandName());
+		existingInventoryItem.setQuantity(request.getQuantity());
+
+		Instant bestBeforeDate = request.getBestBefore() != null ? Instant.parse( request.getBestBefore() ) : null;
+		existingInventoryItem.setBestBeforeDate(bestBeforeDate);
+	}
 }
