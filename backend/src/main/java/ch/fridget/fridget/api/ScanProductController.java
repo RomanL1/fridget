@@ -10,11 +10,9 @@ import org.springframework.web.bind.annotation.RestController;
 
 import ch.fridget.fridget.domain.db.OFFProductResponse;
 import ch.fridget.fridget.domain.db.Product;
-import ch.fridget.fridget.domain.dto.ProductInfoTask;
 import ch.fridget.fridget.domain.dto.api.ScanProductResponseDto;
 import ch.fridget.fridget.repository.OFFProductResponseRepository;
 import ch.fridget.fridget.repository.ProductRepository;
-import ch.fridget.fridget.service.ProductInfoService;
 import kong.unirest.core.HttpResponse;
 import kong.unirest.core.JsonNode;
 import kong.unirest.core.Unirest;
@@ -52,11 +50,12 @@ public class ScanProductController implements APIController
 
 		String uri = "https://world.openfoodfacts.org/api/v2/product/" + ean13Barcode;
 		HttpResponse<JsonNode> response = Unirest.get( uri )
-				.header("accept", "application/json")
-				.header("Content-Type", "application/json")
+				.header( "accept", "application/json" )
+				.header( "Content-Type", "application/json" )
 				.asJson();
 
-		if ( response.getStatus() != 200 || response.getBody() == null || response.getBody().getObject().get( "status" ).equals( 0 ) )
+		if ( response.getStatus() != 200 || response.getBody() == null || response.getBody().getObject().get( "status" )
+				.equals( 0 ) )
 		{
 			//product not found on OFF, save incomplete product
 			log.warn( "Product with ean13 barcode: {} NOT found on OFF", ean13Barcode );
@@ -95,7 +94,8 @@ public class ScanProductController implements APIController
 
 		log.info( "Created new Product with ean13 barcode: {} from OFF", ean13Barcode );
 
-		ScanProductResponseDto responseDto = convertFoundProductToResponseDto( saved, ScanProductResponseDto.ESTATUS.PRODUCT_INCOMPLETE );
+		ScanProductResponseDto responseDto = convertFoundProductToResponseDto( saved,
+				ScanProductResponseDto.ESTATUS.PRODUCT_INCOMPLETE );
 		return ResponseEntity.ok( responseDto );
 	}
 
@@ -116,7 +116,13 @@ public class ScanProductController implements APIController
 	{
 		JSONObject object = offResponseBody.getObject();
 		String brandName = object.getJSONObject( "product" ).optString( "brands", "" );
-		String productName = object.getJSONObject( "product" ).optString( "product_name", "" );
+		String productName = object.getJSONObject( "product" ).optString( "product_name_de", "" );
+
+		if ( productName.isEmpty() )
+		{
+			productName = object.getJSONObject( "product" ).optString( "product_name", "" );
+		}
+
 		String imageUrl = object.getJSONObject( "product" ).optString( "image_url", "" );
 		String quantity = object.getJSONObject( "product" ).optString( "quantity", "" );
 
