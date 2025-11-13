@@ -5,6 +5,7 @@ import java.util.List;
 import java.util.Map;
 import java.util.UUID;
 
+import org.springframework.beans.factory.annotation.Value;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PostMapping;
@@ -28,15 +29,20 @@ import lombok.extern.slf4j.Slf4j;
 public class RecipeController implements APIController
 {
 	public static final String PREFIX = "recipe";
+	private static final int DEFAULT_RECIPE_LIMIT = 3;
+
+	@Value("${recipe.api.url}")
+	private String RECIPE_API_URL;
+
 	private final InventoryItemRepository inventoryItemRepository;
 
 	@GetMapping( PREFIX + "/trending" )
 	public ResponseEntity<ChefkochRecipeResponseDto[]> getTrendingRecipes ()
 	{
 		Map<String, Object> body = new HashMap<>();
-		body.put( "limit", 3 );
+		body.put( "limit", DEFAULT_RECIPE_LIMIT );
 
-		String uri = "http://localhost:5001/daily_recipes";
+		String uri = RECIPE_API_URL + "/daily_recipes";
 		HttpResponse<ChefkochRecipeResponseDto[]> response = Unirest.post( uri )
 				.header( "accept", "application/json" )
 				.header( "Content-Type", "application/json" )
@@ -51,7 +57,22 @@ public class RecipeController implements APIController
 			@RequestHeader( "userCode" ) String userCode,
 			@RequestBody ChefkochRecipeFilteredRequestDto requestDto )
 	{
-		List<UUID> ids = requestDto.getInventoryItemIds().stream().map( UUID::fromString ).toList();
+		if( requestDto.getInventoryItemIds() == null || requestDto.getInventoryItemIds().isEmpty() )
+		{
+			log.error( "inventoryItemIds is null or empty in requestDto: {}", requestDto );
+			return ResponseEntity.badRequest().build();
+		}
+		
+		List<UUID> ids = null;
+		try
+		{
+			ids = requestDto.getInventoryItemIds().stream().map( UUID::fromString ).toList();
+		}
+		catch ( IllegalArgumentException e )
+		{
+			log.error( "Invalid UUID format in inventoryItemIds: {}", requestDto.getInventoryItemIds(), e );
+			return ResponseEntity.badRequest().build();
+		}
 
 		List<InventoryItem> inventoryItems = inventoryItemRepository.findAllByUserUserCodeAndIdIn( userCode, ids );
 
@@ -70,10 +91,10 @@ public class RecipeController implements APIController
 
 		ChefkochRecipeRequestDto recipeRequestDto = ChefkochRecipeRequestDto.builder()
 				.ingredients( ingredients )
-				.limit( 3 )
+				.limit( DEFAULT_RECIPE_LIMIT )
 				.build();
 
-		String uri = "http://localhost:5001/recipes";
+		String uri = RECIPE_API_URL + "/recipes";
 		HttpResponse<ChefkochRecipeResponseDto[]> response = Unirest.post( uri )
 				.header( "accept", "application/json" )
 				.header( "Content-Type", "application/json" )
