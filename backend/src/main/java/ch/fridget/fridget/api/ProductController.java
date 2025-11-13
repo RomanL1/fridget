@@ -48,8 +48,7 @@ public class ProductController implements APIController
 				.brandName( product.getBrandName() )
 				.name( product.getName() )
 				.quantity( product.getQuantity() )
-				.category( product.getCategory() )
-				.subCategory( product.getSubCategory() )
+				.ingredientName( product.getIngredientName() )
 				.imageUrl( product.getImageUrl() )
 				.build();
 	}

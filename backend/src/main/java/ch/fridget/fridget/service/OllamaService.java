@@ -9,7 +9,7 @@ import org.springframework.context.event.EventListener;
 import org.springframework.stereotype.Service;
 
 import ch.fridget.fridget.domain.dto.ProductInfoTask;
-import ch.fridget.fridget.domain.ollama.ProductCategoryInfo;
+import ch.fridget.fridget.domain.ollama.ProductIngredientName;
 import io.github.ollama4j.Ollama;
 import io.github.ollama4j.exceptions.OllamaException;
 import io.github.ollama4j.models.generate.OllamaGenerateRequest;
@@ -39,7 +39,7 @@ public class OllamaService
 		this.ollama.setRequestTimeoutSeconds( requestTimeoutSeconds );
 	}
 
-	public ProductCategoryInfo generateProductInfo ( ProductInfoTask task ) throws OllamaException
+	public ProductIngredientName generateProductInfo ( ProductInfoTask task ) throws OllamaException
 	{
 		pingServer();
 
@@ -48,11 +48,11 @@ public class OllamaService
 		OllamaGenerateRequest request = OllamaGenerateRequest.builder()
 				.withModel( model )
 				.withPrompt( getPrompt( task ))
-				.withFormat( getCategoryFormat() )
+				.withFormat( getResponseFormat() )
 				.build();
 
 		OllamaResult ollamaResult = ollama.generate( request, null );
-		return ollamaResult.as( ProductCategoryInfo.class );
+		return ollamaResult.as( ProductIngredientName.class );
 	}
 
 	private boolean pingServer () throws OllamaException
@@ -60,13 +60,12 @@ public class OllamaService
 		return ollama.ping();
 	}
 
-	private Map<String, Object> getCategoryFormat ()
+	private Map<String, Object> getResponseFormat ()
 	{
 		Map<String, Object> format = new HashMap<>();
 		format.put( "type", "object" );
 		format.put( "properties", Map.of(
-				"category", Map.of( "type", string_name ),
-				"subCategory", Map.of( "type", string_name )
+				"ingredientName", Map.of( "type", string_name )
 		) );
 		return format;
 	}

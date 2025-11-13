@@ -63,7 +63,7 @@ public class RecipeController implements APIController
 			return ResponseEntity.badRequest().build();
 		}
 
-		List<UUID> ids = null;
+		List<UUID> ids;
 		try
 		{
 			ids = requestDto.getInventoryItemIds().stream().map( UUID::fromString ).toList();
@@ -77,7 +77,7 @@ public class RecipeController implements APIController
 		List<InventoryItem> inventoryItems = inventoryItemRepository.findAllByUserUserCodeAndIdIn( userCode, ids );
 
 		List<String> ingredients = inventoryItems.stream()
-				.map( inventoryItem -> inventoryItem.getProduct().getSubCategory() )
+				.map( inventoryItem -> inventoryItem.getProduct().getIngredientName() )
 				.filter( s -> s != null && !s.isEmpty() )
 				.distinct()
 				.toList();

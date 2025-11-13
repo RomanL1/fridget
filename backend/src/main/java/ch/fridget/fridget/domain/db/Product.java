@@ -49,12 +49,8 @@ public class Product implements UniqueIdentifiable
 	@Builder.Default
 	private String quantity = "";
 
-	@Column( name = "category" )
-	private String category;
-
-	//used as ingredient type
-	@Column( name = "sub_category" )
-	private String subCategory;
+	@Column( name = "ingredient_name" )
+	private String ingredientName;
 
 	@Column( name = "common_best_before_time_range" )
 	private Integer commonBestBeforeTimeRange;
