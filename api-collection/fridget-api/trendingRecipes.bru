@@ -1,11 +1,11 @@
 meta {
-  name: inventoryItemList
+  name: trendingRecipes
   type: http
-  seq: 6
+  seq: 8
 }
 
 get {
-  url: ChefkochRecipeResponseDto{{base_url}}/api/inventory-item
+  url: {{base_url}}/api/recipe/trending
   body: json
   auth: inherit
 }

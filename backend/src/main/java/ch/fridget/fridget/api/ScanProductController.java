@@ -52,7 +52,8 @@ public class ScanProductController implements APIController
 
 		String uri = "https://world.openfoodfacts.org/api/v2/product/" + ean13Barcode;
 		HttpResponse<JsonNode> response = Unirest.get( uri )
-				.header( "accept", "application/json" )
+				.header("accept", "application/json")
+				.header("Content-Type", "application/json")
 				.asJson();
 
 		if ( response.getStatus() != 200 || response.getBody() == null || response.getBody().getObject().get( "status" ).equals( 0 ) )

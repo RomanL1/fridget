@@ -38,7 +38,7 @@ import lombok.extern.slf4j.Slf4j;
 @RequiredArgsConstructor
 public class InventoryItemController implements APIController
 {
-	public static final String prefix = "inventory-item";
+	public static final String PREFIX = "inventory-item";
 
 	private final InventoryItemRepository inventoryItemRepository;
 	private final ProductRepository productRepository;
@@ -48,7 +48,7 @@ public class InventoryItemController implements APIController
 	/**
 	 * Creates or updates an inventory item for a user.
 	 */
-	@PutMapping( prefix )
+	@PutMapping( PREFIX )
 	public ResponseEntity<CreateInventoryItemResponseDto> createOrUpdateInventoryItem (
 			@RequestHeader( "userCode" ) String userCode,
 			@RequestBody CreateInventoryItemRequestDto requestDto )
@@ -125,7 +125,7 @@ public class InventoryItemController implements APIController
 		return ResponseEntity.ok( responseDto );
 	}
 
-	@GetMapping( prefix )
+	@GetMapping( PREFIX )
 	public ResponseEntity<List<InventoryItemDto>> listInventoryItems (
 			@RequestHeader( "userCode" ) String userCode )
 	{
@@ -184,7 +184,7 @@ public class InventoryItemController implements APIController
 		return ResponseEntity.ok( inventoryItemDtos );
 	}
 
-	@DeleteMapping( prefix )
+	@DeleteMapping( PREFIX )
 	public ResponseEntity<Void> removeInventoryItem (
 			@RequestHeader( "userCode" ) String userCode,
 			@RequestParam String id )

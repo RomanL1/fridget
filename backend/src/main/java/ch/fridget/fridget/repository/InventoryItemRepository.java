@@ -1,5 +1,6 @@
 package ch.fridget.fridget.repository;
 
+import java.util.Collection;
 import java.util.List;
 import java.util.Optional;
 import java.util.UUID;
@@ -16,4 +17,5 @@ public interface InventoryItemRepository extends JpaRepository<InventoryItem, UU
 
 	Optional<InventoryItem> findFirstByUserUserCodeAndId ( String userUserCode, UUID id );
 
+	List<InventoryItem> findAllByUserUserCodeAndIdIn ( String userUserCode, Collection<UUID> ids );
 }

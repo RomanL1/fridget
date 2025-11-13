@@ -52,6 +52,7 @@ public class Product implements UniqueIdentifiable
 	@Column( name = "category" )
 	private String category;
 
+	//used as ingredient type
 	@Column( name = "sub_category" )
 	private String subCategory;
 
