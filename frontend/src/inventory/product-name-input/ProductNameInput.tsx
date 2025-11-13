@@ -23,6 +23,7 @@ export function ProductNameInput({ onSubmit }: ProductNameInputProps) {
         size="3"
         placeholder="Produkt hinzufügen..."
         value={value}
+        virtualkeyboardpolicy="auto"
         onChange={(event) => setValue(event.target.value)}
       >
         <TextField.Slot side="right" pr="1">
