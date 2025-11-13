@@ -31,7 +31,7 @@ public class RecipeController implements APIController
 	public static final String PREFIX = "recipe";
 	private static final int DEFAULT_RECIPE_LIMIT = 3;
 
-	@Value("${recipe.api.url}")
+	@Value( "${recipe.api.url}" )
 	private String RECIPE_API_URL;
 
 	private final InventoryItemRepository inventoryItemRepository;
@@ -57,12 +57,12 @@ public class RecipeController implements APIController
 			@RequestHeader( "userCode" ) String userCode,
 			@RequestBody ChefkochRecipeFilteredRequestDto requestDto )
 	{
-		if( requestDto.getInventoryItemIds() == null || requestDto.getInventoryItemIds().isEmpty() )
+		if ( requestDto.getInventoryItemIds() == null || requestDto.getInventoryItemIds().isEmpty() )
 		{
 			log.error( "inventoryItemIds is null or empty in requestDto: {}", requestDto );
 			return ResponseEntity.badRequest().build();
 		}
-		
+
 		List<UUID> ids = null;
 		try
 		{
@@ -70,7 +70,7 @@ public class RecipeController implements APIController
 		}
 		catch ( IllegalArgumentException e )
 		{
-			log.error( "Invalid UUID format in inventoryItemIds: {}", requestDto.getInventoryItemIds(), e );
+			log.warn( "Invalid UUID format in inventoryItemIds: {}", requestDto.getInventoryItemIds(), e );
 			return ResponseEntity.badRequest().build();
 		}
 
@@ -84,7 +84,7 @@ public class RecipeController implements APIController
 
 		if ( ingredients.isEmpty() )
 		{
-			log.info( "No ingredients found for userCode: {} with inventoryItemIds: {}", userCode,
+			log.warn( "No ingredients found for userCode: {} with inventoryItemIds: {}", userCode,
 					requestDto.getInventoryItemIds() );
 			return ResponseEntity.notFound().build();
 		}
