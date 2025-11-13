@@ -2,7 +2,6 @@ import { fetch as tauriFetch } from '@tauri-apps/plugin-http';
 import { getUserCode } from '../../auth';
 import { API_HOST } from '../../environment/environment';
 
-// TODO adjust in api
 interface SaveInventoryItemRequest {
   productId?: string;
   barcode?: string;
