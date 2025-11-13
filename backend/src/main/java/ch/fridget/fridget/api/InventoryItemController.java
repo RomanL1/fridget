@@ -69,6 +69,15 @@ public class InventoryItemController implements APIController
 		{
 			product = convertInventoryItemRequestDtoToManualProduct( requestDto );
 			product = productRepository.save( product );
+
+			final ProductInfoTask task = ProductInfoTask.builder()
+					.productId( product.getId() )
+					.brandName( product.getBrandName() )
+					.productName( product.getName() )
+					.build();
+
+			//the product is new, now process it for ingredientName asynchronously
+			productInfoService.submitProductForProcessing( task );
 		}
 		else
 		{
@@ -92,7 +101,7 @@ public class InventoryItemController implements APIController
 						.productName( product.getName() )
 						.build();
 
-				//the product is now complete, now we process it for category info asynchronously
+				//the product is now complete, now process it for ingredientName asynchronously
 				productInfoService.submitProductForProcessing( task );
 			}
 		}
