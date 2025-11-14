@@ -1,6 +1,6 @@
 import { ReactElement } from 'react';
 import styles from './NavigationBar.module.css';
-import logo from '../../../assets/logo_light-dark.svg';
+import Logo from '../../../assets/logo_light-dark.svg?react';
 import { NavLink } from 'react-router';
 import { LucideRefrigerator } from 'lucide-react';
 import { LucideBookOpen } from 'lucide-react';
@@ -9,7 +9,7 @@ import { LucideShoppingCart } from 'lucide-react';
 const NavigationBar = (): ReactElement => (
   <nav className={styles.container}>
     <div className={styles.navLogo}>
-      <img src={logo} />
+      <Logo />
     </div>
     <div className={styles.navContainer}>
       <NavLink to="/" className={({ isActive }) => `${styles.navItem} ${isActive ? styles.active : ''}`}>
