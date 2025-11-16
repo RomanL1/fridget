@@ -1,7 +1,7 @@
 meta {
-  name: createOrUpdateInventoryItem
+  name: cu_InventoryItem
   type: http
-  seq: 5
+  seq: 6
 }
 
 put {
@@ -13,12 +13,12 @@ put {
 body:json {
   {
     "inventoryItemId": null, // optional
-    "productId": "232c5e71-24e1-4ff3-b457-53928b02c08c", // optional
+    "productId": null, // optional
     "productBarcode": null, // optional
-    "productName": "Zucchini", // optional
-    "brandName": "Migros", // optional
+    "productName": "Caesar salad",  
+    "brandName": "Migros MBudget", // optional
     "imageUrl": null, // optional
-    "quantity": "1 Stück", // optional
+    "quantity": "", // optional
     "bestBefore": "2025-11-16T13:01:48.293362Z"  // optional
   }
 }

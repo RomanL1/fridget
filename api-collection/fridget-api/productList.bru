@@ -1,17 +1,17 @@
 meta {
   name: productList
   type: http
-  seq: 7
+  seq: 9
 }
 
 get {
-  url: {{base_url}}/api/product?searchTerm=mate
+  url: {{base_url}}/api/product?searchTerm
   body: json
   auth: inherit
 }
 
 params:query {
-  searchTerm: mate
+  searchTerm: 
 }
 
 settings {
