@@ -1,0 +1,20 @@
+meta {
+  name: d_shoppingListItem
+  type: http
+  seq: 14
+}
+
+delete {
+  url: {{base_url}}/api/shopping-list/item/:shoppingListItemId
+  body: json
+  auth: inherit
+}
+
+params:path {
+  shoppingListItemId: d8f26cd5-d93d-4ce1-aa6d-2f7ba8e2af4b
+}
+
+settings {
+  encodeUrl: true
+  timeout: 0
+}

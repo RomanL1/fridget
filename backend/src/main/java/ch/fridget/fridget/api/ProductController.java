@@ -18,11 +18,11 @@ import lombok.extern.slf4j.Slf4j;
 @RequiredArgsConstructor
 public class ProductController implements APIController
 {
-	public static final String prefix = "product";
+	public static final String PREFIX = "product";
 
 	private final ProductRepository productRepository;
 
-	@GetMapping( prefix )
+	@GetMapping( PREFIX )
 	public ResponseEntity<List<ProductDto>> listInventoryItems (
 			@RequestParam( required = false ) String searchTerm )
 	{
@@ -48,8 +48,7 @@ public class ProductController implements APIController
 				.brandName( product.getBrandName() )
 				.name( product.getName() )
 				.quantity( product.getQuantity() )
-				.category( product.getCategory() )
-				.subCategory( product.getSubCategory() )
+				.ingredientName( product.getIngredientName() )
 				.imageUrl( product.getImageUrl() )
 				.build();
 	}

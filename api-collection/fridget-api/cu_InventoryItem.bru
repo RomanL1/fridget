@@ -1,0 +1,29 @@
+meta {
+  name: cu_InventoryItem
+  type: http
+  seq: 6
+}
+
+put {
+  url: {{base_url}}/api/inventory-item
+  body: json
+  auth: inherit
+}
+
+body:json {
+  {
+    "inventoryItemId": null, // optional
+    "productId": null, // optional
+    "productBarcode": null, // optional
+    "productName": "Caesar salad",  
+    "brandName": "Migros MBudget", // optional
+    "imageUrl": null, // optional
+    "quantity": "", // optional
+    "bestBefore": "2025-11-16T13:01:48.293362Z"  // optional
+  }
+}
+
+settings {
+  encodeUrl: true
+  timeout: 0
+}

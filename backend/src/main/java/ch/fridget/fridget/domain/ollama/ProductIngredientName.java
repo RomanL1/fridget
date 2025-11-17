@@ -7,8 +7,7 @@ import lombok.NoArgsConstructor;
 @Data
 @AllArgsConstructor
 @NoArgsConstructor
-public class ProductCategoryInfo
+public class ProductIngredientName
 {
-	private String category;
-	private String subCategory;
+	private String ingredientName;
 }

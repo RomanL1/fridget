@@ -1,0 +1,16 @@
+meta {
+  name: trendingRecipes
+  type: http
+  seq: 10
+}
+
+get {
+  url: {{base_url}}/api/recipe/trending
+  body: json
+  auth: inherit
+}
+
+settings {
+  encodeUrl: true
+  timeout: 0
+}

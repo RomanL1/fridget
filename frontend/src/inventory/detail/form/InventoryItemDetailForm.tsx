@@ -29,6 +29,7 @@ export function InventoryItemDetailForm({ inventoryItem, onSave, onCancel }: Inv
     event.preventDefault();
 
     onSave({
+      ...inventoryItem,
       productName,
       brandName,
       quantity,
@@ -70,10 +71,10 @@ function ProductNameFormField({ value, onChange }: FormFieldProps<string>) {
         id="productName"
         size="3"
         className={styles.field}
-        placeholder="Produktname"
         value={value}
         onChange={(e) => onChange(e.target.value)}
         required
+        autoComplete="off"
       />
     </div>
   );
@@ -91,6 +92,7 @@ function BrandNameFormField({ value, onChange }: FormFieldProps<string>) {
         className={styles.field}
         value={value}
         onChange={(e) => onChange(e.target.value)}
+        autoComplete="off"
       />
     </div>
   );
@@ -108,6 +110,7 @@ function QuantityFormField({ value, onChange }: FormFieldProps<string>) {
         className={styles.field}
         value={value}
         onChange={(e) => onChange(e.target.value)}
+        autoComplete="off"
       />
     </div>
   );

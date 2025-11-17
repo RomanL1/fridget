@@ -18,7 +18,6 @@ public interface ProductRepository extends JpaRepository<Product, UUID>
 	@Query("select p from Product p where"
 			+ " lower(p.brandName) like LOWER('%' || ?1 || '%')"
 			+ "OR lower(p.name) like LOWER('%' || ?1 || '%')"
-			+ "OR lower(p.category) like LOWER('%' || ?1 || '%')"
-			+ "OR lower(p.subCategory) like LOWER('%' || ?1 || '%')")
+			+ "OR lower(p.ingredientName) like LOWER('%' || ?1 || '%')")
 	List<Product> searchProductsBySearchTerm ( String searchTerm );
 }

@@ -16,8 +16,11 @@ services:
       - OLLAMA_HOST=http://ollama:11434/
       - OLLAMA_REQUEST_TIMEOUT_SECONDS=1200
       - OLLAMA_RUN_ENABLED=true
+      - RECIPE_API_URL=http://chefkoch-api:5001
     depends_on:
       ollama:
+        condition: service_started
+      chefkoch-api:
         condition: service_started
       postgres:
         condition: service_healthy
@@ -52,6 +55,13 @@ services:
       retries: 5
       start_period: 60s
       timeout: 10s
+
+  chefkoch-api:
+    image: romanl1/fridget-chefkoch-api:latest
+    container_name: chefkoch-api
+    restart: unless-stopped
+    ports:
+        - "5001:5001"
 
 volumes:
   ollama_data:
