@@ -5,12 +5,6 @@
   aria-labelledby="logoTitle logoDesc"
   style="background: transparent"
 >
-  <style>
-      :root { color: #08514c }
-      @media (prefers-color-scheme: dark) {
-        :root { color: white }
-      }
-  </style>
   <title id="logoTitle">Fridget Logo</title>
   <desc id="logoDesc">Fridge icon with a smiling face on top and a green check on the bottom.</desc>
 
