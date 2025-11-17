@@ -1,17 +1,5 @@
-:root {
-  --sidebar-width: 0;
-}
-
 .layout {
   display: flex;
-}
-
-.sidebar {
-  position: fixed;
-  width: var(--sidebar-width);
-  top: 0;
-  left: 0;
-  bottom: 0;
 }
 
 .main {

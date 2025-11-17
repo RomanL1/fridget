@@ -1,7 +1,7 @@
 import { useEffect, useRef, useState } from 'react';
 import * as api from '../shared/api';
-import { BottomSheet, BottomSheetRef } from '../shared/bottom-sheet/BottomSheet';
-import { PageShell } from '../shared/page/PageShell';
+import { BottomSheet, BottomSheetRef } from '../shared/components/bottom-sheet/BottomSheet';
+import { PageShell } from '../shared/components/page/PageShell';
 import { BarcodeScannerToggle } from './barcode-scanner-toggle/BarcodeScannerToggle';
 import { InventoryItemDetail } from './detail/InventoryItemDetail';
 import { InventoryItem } from './inventory-items/card/inventory-item';
