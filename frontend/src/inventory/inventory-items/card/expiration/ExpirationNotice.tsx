@@ -2,9 +2,12 @@ import { Text } from '@radix-ui/themes';
 
 interface ExpirationNoticeProps {
   bestBeforeDate?: Date;
+  textSize?: TextSizes;
 }
 
-export function ExpirationNotice({ bestBeforeDate }: ExpirationNoticeProps) {
+type TextSizes = '1' | '2';
+
+export function ExpirationNotice({ bestBeforeDate, textSize }: ExpirationNoticeProps) {
   if (!bestBeforeDate) {
     return <ExpirationUnknown />;
   }
@@ -12,12 +15,12 @@ export function ExpirationNotice({ bestBeforeDate }: ExpirationNoticeProps) {
   const daysUntilExpiration = getDaysUntilExpiration(bestBeforeDate);
 
   if (daysUntilExpiration < 0) {
-    return <AlreadyExpired />;
+    return <AlreadyExpired textSize={textSize} />;
   }
 
   const aboutToExpireInDays = 3;
   if (daysUntilExpiration <= aboutToExpireInDays) {
-    return <AboutToExpire />;
+    return <AboutToExpire textSize={textSize} />;
   }
 
   return <NotYetExpired />;
@@ -32,14 +35,18 @@ function getDaysUntilExpiration(expirationDate: Date): number {
 const ExpirationUnknown = () => <span />;
 const NotYetExpired = () => <span />;
 
-const AlreadyExpired = () => (
-  <Text size="2" weight="light" color="red">
+interface StatusProps {
+  textSize?: TextSizes;
+}
+
+const AlreadyExpired = ({ textSize }: StatusProps) => (
+  <Text size={textSize || '2'} weight="light" color="red">
     Abgelaufen
   </Text>
 );
 
-const AboutToExpire = () => (
-  <Text size="2" weight="light" color="orange">
+const AboutToExpire = ({ textSize }: StatusProps) => (
+  <Text size={textSize || '2'} weight="light" color="orange">
     Läuft bald ab
   </Text>
 );
