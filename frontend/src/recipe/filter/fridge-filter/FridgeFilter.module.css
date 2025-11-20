@@ -1,0 +1,8 @@
+.iconClose {
+  margin-left: auto;
+  cursor: pointer;
+}
+
+.popOver {
+  min-width: 750px;
+}
