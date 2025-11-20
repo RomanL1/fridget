@@ -1,6 +1,7 @@
 import { Flex, Text } from '@radix-ui/themes';
 import { LucideStar } from 'lucide-react';
 import { ReactElement } from 'react';
+import styles from './RecipeRating.module.css';
 
 interface RecipeRatingProps {
   rating: number;
@@ -9,7 +10,7 @@ interface RecipeRatingProps {
 }
 
 const RecipeRating = ({ rating, ratingCount, className }: RecipeRatingProps): ReactElement => (
-  <Flex gap="1" align="center" className={className}>
+  <Flex gap="1" align="center" className={`${className} ${styles.container}`}>
     <LucideStar />
     <Text size="4">
       <strong>{rating}</strong> ({ratingCount})

@@ -1,0 +1,5 @@
+.container {
+  background-color: var(--accent-7);
+  margin: 7px;
+  border-radius: var(--card-border-radius);
+}
