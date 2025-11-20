@@ -134,7 +134,7 @@ class Recipe:
         Raises:
             ValueError: If the image is not found.
         """
-        image: str = self.__soup.find("ds-teaser-link__image").find("img")["src"]
+        image: str = self.__soup.find("img", class_="ds-teaser-link__image")["src"]
         if image:
             return image
         raise ValueError("Image not found")

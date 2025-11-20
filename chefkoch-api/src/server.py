@@ -22,6 +22,7 @@ class RecipeResponse(BaseModel):
     rating: float
     originURL: str
     ratingCount: int
+    imageUrl: str
     
 class RecipeRequest(BaseModel):
     ingredients: list[str]
@@ -40,7 +41,7 @@ def getErrorResponse(message: str, code: int, status_code: int) -> dict:
 
     
 def getRecipeResponse(recipes: list[Recipe], limit=10):
-    return [RecipeResponse(title=r.title, rating=r.rating, originURL=r.url, ratingCount=r.number_ratings) for r in recipes][:limit]  
+    return [RecipeResponse(title=r.title, rating=r.rating, originURL=r.url, ratingCount=r.number_ratings, imageUrl=r.image_url) for r in recipes][:limit]  
     
 @app.post("/recipes")
 def get_recipes(req: RecipeRequest):
@@ -72,10 +73,11 @@ def get_recipes(req: RecipeRequest):
     
         return getRecipeResponse(recipes, req.limit)
     except Exception as e:
+        traceback.print_exc()
         raise HTTPException(
             status_code=500,
             detail=getErrorResponse(
-                message=f"failed to retrieve recipe {str(e)}",
+                message=f"failed to retrieve recipe {str(e.stra)}",
                 code=ERROR_CODES.SEARCH_FAILURE,
                 status_code=500
         )
