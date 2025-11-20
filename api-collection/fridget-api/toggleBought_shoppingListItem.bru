@@ -1,0 +1,20 @@
+meta {
+  name: toggleBought_shoppingListItem
+  type: http
+  seq: 13
+}
+
+put {
+  url: {{base_url}}/api/shopping-list/item/:id/toggle-bought
+  body: none
+  auth: inherit
+}
+
+params:path {
+  id: 1af3b429-8dd3-4d5a-be3b-e05397beb0a5
+}
+
+settings {
+  encodeUrl: true
+  timeout: 0
+}

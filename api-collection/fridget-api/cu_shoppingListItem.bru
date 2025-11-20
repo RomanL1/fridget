@@ -1,0 +1,27 @@
+meta {
+  name: cu_shoppingListItem
+  type: http
+  seq: 13
+}
+
+put {
+  url: {{base_url}}/api/shopping-list/item
+  body: json
+  auth: inherit
+}
+
+body:json {
+  {
+    "id": "db7f3333-2b1d-4d62-9d34-29d8497a3049", //nullable
+    "productId": "", //nullable
+    "brandName": "Migros", //nullalbe
+    "productName": "ABCsdfsdfDd",
+    "quantity": "1 Stück", //nullable
+    "bought": null //nullable (default false)
+  }
+}
+
+settings {
+  encodeUrl: true
+  timeout: 0
+}

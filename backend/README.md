@@ -38,11 +38,11 @@ set the following environment variables in your IDE run configuration
 DOCKER_COMPOSE_ENABLED=true;SPRING_DATASOURCE_USERNAME=fridget;SPRING_DATASOURCE_PASSWORD=secret;
 
 ## building docker image
-docker buildx create --name multi --use
+docker buildx create --name multi-fridget-backend --use
 
 docker buildx inspect --bootstrap
 
-docker buildx build \
+docker buildx build . \
   --platform linux/amd64,linux/arm64 \
   -t romanl1/fridget:latest \
   --push

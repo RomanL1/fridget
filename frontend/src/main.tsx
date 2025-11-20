@@ -5,11 +5,10 @@ import { BrowserRouter, Route, Routes } from 'react-router';
 import { BarcodeScanner } from './barcode-scanner/BarcodeScanner';
 import { Inventory } from './inventory/Inventory';
 import { authenticate } from './shared/auth';
-
 import './main.css';
-import Root from './Root';
 import RecipeView from './recipe/RecipeView';
 import { ThemeProvider } from 'next-themes';
+import MainLayout from './MainLayout';
 
 ReactDOM.createRoot(document.getElementById('root') as HTMLElement).render(
   <React.StrictMode>
@@ -17,7 +16,7 @@ ReactDOM.createRoot(document.getElementById('root') as HTMLElement).render(
       <Theme>
         <BrowserRouter>
           <Routes>
-            <Route path="/" element={<Root />}>
+            <Route path="/" element={<MainLayout />}>
               <Route index element={<Inventory />} />
               <Route path="recipes" element={<RecipeView />} />
               <Route path="grocery-list" />

@@ -1,17 +1,13 @@
 meta {
-  name: productList
+  name: inventoryItemList
   type: http
   seq: 7
 }
 
 get {
-  url: {{base_url}}/api/product?searchTerm=mate
+  url: {{base_url}}/api/inventory-item
   body: json
   auth: inherit
-}
-
-params:query {
-  searchTerm: mate
 }
 
 settings {

@@ -22,9 +22,9 @@ public class InventoryItemDto
 		return InventoryItemDto.builder()
 				.inventoryItemId( inventoryItem.getId().toString() )
 				.productId( inventoryItem.getProduct().getId().toString() )
-				.productName( inventoryItem.getProduct().getName() )
-				.brandName( inventoryItem.getProduct().getBrandName() )
-				.quantity( inventoryItem.getProduct().getQuantity() )
+				.productName( inventoryItem.getProductName() )
+				.brandName( inventoryItem.getBrandName() )
+				.quantity( inventoryItem.getQuantity() )
 				.imageUrl( inventoryItem.getProduct().getImageUrl() )
 				.dateAdded( inventoryItem.getDateAddedAt().toString() )
 				.bestBeforeDate( inventoryItem.getBestBeforeDate() != null ?

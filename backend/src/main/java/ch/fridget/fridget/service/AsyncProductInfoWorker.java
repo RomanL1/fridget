@@ -13,7 +13,7 @@ import org.springframework.stereotype.Component;
 
 import ch.fridget.fridget.domain.db.Product;
 import ch.fridget.fridget.domain.dto.ProductInfoTask;
-import ch.fridget.fridget.domain.ollama.ProductCategoryInfo;
+import ch.fridget.fridget.domain.ollama.ProductIngredientName;
 import ch.fridget.fridget.repository.ProductRepository;
 import jakarta.annotation.PostConstruct;
 import jakarta.annotation.PreDestroy;
@@ -146,7 +146,7 @@ public class AsyncProductInfoWorker
 
 		try
 		{
-			ProductCategoryInfo productCategoryInfo = ollamaService.generateProductInfo( task );
+			ProductIngredientName productIngredientName = ollamaService.generateProductInfo( task );
 			Optional<Product> product = productRepository.findById( task.productId() );
 			if ( product.isEmpty() )
 			{
@@ -154,13 +154,11 @@ public class AsyncProductInfoWorker
 			}
 
 			Product p = product.get();
-			p.setCategory( productCategoryInfo.getCategory() );
-			p.setSubCategory( productCategoryInfo.getSubCategory() );
+			p.setIngredientName( productIngredientName.getIngredientName() );
 			productRepository.save( p );
-			logger.info( "Updated product {} with category: {}, subCategory: {}",
+			logger.info( "Updated product {} with ingredientName: {}",
 					task.productId(),
-					productCategoryInfo.getCategory(),
-					productCategoryInfo.getSubCategory() );
+					productIngredientName.getIngredientName() );
 
 			logger.debug( "Completed processing for product: {}", task.productId() );
 		}

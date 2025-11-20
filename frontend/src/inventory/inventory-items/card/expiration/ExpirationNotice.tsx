@@ -14,7 +14,7 @@ export function ExpirationNotice({ bestBeforeDate, textSize }: ExpirationNoticeP
 
   const daysUntilExpiration = getDaysUntilExpiration(bestBeforeDate);
 
-  if (daysUntilExpiration < 0) {
+  if (daysUntilExpiration < -1) {
     return <AlreadyExpired textSize={textSize} />;
   }
 

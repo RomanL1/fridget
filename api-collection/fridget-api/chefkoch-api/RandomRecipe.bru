@@ -1,0 +1,22 @@
+meta {
+  name: RandomRecipe
+  type: http
+  seq: 2
+}
+
+post {
+  url: http://localhost:5001/daily_recipes
+  body: json
+  auth: inherit
+}
+
+body:json {
+  {
+    "limit": 3
+  }
+}
+
+settings {
+  encodeUrl: true
+  timeout: 0
+}

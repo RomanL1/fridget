@@ -9,7 +9,7 @@ type InventoryItemResponse = {
   brandName?: string;
   imageUrl?: string;
   quantity?: string;
-  bestBeforeDate?: Date;
+  bestBeforeDate?: string;
 }[];
 
 export async function getInventoryItems(): Promise<InventoryItemResponse> {

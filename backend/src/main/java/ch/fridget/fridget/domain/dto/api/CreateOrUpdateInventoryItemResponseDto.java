@@ -5,9 +5,10 @@ import lombok.Data;
 
 @Data
 @Builder
-public class CreateInventoryItemResponseDto
+public class CreateOrUpdateInventoryItemResponseDto
 {
 	private String inventoryItemId;
+	private String productId;
 	private String productName;
 	private String brandName;
 	private String quantity;

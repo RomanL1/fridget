@@ -12,7 +12,6 @@ public class ProductDto
 	private String brandName;
 	private String name;
 	private String quantity;
-	private String category;
-	private String subCategory;
+	private String ingredientName;
 	private String imageUrl;
 }

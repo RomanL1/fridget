@@ -39,15 +39,15 @@ public class ShoppingListItem implements UniqueIdentifiable
 	@JoinColumn( name = "product_id" )
 	private Product product;
 
-	@Column( name = "name" )
-	private String name;
+	@Column( name = "product_name" )
+	private String productName;
 
 	@Column( name = "quantity", nullable = false )
 	private String quantity;
 
-	@Column( name = "quantity_number" )
-	private Integer quantityNumber;
+	@Column( name = "brand_name" )
+	private String brandName;
 
-	@Column( name = "quanitity_type" )
-	private String quantityType;
+	@Column( name = "bought", nullable = false )
+	private Boolean bought;
 }

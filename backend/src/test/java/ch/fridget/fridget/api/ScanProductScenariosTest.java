@@ -26,9 +26,8 @@ import org.springframework.http.ResponseEntity;
 import ch.fridget.fridget.domain.db.InventoryItem;
 import ch.fridget.fridget.domain.db.Product;
 import ch.fridget.fridget.domain.db.User;
-import ch.fridget.fridget.domain.dto.api.CreateInventoryItemRequestDto;
-import ch.fridget.fridget.domain.dto.api.CreateInventoryItemResponseDto;
-import ch.fridget.fridget.domain.dto.api.ScanProductResponseDto;
+import ch.fridget.fridget.domain.dto.api.CreateOrUpdateInventoryItemRequestDto;
+import ch.fridget.fridget.domain.dto.api.CreateOrUpdateInventoryItemResponseDto;
 import ch.fridget.fridget.repository.InventoryItemRepository;
 import ch.fridget.fridget.repository.ProductRepository;
 import ch.fridget.fridget.repository.UserRepository;
@@ -87,7 +86,7 @@ class ScanProductScenariosTest
 				.build();
 
 		String bestBeforeDate = "2025-12-31T23:59:59Z";
-		CreateInventoryItemRequestDto requestDto = CreateInventoryItemRequestDto.builder()
+		CreateOrUpdateInventoryItemRequestDto requestDto = CreateOrUpdateInventoryItemRequestDto.builder()
 				.productId( existingProductId.toString() )
 				.productName(  "Coca Cola" )
 				.quantity( "1" )
@@ -113,7 +112,7 @@ class ScanProductScenariosTest
 		when( inventoryItemRepository.save( any( InventoryItem.class ) ) ).thenReturn( savedInventoryItem );
 
 		// When
-		ResponseEntity<CreateInventoryItemResponseDto> response = inventoryItemController.createOrUpdateInventoryItem( testUserCode, requestDto );
+		ResponseEntity<CreateOrUpdateInventoryItemResponseDto> response = inventoryItemController.createOrUpdateInventoryItem( testUserCode, requestDto );
 
 		// Then
 		assertThat( response.getStatusCode() ).isEqualTo( HttpStatus.OK );
@@ -136,12 +135,12 @@ class ScanProductScenariosTest
 	void shouldCreateProductAndInventoryItemWhenProductDoesNotExist ()
 	{
 		// Given - Product does not exist, user manually adds it
-		CreateInventoryItemRequestDto requestDto = CreateInventoryItemRequestDto.builder()
+		CreateOrUpdateInventoryItemRequestDto requestDto = CreateOrUpdateInventoryItemRequestDto.builder()
 				.productId( null ) // No product ID means new product
 				.productName( "Custom Milk" )
-				.productBrandName( "Local Farm" )
+				.brandName( "Local Farm" )
 				.productBarcode( "1234567890123" )
-				.productImageUrl( "https://example.com/milk.jpg" )
+				.imageUrl( "https://example.com/milk.jpg" )
 				.quantity( "1L" )
 				.bestBefore( "2025-11-15T00:00:00Z" )
 				.build();
@@ -176,7 +175,7 @@ class ScanProductScenariosTest
 		when( inventoryItemRepository.save( any( InventoryItem.class ) ) ).thenReturn( savedInventoryItem );
 
 		// When
-		ResponseEntity<CreateInventoryItemResponseDto> response = inventoryItemController.createOrUpdateInventoryItem( testUserCode, requestDto );
+		ResponseEntity<CreateOrUpdateInventoryItemResponseDto> response = inventoryItemController.createOrUpdateInventoryItem( testUserCode, requestDto );
 
 		// Then
 		assertThat( response.getStatusCode() ).isEqualTo( HttpStatus.OK );
@@ -214,11 +213,11 @@ class ScanProductScenariosTest
 				.manuallyAddedByUser( false )
 				.build();
 
-		CreateInventoryItemRequestDto requestDto = CreateInventoryItemRequestDto.builder()
+		CreateOrUpdateInventoryItemRequestDto requestDto = CreateOrUpdateInventoryItemRequestDto.builder()
 				.productId( incompleteProductId.toString() )
 				.productName( "Orange Juice" )
-				.productBrandName( "Tropicana" )
-				.productImageUrl( "https://example.com/oj.jpg" )
+				.brandName( "Tropicana" )
+				.imageUrl( "https://example.com/oj.jpg" )
 				.quantity( "1L" )
 				.bestBefore( "2025-11-30T00:00:00Z" )
 				.build();
@@ -254,7 +253,7 @@ class ScanProductScenariosTest
 		when( inventoryItemRepository.save( any( InventoryItem.class ) ) ).thenReturn( savedInventoryItem );
 
 		// When
-		ResponseEntity<CreateInventoryItemResponseDto> response = inventoryItemController.createOrUpdateInventoryItem( testUserCode, requestDto );
+		ResponseEntity<CreateOrUpdateInventoryItemResponseDto> response = inventoryItemController.createOrUpdateInventoryItem( testUserCode, requestDto );
 
 		// Then
 		assertThat( response.getStatusCode() ).isEqualTo( HttpStatus.OK );
@@ -279,12 +278,12 @@ class ScanProductScenariosTest
 	void shouldReturnBadRequestWhenProductNameIsMissing ()
 	{
 		// Given
-		CreateInventoryItemRequestDto requestDto = CreateInventoryItemRequestDto.builder()
+		CreateOrUpdateInventoryItemRequestDto requestDto = CreateOrUpdateInventoryItemRequestDto.builder()
 				.productName( null)
 				.build();
 
 		// When
-		ResponseEntity<CreateInventoryItemResponseDto> response = inventoryItemController.createOrUpdateInventoryItem( testUserCode, requestDto );
+		ResponseEntity<CreateOrUpdateInventoryItemResponseDto> response = inventoryItemController.createOrUpdateInventoryItem( testUserCode, requestDto );
 
 		// Then
 		assertThat( response.getStatusCode() ).isEqualTo( HttpStatus.BAD_REQUEST );
@@ -297,12 +296,12 @@ class ScanProductScenariosTest
 	void shouldReturnBadRequestWhenProductNameIsEmpty ()
 	{
 		// Given
-		CreateInventoryItemRequestDto requestDto = CreateInventoryItemRequestDto.builder()
+		CreateOrUpdateInventoryItemRequestDto requestDto = CreateOrUpdateInventoryItemRequestDto.builder()
 				.productName( "" )
 				.build();
 
 		// When
-		ResponseEntity<CreateInventoryItemResponseDto> response = inventoryItemController.createOrUpdateInventoryItem( testUserCode, requestDto );
+		ResponseEntity<CreateOrUpdateInventoryItemResponseDto> response = inventoryItemController.createOrUpdateInventoryItem( testUserCode, requestDto );
 
 		// Then
 		assertThat( response.getStatusCode() ).isEqualTo( HttpStatus.BAD_REQUEST );
@@ -316,9 +315,9 @@ class ScanProductScenariosTest
 	{
 		// Given
 		String invalidUserCode = "INVALID_USER";
-		CreateInventoryItemRequestDto requestDto = CreateInventoryItemRequestDto.builder()
+		CreateOrUpdateInventoryItemRequestDto requestDto = CreateOrUpdateInventoryItemRequestDto.builder()
 				.productName( "Test Product" )
-				.productBrandName( "Test Brand" )
+				.brandName( "Test Brand" )
 				.quantity( "1" )
 				.build();
 
@@ -339,7 +338,7 @@ class ScanProductScenariosTest
 	{
 		// Given
 		UUID nonExistentProductId = UUID.randomUUID();
-		CreateInventoryItemRequestDto requestDto = CreateInventoryItemRequestDto.builder()
+		CreateOrUpdateInventoryItemRequestDto requestDto = CreateOrUpdateInventoryItemRequestDto.builder()
 				.productId( nonExistentProductId.toString() )
 				.productName( "Test" )
 				.build();
@@ -348,7 +347,7 @@ class ScanProductScenariosTest
 		when( productRepository.findById( nonExistentProductId ) ).thenReturn( Optional.empty() );
 
 		// When
-		ResponseEntity<CreateInventoryItemResponseDto> response = inventoryItemController.createOrUpdateInventoryItem( testUserCode, requestDto );
+		ResponseEntity<CreateOrUpdateInventoryItemResponseDto> response = inventoryItemController.createOrUpdateInventoryItem( testUserCode, requestDto );
 
 		// Then
 		assertThat( response.getStatusCode() ).isEqualTo( HttpStatus.NOT_FOUND );
@@ -362,13 +361,13 @@ class ScanProductScenariosTest
 	{
 		// Given - Product is incomplete but user doesn't provide name and brand
 		UUID incompleteProductId = UUID.randomUUID();
-		CreateInventoryItemRequestDto requestDto = CreateInventoryItemRequestDto.builder()
+		CreateOrUpdateInventoryItemRequestDto requestDto = CreateOrUpdateInventoryItemRequestDto.builder()
 				.productId( incompleteProductId.toString() )
 				// Missing productName and productBrandName
 				.build();
 
 		// When
-		ResponseEntity<CreateInventoryItemResponseDto> response = inventoryItemController.createOrUpdateInventoryItem( testUserCode, requestDto );
+		ResponseEntity<CreateOrUpdateInventoryItemResponseDto> response = inventoryItemController.createOrUpdateInventoryItem( testUserCode, requestDto );
 
 		// Then
 		assertThat( response.getStatusCode() ).isEqualTo( HttpStatus.BAD_REQUEST );
@@ -390,7 +389,7 @@ class ScanProductScenariosTest
 				.incomplete( false )
 				.build();
 
-		CreateInventoryItemRequestDto requestDto = CreateInventoryItemRequestDto.builder()
+		CreateOrUpdateInventoryItemRequestDto requestDto = CreateOrUpdateInventoryItemRequestDto.builder()
 				.productId( existingProductId.toString() )
 				.productName( "Salt" )
 				.bestBefore( null ) // No best before date
@@ -415,7 +414,7 @@ class ScanProductScenariosTest
 		when( inventoryItemRepository.save( any( InventoryItem.class ) ) ).thenReturn( savedInventoryItem );
 
 		// When
-		ResponseEntity<CreateInventoryItemResponseDto> response = inventoryItemController.createOrUpdateInventoryItem( testUserCode, requestDto );
+		ResponseEntity<CreateOrUpdateInventoryItemResponseDto> response = inventoryItemController.createOrUpdateInventoryItem( testUserCode, requestDto );
 
 		// Then
 		assertThat( response.getStatusCode() ).isEqualTo( HttpStatus.OK );
@@ -443,7 +442,7 @@ class ScanProductScenariosTest
 				.incomplete( false )
 				.build();
 
-		CreateInventoryItemRequestDto requestDto = CreateInventoryItemRequestDto.builder()
+		CreateOrUpdateInventoryItemRequestDto requestDto = CreateOrUpdateInventoryItemRequestDto.builder()
 				.productId( existingProductId.toString() )
 				.productName( "Test Product" )
 				.build();
@@ -466,7 +465,7 @@ class ScanProductScenariosTest
 		when( inventoryItemRepository.save( any( InventoryItem.class ) ) ).thenReturn( savedInventoryItem );
 
 		// When
-		ResponseEntity<CreateInventoryItemResponseDto> response = inventoryItemController.createOrUpdateInventoryItem( testUserCode, requestDto );
+		ResponseEntity<CreateOrUpdateInventoryItemResponseDto> response = inventoryItemController.createOrUpdateInventoryItem( testUserCode, requestDto );
 
 		// Then
 		assertThat( response.getStatusCode() ).isEqualTo( HttpStatus.OK );
@@ -495,7 +494,7 @@ class ScanProductScenariosTest
 				.incomplete( false )
 				.build();
 
-		CreateInventoryItemRequestDto requestDto = CreateInventoryItemRequestDto.builder()
+		CreateOrUpdateInventoryItemRequestDto requestDto = CreateOrUpdateInventoryItemRequestDto.builder()
 				.productId( existingProductId.toString() )
 				.productName( "Test Product" )
 				.build();
@@ -518,7 +517,7 @@ class ScanProductScenariosTest
 		when( inventoryItemRepository.save( any( InventoryItem.class ) ) ).thenReturn( savedInventoryItem );
 
 		// When
-		ResponseEntity<CreateInventoryItemResponseDto> response = inventoryItemController.createOrUpdateInventoryItem( testUserCode, requestDto );
+		ResponseEntity<CreateOrUpdateInventoryItemResponseDto> response = inventoryItemController.createOrUpdateInventoryItem( testUserCode, requestDto );
 
 		// Then
 		assertThat( response.getStatusCode() ).isEqualTo( HttpStatus.OK );
