@@ -1,10 +1,9 @@
 import { Flex, Text } from '@radix-ui/themes';
 import { ReactElement, useEffect, useState } from 'react';
-import styles from './FridgeFilterPopover.module.css';
-import InventoryItemGrid from './InventoryItemGrid.tsx';
-import { sampleInventoryItems } from '../../../../shared/fixtures/inventory-items.ts';
 import { InventoryItem } from '../../../../inventory/inventory-items/card/inventory-item.ts';
 import * as api from '../../../../shared/api';
+import styles from './FridgeFilterPopover.module.css';
+import InventoryItemGrid from './InventoryItemGrid.tsx';
 
 interface FridgeFilterPopoverProps {
   selectedIngredients: InventoryItem[];
