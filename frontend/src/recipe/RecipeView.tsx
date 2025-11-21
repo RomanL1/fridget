@@ -47,7 +47,7 @@ const RecipeView = (): ReactElement => {
         setLoading(false);
       });
     } else {
-      getRecipes(recipeFilter.payload).then((fetchedItems) => {
+      getRecipes(recipeFilter.payload!).then((fetchedItems) => {
         console.log(fetchedItems);
         setRecipes(fetchedItems);
         setLoading(false);

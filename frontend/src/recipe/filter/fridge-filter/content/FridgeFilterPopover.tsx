@@ -2,7 +2,6 @@ import { Flex, Text } from '@radix-ui/themes';
 import { ReactElement, useEffect, useState } from 'react';
 import styles from './FridgeFilterPopover.module.css';
 import InventoryItemGrid from './InventoryItemGrid.tsx';
-import { sampleInventoryItems } from '../../../../shared/fixtures/inventory-items.ts';
 import { InventoryItem } from '../../../../inventory/inventory-items/card/inventory-item.ts';
 import * as api from '../../../../shared/api';
 
@@ -23,13 +22,13 @@ const FridgeFilterPopover = ({
     getInventoryItems().then((fetchedItems) => {
       const filteredItems = fetchedItems.filter((item: InventoryItem) => {
         if (selectedIngredients.length < 1) return true;
-        selectedIngredients.every(
-          (selectedItem: InventoryItem) => selectedItem.inventoryItemId !== item.inventoryItemId,
+       return !selectedIngredients.some(
+          (selectedItem: InventoryItem) => selectedItem.inventoryItemId === item.inventoryItemId,
         );
       });
       setSelectableItems(filteredItems);
     });
-  }, []);
+  }, [selectedIngredients]);
 
   return (
     <Flex p="5" direction="column" width="100%" gap="6" className={styles.container}>
