@@ -36,6 +36,7 @@
 Fridget is an android application built to organize the contents of your fridge, create and manage shopping lists and get recipe inspirations for your next meal, based on the contents of your fridge.
 
 Core Functionalities of Fridget are:
+
 - Scanning Items by their barcode
 - Manually entering Items without a specific barcode
 - Keeping track of expiry dates
@@ -43,7 +44,7 @@ Core Functionalities of Fridget are:
 - Filtering recipes by ingredients in your fridge
 - Creating and managing shopping list
 
-The app was built with Tauri to enable cross-platform application development for Web, Desktop, iOS and Android. 
+The app was built with Tauri to enable cross-platform application development for Web, Desktop, iOS and Android.
 
 <img src="https://github.com/user-attachments/assets/e7709d16-a4b1-4442-b12d-e7ac42eca286" height="300px">
 
@@ -57,7 +58,6 @@ See installation and setup instructions for the following components:
 - [Backend API](./backend/README.md)
 
 > Running the backend API will compose docker containers locally for the database and LLM runtime.
-
 
 ## Contributing
 
