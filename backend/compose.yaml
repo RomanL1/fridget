@@ -32,11 +32,11 @@ services:
       timeout: 10s
 
   chefkoch-api:
-    image: romanl1/fridget-chefkoch-api:latest
+    build: ../chefkoch-api/src/.
     container_name: chefkoch-api
     restart: unless-stopped
     ports:
-        - "5001:5001"
+      - "5001:5001"
 
 volumes:
   ollama_data:

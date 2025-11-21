@@ -9,7 +9,11 @@
     "os:default",
     {
       "identifier": "http:default",
-      "allow": [{ "url": "http://fridget-001.prod.projects.ls.eee.intern/**" }, { "url": "http://localhost:8080/**" }]
+      "allow": [
+        { "url": "http://fridget-001.prod.projects.ls.eee.intern/**" },
+        { "url": "http://localhost:8080/**" },
+        { "url": "http://localhost:5001/**" }
+      ]
     }
   ]
 }
