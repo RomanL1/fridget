@@ -18,6 +18,7 @@ import ch.fridget.fridget.domain.dto.api.ChefkochRecipeFilteredRequestDto;
 import ch.fridget.fridget.domain.dto.api.ChefkochRecipeRequestDto;
 import ch.fridget.fridget.domain.dto.api.ChefkochRecipeResponseDto;
 import ch.fridget.fridget.repository.InventoryItemRepository;
+import ch.fridget.fridget.service.TrendingRecipeCacheService;
 import kong.unirest.core.HttpResponse;
 import kong.unirest.core.Unirest;
 import lombok.RequiredArgsConstructor;
@@ -35,6 +36,7 @@ public class RecipeController implements APIController
 	private String RECIPE_API_URL;
 
 	private final InventoryItemRepository inventoryItemRepository;
+	private final TrendingRecipeCacheService trendingRecipeCacheService;
 
 	@GetMapping( PREFIX + "/trending" )
 	public ResponseEntity<ChefkochRecipeResponseDto[]> getTrendingRecipes ()
@@ -42,14 +44,10 @@ public class RecipeController implements APIController
 		Map<String, Object> body = new HashMap<>();
 		body.put( "limit", DEFAULT_RECIPE_LIMIT );
 
-		String uri = RECIPE_API_URL + "/daily_recipes";
-		HttpResponse<ChefkochRecipeResponseDto[]> response = Unirest.post( uri )
-				.header( "accept", "application/json" )
-				.header( "Content-Type", "application/json" )
-				.body( body )
-				.asObject( ChefkochRecipeResponseDto[].class );
+		ChefkochRecipeResponseDto[] trendingRecipes = trendingRecipeCacheService.getTrendingRecipes()
+				.orElseGet( () -> requestRecipeApiWithMapBody( "/daily_recipes", body ) );
 
-		return ResponseEntity.ok( response.getBody() );
+		return ResponseEntity.ok( trendingRecipes );
 	}
 
 	@PostMapping( PREFIX + "/filtered" )
@@ -94,13 +92,38 @@ public class RecipeController implements APIController
 				.limit( DEFAULT_RECIPE_LIMIT )
 				.build();
 
-		String uri = RECIPE_API_URL + "/recipes";
+		ChefkochRecipeResponseDto[] response = requestRecipeApiWithRequestDtoBody( "/recipes", recipeRequestDto );
+
+		return ResponseEntity.ok( response );
+	}
+
+	private ChefkochRecipeResponseDto[] requestRecipeApiWithMapBody ( String path, Map<String, Object> body )
+	{
+		String uri = RECIPE_API_URL + path;
+
 		HttpResponse<ChefkochRecipeResponseDto[]> response = Unirest.post( uri )
 				.header( "accept", "application/json" )
 				.header( "Content-Type", "application/json" )
-				.body( recipeRequestDto )
+				.body( body )
 				.asObject( ChefkochRecipeResponseDto[].class );
 
-		return ResponseEntity.ok( response.getBody() );
+		trendingRecipeCacheService.putTrendingRecipes(  response.getBody() );
+
+		return response.getBody();
 	}
+
+	private ChefkochRecipeResponseDto[] requestRecipeApiWithRequestDtoBody ( String path,
+			ChefkochRecipeRequestDto requestDto )
+	{
+		String uri = RECIPE_API_URL + path;
+
+		HttpResponse<ChefkochRecipeResponseDto[]> response = Unirest.post( uri )
+				.header( "accept", "application/json" )
+				.header( "Content-Type", "application/json" )
+				.body( requestDto )
+				.asObject( ChefkochRecipeResponseDto[].class );
+
+		return response.getBody();
+	}
+
 }
