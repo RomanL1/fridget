@@ -1,7 +1,5 @@
 .dropzone {
   border: 2px dotted var(--gray-10);
-  min-height: 300px;
-  min-width: 400px;
   border-radius: 6px;
 }
 

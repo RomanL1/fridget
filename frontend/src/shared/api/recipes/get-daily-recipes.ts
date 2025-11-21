@@ -3,11 +3,10 @@ import { getUserCode } from '../../auth';
 import { CHEFKOCH_HOST } from '../../environment/environment';
 import { RecipeItemResponse } from './recipe-item';
 
-export async function getRecipes(ingredients: (string | undefined)[] | null): Promise<RecipeItemResponse> {
-  const url = `${CHEFKOCH_HOST}/recipes`;
+export async function getDailyRecipes(): Promise<RecipeItemResponse> {
+  const url = `${CHEFKOCH_HOST}/daily_recipes`;
   const body = {
-    ingredients: ingredients,
-    limit: 10,
+    limit: 8,
   };
 
   const response = tauriFetch(url, {

@@ -23,14 +23,16 @@ const FridgeFilterPopover = ({
 
   return (
     <Flex p="5" direction="column" width="100%" gap="6" className={styles.container}>
-      <Flex p="5" gap="5" align="center" direction="column" className={styles.dropzone}>
+      <Flex p="5" gap="5" align="center" direction="column" className={styles.dropzone} wrap="nowrap">
         <Text size="5" weight="bold">
           Ausgewählte Zutaten ({selectedIngredients.length} / 3)
         </Text>
         {selectedIngredients.length > 0 ? (
           <InventoryItemGrid inventoryItems={selectedIngredients} onItemClick={onItemDeselect} />
         ) : (
-          <Text>Keine weiteren Zutaten vorhanden</Text>
+          <Text size="3" weight="bold">
+            Keine Zutaten ausgewählt
+          </Text>
         )}
       </Flex>
       <Flex gap="4" direction="column">

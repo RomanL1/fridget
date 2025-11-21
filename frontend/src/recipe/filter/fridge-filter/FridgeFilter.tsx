@@ -2,7 +2,7 @@ import { Flex, Popover, Text } from '@radix-ui/themes';
 import { LucideSlidersHorizontal, LucideX } from 'lucide-react';
 import { ReactElement, useState } from 'react';
 import styles from './FridgeFilter.module.css';
-import FridgeFilterPopover from './popover/FridgeFilterPopover';
+import FridgeFilterPopover from './content/FridgeFilterPopover';
 import { InventoryItem } from '../../../inventory/inventory-items/card/inventory-item';
 
 interface FridgetFilterProps {
@@ -25,7 +25,7 @@ const FridgeFilter = ({
   const handleOnOpenChange = (open: boolean) => {
     setIsOpen(open);
 
-    // it modal is not open filter should fire change to reload data based on selected ingredients
+    // if modal is not open filter should fire change to reload data based on selected ingredients
     if (!open) {
       onChange();
     }
@@ -49,7 +49,7 @@ const FridgeFilter = ({
         {selectedIngredients.length > 0 ? <LucideX className={styles.iconClose} onClick={onClear} /> : ''}
       </Flex>
 
-      <Popover.Content className={styles.popOver} side="right">
+      <Popover.Content className={styles.popOver} side="bottom" width="950px" maxWidth="950px">
         <FridgeFilterPopover
           selectedIngredients={selectedIngredients}
           onItemClick={onItemClick}
