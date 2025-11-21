@@ -1,13 +1,12 @@
 import { Theme } from '@radix-ui/themes';
-import React from 'react';
+import { ThemeProvider } from 'next-themes';
 import ReactDOM from 'react-dom/client';
 import { BrowserRouter, Route, Routes } from 'react-router';
 import { BarcodeScanner } from './barcode-scanner/BarcodeScanner';
 import { Inventory } from './inventory/Inventory';
-import { authenticate } from './shared/auth';
 import './main.css';
-import { ThemeProvider } from 'next-themes';
 import MainLayout from './MainLayout';
+import { authenticate } from './shared/auth';
 
 ReactDOM.createRoot(document.getElementById('root') as HTMLElement).render(
   <ThemeProvider attribute="class">
