@@ -14,6 +14,7 @@ import styles from './Inventory.module.css';
 export function Inventory() {
   const [items, setItems] = useState<InventoryItem[]>([]);
   const [selectedItem, setSelectedItem] = useState<InventoryItem | null>(null);
+  const [itemsFetched, setItemsFetched] = useState(false);
 
   const [searchParams, setSearchParams] = useSearchParams();
   const scannedBarcode = searchParams.get('barcode');
@@ -22,19 +23,16 @@ export function Inventory() {
 
   // Load inventory items
   useEffect(() => {
-    let alreadyFetched = false;
     getInventoryItems().then((fetchedItems) => {
-      if (!alreadyFetched) setItems(fetchedItems);
+      setItems(fetchedItems);
+      setItemsFetched(true);
     });
-
-    return () => {
-      alreadyFetched = true;
-    };
   }, []);
 
   // Load scanned barcode
   useEffect(() => {
-    if (!scannedBarcode) return;
+    if (!scannedBarcode || !itemsFetched) return;
+
     scanProduct(scannedBarcode).then(({ requiresCompletion, inventoryItem }) => {
       if (requiresCompletion) {
         editItem(inventoryItem);
@@ -43,7 +41,7 @@ export function Inventory() {
       }
       setSearchParams('');
     });
-  }, [scannedBarcode]);
+  }, [scannedBarcode, itemsFetched]);
 
   function editItem(item: InventoryItem) {
     setSelectedItem(item);

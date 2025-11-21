@@ -4,8 +4,8 @@
   "version": "0.1.0",
   "type": "module",
   "scripts": {
-    "dev": "vite",
-    "build": "tsc && vite build",
+    "dev": "vite --mode=production",
+    "build": "tsc && vite build --mode=production",
     "preview": "vite preview",
     "tauri": "tauri",
     "lint": "eslint .",
