@@ -11,6 +11,7 @@
         android:theme="@style/Theme.fridget"
         android:usesCleartextTraffic="true">
         <activity
+            android:windowSoftInputMode="adjustResize"
             android:configChanges="orientation|keyboardHidden|keyboard|screenSize|locale|smallestScreenSize|screenLayout|uiMode"
             android:launchMode="singleTask"
             android:label="@string/main_activity_title"

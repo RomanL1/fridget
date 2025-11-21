@@ -12,8 +12,8 @@ interface ScanProductResponse {
 }
 
 export enum ScanProductResponseStatus {
-  Complete,
-  Incomplete,
+  Complete = 'PRODUCT_COMPLETE',
+  Incomplete = 'PRODUCT_INCOMPLETE',
 }
 
 export async function scanProduct(barcode: string): Promise<ScanProductResponse> {
