@@ -26,75 +26,38 @@
 
 ## Table of Contents
 
-- [About the project](https://github.com/RomanL1/fridget?tab=readme-ov-file#about-the-project)
-- [Installation](https://github.com/RomanL1/fridget?tab=readme-ov-file#installation)
-- [Run the project](https://github.com/RomanL1/fridget?tab=readme-ov-file#run-the-project)
-  - [Desktop & Web](https://github.com/RomanL1/fridget?tab=readme-ov-file#desktop--web)
-  - [Android](https://github.com/RomanL1/fridget?tab=readme-ov-file#android)
-    - [Run inside an emulator](https://github.com/RomanL1/fridget?tab=readme-ov-file#run-inside-an-emulator)
-    - [Run on a physical device](https://github.com/RomanL1/fridget?tab=readme-ov-file#run-on-a-physical-device)
-    - [Debugging](https://github.com/RomanL1/fridget?tab=readme-ov-file#debugging)
-- [Contributing](https://github.com/RomanL1/fridget?tab=readme-ov-file#contributing)
-- [License](https://github.com/RomanL1/fridget?tab=readme-ov-file#license)
+- [About the project](#about-the-project)
+- [Installation](#installation)
+- [Contributing](#contributing)
+- [License](#license)
 
 ## About the project
 
-tbd
+Fridget is an android application built to organize the contents of your fridge, create and manage shopping lists and get recipe inspirations for your next meal, based on the contents of your fridge.
+
+Core Functionalities of Fridget are:
+- Scanning Items by their barcode
+- Manually entering Items without a specific barcode
+- Keeping track of expiry dates
+- Getting trending recipe recommendations
+- Filtering recipes by ingredients in your fridge
+- Creating and managing shopping list
+
+The app was built with Tauri to enable cross-platform application development for Web, Desktop, iOS and Android. 
+
+<img src="https://github.com/user-attachments/assets/e7709d16-a4b1-4442-b12d-e7ac42eca286" height="300px">
 
 ## Installation
 
-Follow these steps before running the project
+See installation and setup instructions for the following components:
 
-- Follow [Tauri Prerequisites](https://v2.tauri.app/start/prerequisites/) (Installs Rust, Node.js and Android Studio)
-- Install dependencies
-  ```bash
-  npm clean-install
-  ```
+- [Tauri App](./frontend/README.md)
+- [Chefkoch API](./chefkoch-api/README.md)
+- [Ollama Runtime](./ollama/README.md)
+- [Backend API](./backend/README.md)
 
-## Run the Project
+> Running the backend API will compose docker containers locally for the database and LLM runtime.
 
-### Desktop & Web
-
-Running the following command will serve up a Tauri application in Desktop mode.
-
-You can also view the application in a browser under [localhost:1420](http://localhost:1420)
-
-```bash
-npm run tauri dev
-```
-
-### Android
-
-#### Run inside an Emulator
-
-Running the following command will serve up a Tauri application inside an Android emulator.
-
-```bash
-npm run tauri android dev
-```
-
-> On windows, open the terminal as an Administrator
-
-#### Run on a Physical Device
-
-- Make sure the device runs on the same network as your computer
-- Connect the device to your computer via USB
-- Enable Developer mode on the device
-- Enable USB Debugging inside the Developer settings
-
-Afterwards run the following command to serve up the Tauri application on your Android device.
-
-```shell
-npm run tauri android dev
-```
-
-> On windows, open the terminal as an Administrator
-
-#### Debugging
-
-Open [chrome://inspect/#devices](chrome://inspect/#devices) in your chrome-based browser to debug open Chrome Developer Tools.
-
-> For physical devices, this only works as long as the device is connected via USB
 
 ## Contributing
 
