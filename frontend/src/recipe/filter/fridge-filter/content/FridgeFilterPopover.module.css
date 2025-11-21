@@ -1,0 +1,9 @@
+.dropzone {
+  border: 2px dotted var(--gray-10);
+  border-radius: 6px;
+}
+
+.container {
+  overflow-y: auto;
+  max-height: 80vh;
+}

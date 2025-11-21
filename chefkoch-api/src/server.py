@@ -22,6 +22,7 @@ class RecipeResponse(BaseModel):
     rating: float
     originURL: str
     ratingCount: int
+    imageUrl: str
     
 class RecipeRequest(BaseModel):
     ingredients: list[str]
@@ -40,7 +41,7 @@ def getErrorResponse(message: str, code: int, status_code: int) -> dict:
 
     
 def getRecipeResponse(recipes: list[Recipe], limit=10):
-    return [RecipeResponse(title=r.title, rating=r.rating, originURL=r.url, ratingCount=r.number_ratings) for r in recipes][:limit]  
+    return [RecipeResponse(title=r.title, rating=r.rating, originURL=r.url, ratingCount=r.number_ratings, imageUrl=r.image_url) for r in recipes][:limit]  
     
 @app.post("/recipes")
 def get_recipes(req: RecipeRequest):
@@ -75,7 +76,7 @@ def get_recipes(req: RecipeRequest):
         raise HTTPException(
             status_code=500,
             detail=getErrorResponse(
-                message=f"failed to retrieve recipe {str(e)}",
+                message=f"failed to retrieve recipe {str(e.stra)}",
                 code=ERROR_CODES.SEARCH_FAILURE,
                 status_code=500
         )
@@ -83,7 +84,6 @@ def get_recipes(req: RecipeRequest):
 
 @app.post("/daily_recipes")
 def get_random_recipes(req: RandomRecipeRequest):
-    
     if req.limit <= 0:
         raise HTTPException(
                 status_code=422,
@@ -121,4 +121,4 @@ def get_random_recipes(req: RandomRecipeRequest):
 
 if __name__ == '__main__':
     import uvicorn
-    uvicorn.run("server:app", host="0.0.0.0", port=5001)
+    uvicorn.run("server:app", host="0.0.0.0", port=5002)

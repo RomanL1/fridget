@@ -11,4 +11,5 @@ public class ChefkochRecipeResponseDto
 	private Double rating;
 	private String originURL;
 	private Integer ratingCount;
+	private String imageUrl;
 }

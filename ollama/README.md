@@ -1,6 +1,7 @@
-Modell wird bei der ersten request automatisch heruntergeladen.
+# LLM runtime setup instructions
 
-api-test.js ist ein beispiel, dass kann man lokal ausführen kann
+## Run the project
+The LLM runtime is composed as a docker container locally. Run the [Backend API](../backend/README.md) project to compose this container.
 
-models zum auswählen
-https://ollama.com/search
+
+A model will be downloaded automatically upon the first request. These are the models to choose from: https://ollama.com/search

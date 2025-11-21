@@ -1,0 +1,19 @@
+.filterItem {
+  all: unset;
+  outline: 1px solid var(--gray-8);
+  border-radius: 6px;
+  padding: 10px;
+}
+
+.filterItem[data-state='on'] {
+  outline-color: var(--accent-7);
+  outline-width: 2px;
+}
+
+.filterItem:hover[data-state='off'] {
+  outline-color: var(--gray-10);
+}
+
+.filterItem:active[data-state='off'] {
+  outline-color: var(--gray-10);
+}
