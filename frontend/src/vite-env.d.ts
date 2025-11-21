@@ -7,6 +7,7 @@ interface ViteTypeOptions {
 
 interface ImportMetaEnv {
   readonly VITE_API_HOST: string;
+  readonly VITE_CHEFKOCH_HOST: string;
 }
 
 interface ImportMeta {
