@@ -23,7 +23,7 @@ const FridgeFilterPopover = ({
   useEffect(() => {
     getInventoryItems().then((fetchedItems) => {
       console.log(fetchedItems)
-      const filteredItems = sampleInventoryItems.filter((item: InventoryItem) => {
+      const filteredItems = fetchedItems.filter((item: InventoryItem) => {
         if (selectedIngredients.length < 1) return true;
         selectedIngredients.every((selectedItem: InventoryItem) => selectedItem.inventoryItemId !== item.inventoryItemId);
       })
