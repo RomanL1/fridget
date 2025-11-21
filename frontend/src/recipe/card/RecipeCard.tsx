@@ -1,9 +1,9 @@
-import { Box, Card, Flex, Inset, Link, Skeleton, Text } from '@radix-ui/themes';
-import { ReactElement, useState } from 'react';
-import styles from './RecipeCard.module.css';
+import { Box, Card, Flex, Inset, Link, Text } from '@radix-ui/themes';
 import { LucideExternalLink } from 'lucide-react';
-import RecipeRating from './rating/RecipeRating';
+import { ReactElement } from 'react';
 import { RecipeItem } from '../RecipeView';
+import RecipeRating from './rating/RecipeRating';
+import styles from './RecipeCard.module.css';
 
 interface RecipeCardProps {
   recipeItem: RecipeItem;
