@@ -1,9 +1,10 @@
 import { Flex, Text } from '@radix-ui/themes';
-import { ReactElement } from 'react';
+import { ReactElement, useEffect, useState } from 'react';
 import styles from './FridgeFilterPopover.module.css';
 import InventoryItemGrid from './InventoryItemGrid.tsx';
 import { sampleInventoryItems } from '../../../../shared/fixtures/inventory-items.ts';
 import { InventoryItem } from '../../../../inventory/inventory-items/card/inventory-item.ts';
+import * as api from '../../../../shared/api';
 
 interface FridgeFilterPopoverProps {
   selectedIngredients: InventoryItem[];
@@ -16,10 +17,19 @@ const FridgeFilterPopover = ({
   onItemClick,
   onItemDeselect,
 }: FridgeFilterPopoverProps): ReactElement => {
-  const selectableItems = sampleInventoryItems.filter((item: InventoryItem) => {
-    if (selectedIngredients.length < 1) return true;
-    return selectedIngredients.every((selectedItem: InventoryItem) => selectedItem.productId !== item.productId);
-  });
+
+  const [selectableItems, setSelectableItems] = useState<InventoryItem[]>([])
+
+  useEffect(() => {
+    getInventoryItems().then((fetchedItems) => {
+      console.log(fetchedItems)
+      const filteredItems = sampleInventoryItems.filter((item: InventoryItem) => {
+        if (selectedIngredients.length < 1) return true;
+        selectedIngredients.every((selectedItem: InventoryItem) => selectedItem.inventoryItemId !== item.inventoryItemId);
+      })
+      setSelectableItems(filteredItems)
+    })
+  }, [])
 
   return (
     <Flex p="5" direction="column" width="100%" gap="6" className={styles.container}>
@@ -48,4 +58,19 @@ const FridgeFilterPopover = ({
     </Flex>
   );
 };
+
+const getInventoryItems = async (): Promise<InventoryItem[]> => {
+  const items = await api.getInventoryItems();
+  
+    return items.map<InventoryItem>((item) => ({
+      inventoryItemId: item.inventoryItemId,
+      productId: item.productId,
+      productName: item.productName,
+      brandName: item.brandName,
+      quantity: item.quantity,
+      imageUrl: item.imageUrl,
+      bestBeforeDate: item.bestBeforeDate ? new Date(item.bestBeforeDate) : undefined,
+    }));
+};
+
 export default FridgeFilterPopover;

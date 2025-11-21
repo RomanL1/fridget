@@ -16,7 +16,6 @@ ReactDOM.createRoot(document.getElementById('root') as HTMLElement).render(
         <Routes>
           <Route path="/" element={<MainLayout />}>
             <Route index element={<Inventory />} />
-            <Route path="recipes" />
             <Route path="grocery-list" />
             <Route path="recipes" element={<RecipeView />} />
           </Route>
@@ -24,7 +23,7 @@ ReactDOM.createRoot(document.getElementById('root') as HTMLElement).render(
         </Routes>
       </BrowserRouter>
     </Theme>
-  </ThemeProvider>,
+  </ThemeProvider>
 );
 
 await authenticate();

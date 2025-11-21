@@ -1,13 +1,12 @@
 import { fetch as tauriFetch } from '@tauri-apps/plugin-http';
 import { getUserCode } from '../../auth';
-import { CHEFKOCH_HOST } from '../../environment/environment';
 import { RecipeItemResponse } from './recipe-item';
+import { API_HOST } from '../../environment/environment';
 
 export async function getRecipes(ingredients: (string | undefined)[] | null): Promise<RecipeItemResponse> {
-  const url = `${CHEFKOCH_HOST}/recipes`;
+  const url = `${API_HOST}/recipe/filtered`;
   const body = {
     ingredients: ingredients,
-    limit: 10,
   };
 
   const response = tauriFetch(url, {

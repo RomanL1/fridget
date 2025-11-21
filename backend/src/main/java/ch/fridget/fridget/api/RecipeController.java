@@ -29,7 +29,7 @@ import lombok.extern.slf4j.Slf4j;
 public class RecipeController implements APIController
 {
 	public static final String PREFIX = "recipe";
-	private static final int DEFAULT_RECIPE_LIMIT = 3;
+	private static final int DEFAULT_RECIPE_LIMIT = 8;
 
 	@Value( "${recipe.api.url}" )
 	private String RECIPE_API_URL;
