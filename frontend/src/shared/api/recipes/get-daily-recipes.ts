@@ -5,14 +5,11 @@ import { RecipeItemResponse } from './recipe-item';
 
 export async function getDailyRecipes(): Promise<RecipeItemResponse> {
   const url = `${API_HOST}/recipe/trending`;
-
-  console.log(url)
-
+  console.log(url);
   const response = tauriFetch(url, {
     method: 'GET',
-    headers: { userCode: getUserCode()!, 'content-type': 'application/json' },
+    headers: { userCode: getUserCode()! },
   });
 
   return await response.then((r) => r.json());
 }
-  

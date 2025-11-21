@@ -14,6 +14,8 @@ export type RecipeItem = {
   imageUrl: string;
 };
 
+const COUNT_OF_SKELETON_CARDS = 4;
+
 const RecipeView = (): ReactElement => {
   const [recipes, setRecipes] = useState<RecipeItem[]>([]);
   const [loading, setLoading] = useState<boolean>(true);
@@ -46,6 +48,7 @@ const RecipeView = (): ReactElement => {
       });
     } else {
       getRecipes(recipeFilter.payload).then((fetchedItems) => {
+        console.log(fetchedItems);
         setRecipes(fetchedItems);
         setLoading(false);
       });
@@ -58,7 +61,9 @@ const RecipeView = (): ReactElement => {
         <RecipeFilter onFilterChange={onFilterChange} />
         <Flex direction="row" gap="6" wrap="wrap">
           {loading
-            ? Array.from({ length: 6 }).map((_, i) => <RecipeCardSkeleton loading={loading} key={i} />)
+            ? Array.from({ length: COUNT_OF_SKELETON_CARDS }).map((_, i) => (
+                <RecipeCardSkeleton loading={loading} key={i} />
+              ))
             : recipes.map((recipeItem, index) => <RecipeCard key={index} recipeItem={recipeItem} />)}
         </Flex>
       </Flex>
@@ -70,7 +75,7 @@ const getDailyRecipes = async (): Promise<RecipeItem[]> => {
   return await api.getDailyRecipes();
 };
 
-const getRecipes = async (ingredients: (string | undefined)[] | null): Promise<RecipeItem[]> => {
+const getRecipes = async (ingredients: string[]): Promise<RecipeItem[]> => {
   return await api.getRecipes(ingredients);
 };
 

@@ -17,19 +17,19 @@ const FridgeFilterPopover = ({
   onItemClick,
   onItemDeselect,
 }: FridgeFilterPopoverProps): ReactElement => {
-
-  const [selectableItems, setSelectableItems] = useState<InventoryItem[]>([])
+  const [selectableItems, setSelectableItems] = useState<InventoryItem[]>([]);
 
   useEffect(() => {
     getInventoryItems().then((fetchedItems) => {
-      console.log(fetchedItems)
       const filteredItems = fetchedItems.filter((item: InventoryItem) => {
         if (selectedIngredients.length < 1) return true;
-        selectedIngredients.every((selectedItem: InventoryItem) => selectedItem.inventoryItemId !== item.inventoryItemId);
-      })
-      setSelectableItems(filteredItems)
-    })
-  }, [])
+        selectedIngredients.every(
+          (selectedItem: InventoryItem) => selectedItem.inventoryItemId !== item.inventoryItemId,
+        );
+      });
+      setSelectableItems(filteredItems);
+    });
+  }, []);
 
   return (
     <Flex p="5" direction="column" width="100%" gap="6" className={styles.container}>
@@ -61,16 +61,16 @@ const FridgeFilterPopover = ({
 
 const getInventoryItems = async (): Promise<InventoryItem[]> => {
   const items = await api.getInventoryItems();
-  
-    return items.map<InventoryItem>((item) => ({
-      inventoryItemId: item.inventoryItemId,
-      productId: item.productId,
-      productName: item.productName,
-      brandName: item.brandName,
-      quantity: item.quantity,
-      imageUrl: item.imageUrl,
-      bestBeforeDate: item.bestBeforeDate ? new Date(item.bestBeforeDate) : undefined,
-    }));
+
+  return items.map<InventoryItem>((item) => ({
+    inventoryItemId: item.inventoryItemId,
+    productId: item.productId,
+    productName: item.productName,
+    brandName: item.brandName,
+    quantity: item.quantity,
+    imageUrl: item.imageUrl,
+    bestBeforeDate: item.bestBeforeDate ? new Date(item.bestBeforeDate) : undefined,
+  }));
 };
 
 export default FridgeFilterPopover;

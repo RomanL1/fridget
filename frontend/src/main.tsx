@@ -23,7 +23,7 @@ ReactDOM.createRoot(document.getElementById('root') as HTMLElement).render(
         </Routes>
       </BrowserRouter>
     </Theme>
-  </ThemeProvider>
+  </ThemeProvider>,
 );
 
 await authenticate();

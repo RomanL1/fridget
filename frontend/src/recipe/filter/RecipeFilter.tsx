@@ -18,7 +18,7 @@ export enum RecipeFilterType {
 
 export type RecipeFilterPayload = {
   [RecipeFilterType.DailyHits]: null;
-  [RecipeFilterType.Fridge]: (string | undefined)[];
+  [RecipeFilterType.Fridge]: string[];
 };
 
 export type RecipeFilterChange<T extends RecipeFilterType = RecipeFilterType> = {
@@ -47,7 +47,7 @@ const RecipeFilter = ({ onFilterChange }: RecipeFilterProps): ReactElement => {
   const handleOnFridgeFilterChange = () => {
     onFilterChange({
       type: RecipeFilterType.Fridge,
-      payload: selectedIngredients.map((selectedItem: InventoryItem) => selectedItem.productName),
+      payload: selectedIngredients.map((selectedItem: InventoryItem) => selectedItem.inventoryItemId),
     });
   };
 
