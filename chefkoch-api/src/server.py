@@ -73,7 +73,6 @@ def get_recipes(req: RecipeRequest):
     
         return getRecipeResponse(recipes, req.limit)
     except Exception as e:
-        traceback.print_exc()
         raise HTTPException(
             status_code=500,
             detail=getErrorResponse(
@@ -85,7 +84,6 @@ def get_recipes(req: RecipeRequest):
 
 @app.post("/daily_recipes")
 def get_random_recipes(req: RandomRecipeRequest):
-    
     if req.limit <= 0:
         raise HTTPException(
                 status_code=422,
@@ -123,4 +121,4 @@ def get_random_recipes(req: RandomRecipeRequest):
 
 if __name__ == '__main__':
     import uvicorn
-    uvicorn.run("server:app", host="0.0.0.0", port=5001)
+    uvicorn.run("server:app", host="0.0.0.0", port=5002)
