@@ -47,7 +47,7 @@ const RecipeFilter = ({ onFilterChange }: RecipeFilterProps): ReactElement => {
   const handleOnFridgeFilterChange = () => {
     onFilterChange({
       type: RecipeFilterType.Fridge,
-      payload: selectedIngredients.map((selectedItem: InventoryItem) => selectedItem.inventoryItemId),
+      payload: selectedIngredients.map((selectedItem: InventoryItem) => selectedItem.inventoryItemId!),
     });
   };
 
