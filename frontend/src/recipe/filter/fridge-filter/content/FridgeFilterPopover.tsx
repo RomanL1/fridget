@@ -22,7 +22,7 @@ const FridgeFilterPopover = ({
     getInventoryItems().then((fetchedItems) => {
       const filteredItems = fetchedItems.filter((item: InventoryItem) => {
         if (selectedIngredients.length < 1) return true;
-       return !selectedIngredients.some(
+        return !selectedIngredients.some(
           (selectedItem: InventoryItem) => selectedItem.inventoryItemId === item.inventoryItemId,
         );
       });
