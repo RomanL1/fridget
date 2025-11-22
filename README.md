@@ -21,6 +21,7 @@
 
 [![CI Build](https://github.com/RomanL1/fridget/actions/workflows/ci-tauri.yml/badge.svg)](https://github.com/RomanL1/fridget/actions/workflows/ci-tauri.yml)
 [![Backend CI Build](https://github.com/RomanL1/fridget/actions/workflows/backend.yml/badge.svg)](https://github.com/RomanL1/fridget/actions/workflows/backend.yml)
+[![Chefkoch API CI Build](https://github.com/RomanL1/fridget/actions/workflows/chefkoch-api.yaml/badge.svg)](https://github.com/RomanL1/fridget/actions/workflows/chefkoch-api.yaml)
 
 </div>
 
@@ -53,11 +54,9 @@ The app was built with Tauri to enable cross-platform application development fo
 See installation and setup instructions for the following components:
 
 - [Tauri App](./frontend/README.md)
-- [Chefkoch API](./chefkoch-api/README.md)
-- [Ollama Runtime](./ollama/README.md)
 - [Backend API](./backend/README.md)
 
-> Running the backend API will compose docker containers locally for the database and LLM runtime.
+> Running the backend API will compose docker containers locally for the database, recipe API and LLM runtime.
 
 ## Contributing
 
