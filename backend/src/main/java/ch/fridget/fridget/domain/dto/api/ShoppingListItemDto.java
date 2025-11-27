@@ -15,8 +15,8 @@ public class ShoppingListItemDto
 {
 	private String id; // nullable
 	private String productId; // nullable
-	private String brandName; // nullable
-	private String productName;
+	private String name;
+	private String description; // nullable
 	private String quantity; // nullable
 	@Builder.Default
 	private Boolean bought = false;

@@ -56,9 +56,19 @@ public class ShoppingListController implements APIController
 	public ResponseEntity<ShoppingListItemDto> createOrUpdateItem ( @RequestHeader( "userCode" ) String userCode,
 			@RequestBody ShoppingListItemDto shoppingListItemDto )
 	{
-		if ( ObjectUtils.isEmpty( shoppingListItemDto.getProductName() ) )
+		if ( ObjectUtils.isEmpty( shoppingListItemDto.getName() ) )
 		{
 			return ResponseEntity.badRequest().build();
+		}
+
+		if ( !ObjectUtils.isEmpty( shoppingListItemDto.getId() ) )
+		{
+			boolean exists = shoppingListItemRepository.existsById( UUID.fromString( shoppingListItemDto.getId() ) );
+			if ( !exists )
+			{
+				log.info( "The given ShoppingListItem Id does not exist." );
+				return ResponseEntity.badRequest().build();
+			}
 		}
 
 		Optional<Product> product = Optional.empty();
@@ -137,14 +147,15 @@ public class ShoppingListController implements APIController
 				.productId( shoppingListItem.getProduct() != null ?
 						shoppingListItem.getProduct().getId().toString() :
 						null )
-				.brandName( shoppingListItem.getBrandName() )
-				.productName( shoppingListItem.getProductName() )
+				.description( shoppingListItem.getDescription() )
+				.name( shoppingListItem.getName() )
 				.quantity( shoppingListItem.getQuantity() )
 				.bought( shoppingListItem.getBought() )
 				.build();
 	}
 
-	private ShoppingListItem convertToDbEntity ( ShoppingListItemDto shoppingListItem, Optional<Product> product, User user )
+	private ShoppingListItem convertToDbEntity ( ShoppingListItemDto shoppingListItem, Optional<Product> product,
+			User user )
 	{
 		return ShoppingListItem.builder()
 				.id( ObjectUtils.isEmpty( shoppingListItem.getId() ) ?
@@ -152,8 +163,8 @@ public class ShoppingListController implements APIController
 						UUID.fromString( shoppingListItem.getId() ) )
 				.user( user )
 				.product( product.orElse( null ) )
-				.brandName( shoppingListItem.getBrandName() )
-				.productName( shoppingListItem.getProductName() )
+				.name( shoppingListItem.getName() )
+				.description( shoppingListItem.getDescription() )
 				.quantity( shoppingListItem.getQuantity() )
 				.bought( shoppingListItem.getBought() != null ? shoppingListItem.getBought() : false )
 				.build();
