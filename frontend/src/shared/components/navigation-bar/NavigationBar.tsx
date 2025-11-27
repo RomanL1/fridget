@@ -20,7 +20,7 @@ const NavigationBar = (): ReactElement => (
         <LucideBookOpen size="35" />
         Rezepte
       </NavLink>
-      <NavLink to="/grocery-list" className={({ isActive }) => `${styles.navItem} ${isActive ? styles.active : ''}`}>
+      <NavLink to="/shopping-list" className={({ isActive }) => `${styles.navItem} ${isActive ? styles.active : ''}`}>
         <LucideShoppingCart size="35" />
         Einkaufsliste
       </NavLink>
