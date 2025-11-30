@@ -1,5 +1,6 @@
 package ch.fridget.fridget.domain.db;
 
+import java.time.Instant;
 import java.util.UUID;
 
 import ch.fridget.fridget.domain.UniqueIdentifiable;
@@ -50,4 +51,7 @@ public class ShoppingListItem implements UniqueIdentifiable
 
 	@Column( name = "bought", nullable = false )
 	private Boolean bought;
+
+	@Column( name = "updated_at", nullable = false )
+	private Instant updatedAt;
 }
