@@ -14,6 +14,7 @@ export type ShoppingListItem = {
   id?: string;
   name: string;
   description?: string;
+  bought: boolean;
 };
 
 const ShoppingListView = (): ReactElement => {
