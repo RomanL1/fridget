@@ -1,4 +1,4 @@
-import { ReactElement, useRef, useState } from 'react';
+import { ReactElement, useEffect, useRef, useState } from 'react';
 import { PageShell } from '../shared/components/page/PageShell';
 import { Flex } from '@radix-ui/themes';
 import sampleData from './sample-data';
@@ -7,6 +7,7 @@ import ShoppingListCard from './card/ShoppingListCard';
 import { BottomSheet, BottomSheetRef } from '../shared/components/bottom-sheet/BottomSheet';
 import ShoppingListItemDetail from './detail/ShoppingListItemDetail';
 import { ProductNameInput } from '../shared/components/floating-input/ProductNameInput';
+import * as api from '../shared/api';
 
 const COUNT_OF_SKELETON_CARDS = 4;
 
@@ -20,18 +21,42 @@ export type ShoppingListItem = {
 const ShoppingListView = (): ReactElement => {
   const [loading, setLoading] = useState<boolean>(false);
   const [selectedItem, setSelectedItem] = useState<ShoppingListItem | null>(null);
+  const [items, setItems] = useState<ShoppingListItem[]>([]);
   const detailSheetRef = useRef<BottomSheetRef | null>(null);
+
+  useEffect(() => {
+    getShoppingListItems()
+      .then((fetchedItems: ShoppingListItem[]) => {
+        setLoading(false);
+        setItems(fetchedItems);
+      })
+      .catch(() => {
+        setLoading(false);
+        setItems([]);
+      });
+  });
 
   const handleOnClose = () => {
     setSelectedItem(null);
   };
 
-  const handleOnSave = () => {
+  const handleOnSave = (updatedItem: ShoppingListItem) => {
+    saveShoppingListItem(updatedItem);
+    const findIndex = items.findIndex((i: ShoppingListItem) => i.id === updatedItem.id);
+
+    if (findIndex === -1) {
+      setItems([updatedItem, ...items]);
+    } else {
+      const updatedItems = items.map((i: ShoppingListItem) => (i.id === updatedItem.id ? updatedItem : i));
+      setItems(updatedItems);
+    }
+
     detailSheetRef.current?.close();
   };
 
   const handleOnCacnel = () => {
     detailSheetRef.current?.close();
+    setSelectedItem(null);
   };
 
   const handleOnEditClick = (item: ShoppingListItem) => {
@@ -39,13 +64,23 @@ const ShoppingListView = (): ReactElement => {
     detailSheetRef.current?.open();
   };
 
-  const handleOnClick = (item: ShoppingListItem) => {
-    // TODO: Item löschen
+  const handleOnClick = (clickedItem: ShoppingListItem) => {
+    toggleBoughtStatusShoppingListItem(clickedItem.id!);
+
+    clickedItem.bought = false;
+    const updatedItems = items.map((i: ShoppingListItem) => (i.id === clickedItem.id ? clickedItem : i));
+    setItems(updatedItems);
   };
 
-  const handleOnCreateItem = () => {};
+  const handleOnCreateItem = (enteredName: string) => {
+    handleOnEditClick({ name: enteredName, bought: false });
+  };
 
-  const handleOnRemoveClick = (item: ShoppingListItem) => {};
+  const handleOnRemoveClick = (itemId: string) => {
+    removeShoppingListItem(itemId);
+    const updatedItems = items.filter((item: ShoppingListItem) => item.id !== itemId);
+    setItems(updatedItems);
+  };
 
   return (
     <PageShell title={'Rezepte'}>
@@ -56,7 +91,7 @@ const ShoppingListView = (): ReactElement => {
               <ShoppingListCard
                 onEditClick={() => handleOnEditClick(item)}
                 onClick={() => handleOnClick(item)}
-                onRemoveClick={() => handleOnRemoveClick(item)}
+                onRemoveClick={() => handleOnRemoveClick(item.id!)}
                 key={item.id}
                 shoppingListItem={item}
               />
@@ -68,6 +103,22 @@ const ShoppingListView = (): ReactElement => {
       </BottomSheet>
     </PageShell>
   );
+};
+
+const getShoppingListItems = async (): Promise<ShoppingListItem[]> => {
+  return await api.getShoppingListItems();
+};
+
+const saveShoppingListItem = async (item: ShoppingListItem): Promise<ShoppingListItem[]> => {
+  return await api.saveShoppingListItem(item);
+};
+
+const removeShoppingListItem = async (itemId: string): Promise<ShoppingListItem[]> => {
+  return await api.removeShoppingListItem(itemId);
+};
+
+const toggleBoughtStatusShoppingListItem = async (itemId: string): Promise<ShoppingListItem[]> => {
+  return await api.toggleBoughtStatusShoppingListItem(itemId);
 };
 
 export default ShoppingListView;

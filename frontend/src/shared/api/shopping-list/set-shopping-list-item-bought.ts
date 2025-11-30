@@ -3,7 +3,7 @@ import { getUserCode } from '../../auth';
 import { API_HOST } from '../../environment/environment';
 import { ShoppingListItemResponse } from './shopping-list-items';
 
-export async function saveShoppingListItem(itemId: string): Promise<ShoppingListItemResponse> {
+export async function toggleBoughtStatusShoppingListItem(itemId: string): Promise<ShoppingListItemResponse> {
   const url = `${API_HOST}/recipe/shopping-list/item/${itemId}/toggle-bought`;
 
   const response = tauriFetch(url, {

@@ -28,6 +28,7 @@ const ShoppingListItemDetail = ({ selectedItem, onSave, onCancel }: ShoppingList
 
     onSave({
       ...selectedItem,
+      bought: selectedItem?.bought ?? false,
       name,
       description,
     });

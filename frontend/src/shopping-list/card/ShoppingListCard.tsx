@@ -15,7 +15,7 @@ const ShoppingListCard = ({ shoppingListItem, onEditClick, onRemoveClick }: Card
   <Box width="250px" onClick={onEditClick}>
     <RadixCard size="2" className={styles.card}>
       <Flex direction="column" gap="2">
-        <Heading size="4" weight="medium" as="h3">
+        <Heading size="5" weight="bold" as="h3">
           {shoppingListItem.name}
         </Heading>
         <Flex gap="1" align="center">
