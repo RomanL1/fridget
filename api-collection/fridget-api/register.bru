@@ -10,6 +10,17 @@ post {
   auth: inherit
 }
 
+script:post-response {
+  bru.setVar("usercode", res.body.userCode, "collection");
+}
+
+tests {
+  test("should set usercode", function () {
+    expect(bru.getVar("usercode")).to.exist;
+    expect(bru.getVar("usercode")).to.not.be.empty;
+  });
+}
+
 settings {
   encodeUrl: true
   timeout: 0
