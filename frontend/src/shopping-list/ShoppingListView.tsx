@@ -1,7 +1,6 @@
 import { ReactElement, useEffect, useRef, useState } from 'react';
 import { PageShell } from '../shared/components/page/PageShell';
 import { Flex } from '@radix-ui/themes';
-import sampleData from './sample-data';
 import CardSkeleton from './card/ShoppingListCardSkeleton';
 import ShoppingListCard from './card/ShoppingListCard';
 import { BottomSheet, BottomSheetRef } from '../shared/components/bottom-sheet/BottomSheet';
@@ -19,7 +18,7 @@ export type ShoppingListItem = {
 };
 
 const ShoppingListView = (): ReactElement => {
-  const [loading, setLoading] = useState<boolean>(false);
+  const [loading, setLoading] = useState<boolean>(true);
   const [selectedItem, setSelectedItem] = useState<ShoppingListItem | null>(null);
   const [items, setItems] = useState<ShoppingListItem[]>([]);
   const detailSheetRef = useRef<BottomSheetRef | null>(null);
@@ -28,28 +27,33 @@ const ShoppingListView = (): ReactElement => {
     getShoppingListItems()
       .then((fetchedItems: ShoppingListItem[]) => {
         setLoading(false);
+        console.log(fetchedItems);
         setItems(fetchedItems);
       })
       .catch(() => {
         setLoading(false);
         setItems([]);
       });
-  });
+  }, []);
 
   const handleOnClose = () => {
     setSelectedItem(null);
   };
 
-  const handleOnSave = (updatedItem: ShoppingListItem) => {
-    saveShoppingListItem(updatedItem);
-    const findIndex = items.findIndex((i: ShoppingListItem) => i.id === updatedItem.id);
+  const handleOnSave = async (updatedItem: ShoppingListItem) => {
+    const savedInventoryItem = await saveShoppingListItem(updatedItem);
+    const findIndex = items.findIndex((i: ShoppingListItem) => i.id === savedInventoryItem.id);
+
+    console.log('ITEM: ' + savedInventoryItem);
 
     if (findIndex === -1) {
-      setItems([updatedItem, ...items]);
+      setItems([savedInventoryItem, ...items]);
     } else {
-      const updatedItems = items.map((i: ShoppingListItem) => (i.id === updatedItem.id ? updatedItem : i));
+      const updatedItems = items.map((i: ShoppingListItem) => (i.id === savedInventoryItem.id ? updatedItem : i));
       setItems(updatedItems);
     }
+
+    console.log('Close Sheet');
 
     detailSheetRef.current?.close();
   };
@@ -61,6 +65,7 @@ const ShoppingListView = (): ReactElement => {
 
   const handleOnEditClick = (item: ShoppingListItem) => {
     setSelectedItem(item);
+    console.log('OPEN EDIT');
     detailSheetRef.current?.open();
   };
 
@@ -87,7 +92,7 @@ const ShoppingListView = (): ReactElement => {
       <Flex direction="row" gap="6" wrap="wrap">
         {loading
           ? Array.from({ length: COUNT_OF_SKELETON_CARDS }).map((_, i) => <CardSkeleton loading={loading} key={i} />)
-          : sampleData.map((item) => (
+          : items.map((item) => (
               <ShoppingListCard
                 onEditClick={() => handleOnEditClick(item)}
                 onClick={() => handleOnClick(item)}
@@ -109,15 +114,15 @@ const getShoppingListItems = async (): Promise<ShoppingListItem[]> => {
   return await api.getShoppingListItems();
 };
 
-const saveShoppingListItem = async (item: ShoppingListItem): Promise<ShoppingListItem[]> => {
+const saveShoppingListItem = async (item: ShoppingListItem): Promise<ShoppingListItem> => {
   return await api.saveShoppingListItem(item);
 };
 
-const removeShoppingListItem = async (itemId: string): Promise<ShoppingListItem[]> => {
+const removeShoppingListItem = async (itemId: string): Promise<ShoppingListItem> => {
   return await api.removeShoppingListItem(itemId);
 };
 
-const toggleBoughtStatusShoppingListItem = async (itemId: string): Promise<ShoppingListItem[]> => {
+const toggleBoughtStatusShoppingListItem = async (itemId: string): Promise<ShoppingListItem> => {
   return await api.toggleBoughtStatusShoppingListItem(itemId);
 };
 

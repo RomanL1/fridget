@@ -12,7 +12,7 @@ interface CardProps {
 }
 
 const ShoppingListCard = ({ shoppingListItem, onEditClick, onRemoveClick }: CardProps): ReactElement => (
-  <Box width="250px" onClick={onEditClick}>
+  <Box width="250px">
     <RadixCard size="2" className={styles.card}>
       <Flex direction="column" gap="2">
         <Heading size="5" weight="bold" as="h3">

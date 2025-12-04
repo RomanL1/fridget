@@ -21,7 +21,7 @@ const ShoppingListItemDetail = ({ selectedItem, onSave, onCancel }: ShoppingList
 
     setName(selectedItem.name ?? '');
     setDescription(selectedItem.description ?? '');
-  });
+  }, [selectedItem]);
 
   const handleOnSubmit = (event: FormEvent<HTMLFormElement>) => {
     event.preventDefault();
@@ -40,11 +40,23 @@ const ShoppingListItemDetail = ({ selectedItem, onSave, onCancel }: ShoppingList
       <form onSubmit={handleOnSubmit} className={styles.form}>
         <div className={styles.field}>
           <Label.Root htmlFor="name">Name</Label.Root>
-          <TextField.Root value={name} size="3" id="name" placeholder="Name" />
+          <TextField.Root
+            onChange={(e) => setName(e.target.value)}
+            value={name}
+            size="3"
+            id="name"
+            placeholder="Name"
+          />
         </div>
         <div className={styles.field}>
           <Label.Root htmlFor="description">Beschreibung</Label.Root>
-          <TextArea value={description} size="3" id="description" placeholder="Menge oder Beschreibung" />
+          <TextArea
+            onChange={(e) => setDescription(e.target.value)}
+            value={description}
+            size="3"
+            id="description"
+            placeholder="Menge oder Beschreibung"
+          />
         </div>
         <div className={styles.actions}>
           <Button type="button" variant="ghost" color="gray" onClick={onCancel}>
