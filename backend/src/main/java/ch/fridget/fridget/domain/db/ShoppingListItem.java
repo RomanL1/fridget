@@ -46,7 +46,7 @@ public class ShoppingListItem implements UniqueIdentifiable
 	@Column( name = "description" )
 	private String description;
 
-	@Column( name = "quantity", nullable = false )
+	@Column( name = "quantity")
 	private String quantity;
 
 	@Column( name = "bought", nullable = false )
