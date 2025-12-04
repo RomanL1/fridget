@@ -5,3 +5,7 @@
 .actions {
   margin-left: auto;
 }
+
+.bought {
+  text-decoration: line-through;
+}

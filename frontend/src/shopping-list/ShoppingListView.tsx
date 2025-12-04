@@ -1,6 +1,6 @@
 import { ReactElement, useEffect, useRef, useState } from 'react';
 import { PageShell } from '../shared/components/page/PageShell';
-import { Flex } from '@radix-ui/themes';
+import { Flex, Heading, Text } from '@radix-ui/themes';
 import CardSkeleton from './card/ShoppingListCardSkeleton';
 import ShoppingListCard from './card/ShoppingListCard';
 import { BottomSheet, BottomSheetRef } from '../shared/components/bottom-sheet/BottomSheet';
@@ -21,14 +21,23 @@ const ShoppingListView = (): ReactElement => {
   const [loading, setLoading] = useState<boolean>(true);
   const [selectedItem, setSelectedItem] = useState<ShoppingListItem | null>(null);
   const [items, setItems] = useState<ShoppingListItem[]>([]);
+  const [boughtItems, setBoughtItems] = useState<ShoppingListItem[]>([]);
   const detailSheetRef = useRef<BottomSheetRef | null>(null);
 
   useEffect(() => {
     getShoppingListItems()
       .then((fetchedItems: ShoppingListItem[]) => {
         setLoading(false);
-        console.log(fetchedItems);
-        setItems(fetchedItems);
+
+        const boughtItems: ShoppingListItem[] = [];
+        const notBoughtItems: ShoppingListItem[] = [];
+
+        for (const item of fetchedItems) {
+          (item.bought ? boughtItems : notBoughtItems).push(item);
+        }
+
+        setItems(notBoughtItems);
+        setBoughtItems(boughtItems);
       })
       .catch(() => {
         setLoading(false);
@@ -44,16 +53,12 @@ const ShoppingListView = (): ReactElement => {
     const savedInventoryItem = await saveShoppingListItem(updatedItem);
     const findIndex = items.findIndex((i: ShoppingListItem) => i.id === savedInventoryItem.id);
 
-    console.log('ITEM: ' + savedInventoryItem);
-
     if (findIndex === -1) {
       setItems([savedInventoryItem, ...items]);
     } else {
       const updatedItems = items.map((i: ShoppingListItem) => (i.id === savedInventoryItem.id ? updatedItem : i));
       setItems(updatedItems);
     }
-
-    console.log('Close Sheet');
 
     detailSheetRef.current?.close();
   };
@@ -65,16 +70,30 @@ const ShoppingListView = (): ReactElement => {
 
   const handleOnEditClick = (item: ShoppingListItem) => {
     setSelectedItem(item);
-    console.log('OPEN EDIT');
     detailSheetRef.current?.open();
   };
 
   const handleOnClick = (clickedItem: ShoppingListItem) => {
     toggleBoughtStatusShoppingListItem(clickedItem.id!);
 
-    clickedItem.bought = false;
-    const updatedItems = items.map((i: ShoppingListItem) => (i.id === clickedItem.id ? clickedItem : i));
+    clickedItem.bought = true;
+    const updatedItems = items.filter((item: ShoppingListItem) => item.id != clickedItem.id);
+    const updatedBoughtItems = [clickedItem, ...boughtItems];
+
     setItems(updatedItems);
+    setBoughtItems(updatedBoughtItems);
+  };
+
+  const handleOnBoughtClick = (clickedItem: ShoppingListItem) => {
+    toggleBoughtStatusShoppingListItem(clickedItem.id!);
+
+    clickedItem.bought = false;
+
+    const updatedBoughtItems = boughtItems.filter((item: ShoppingListItem) => item.id != clickedItem.id);
+    const updatedItems = [...items, clickedItem];
+
+    setItems(updatedItems);
+    setBoughtItems(updatedBoughtItems);
   };
 
   const handleOnCreateItem = (enteredName: string) => {
@@ -88,19 +107,33 @@ const ShoppingListView = (): ReactElement => {
   };
 
   return (
-    <PageShell title={'Rezepte'}>
-      <Flex direction="row" gap="6" wrap="wrap">
-        {loading
-          ? Array.from({ length: COUNT_OF_SKELETON_CARDS }).map((_, i) => <CardSkeleton loading={loading} key={i} />)
-          : items.map((item) => (
-              <ShoppingListCard
-                onEditClick={() => handleOnEditClick(item)}
-                onClick={() => handleOnClick(item)}
-                onRemoveClick={() => handleOnRemoveClick(item.id!)}
-                key={item.id}
-                shoppingListItem={item}
-              />
-            ))}
+    <PageShell title={'Einkaufsliste'}>
+      <Flex direction="column" gap="5">
+        <Flex direction="row" gap="6" wrap="wrap">
+          {loading
+            ? Array.from({ length: COUNT_OF_SKELETON_CARDS }).map((_, i) => <CardSkeleton loading={loading} key={i} />)
+            : items.map((item) => (
+                <ShoppingListCard
+                  onEditClick={() => handleOnEditClick(item)}
+                  onClick={() => handleOnClick(item)}
+                  onRemoveClick={() => handleOnRemoveClick(item.id!)}
+                  key={item.id}
+                  shoppingListItem={item}
+                />
+              ))}
+        </Flex>
+        {boughtItems.length > 0 ? (
+          <>
+            <Heading size="4">Zuletzt verwendet</Heading>
+            <Flex direction="row" gap="6">
+              {boughtItems.map((item) => (
+                <ShoppingListCard onClick={() => handleOnBoughtClick(item)} key={item.id} shoppingListItem={item} />
+              ))}
+            </Flex>
+          </>
+        ) : (
+          ''
+        )}
       </Flex>
       <ProductNameInput onSubmit={handleOnCreateItem} />
       <BottomSheet ref={detailSheetRef} onClose={handleOnClose}>
