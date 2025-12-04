@@ -26,7 +26,6 @@ const RecipeView = (): ReactElement => {
     getDailyRecipes()
       .then((fetchedItems) => {
         if (!alreadyFetched) {
-          console.log(fetchedItems);
           setRecipes(fetchedItems);
           setLoading(false);
         }
