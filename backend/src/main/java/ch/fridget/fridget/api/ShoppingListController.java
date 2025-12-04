@@ -1,9 +1,11 @@
 package ch.fridget.fridget.api;
 
+import java.time.Instant;
 import java.util.List;
 import java.util.Optional;
 import java.util.UUID;
 
+import org.springframework.data.domain.Sort;
 import org.springframework.http.ResponseEntity;
 import org.springframework.util.ObjectUtils;
 import org.springframework.web.bind.annotation.DeleteMapping;
@@ -38,7 +40,8 @@ public class ShoppingListController implements APIController
 	@GetMapping( PREFIX )
 	public ResponseEntity<List<ShoppingListItemDto>> getShoppingList ( @RequestHeader( "userCode" ) String userCode )
 	{
-		List<ShoppingListItem> shoppingList = shoppingListItemRepository.findAllByUserUserCode( userCode );
+		List<ShoppingListItem> shoppingList = shoppingListItemRepository.findAllByUserUserCode( userCode,
+				Sort.by( "updatedAt" ).descending() );
 
 		if ( shoppingList.isEmpty() )
 		{
@@ -87,6 +90,7 @@ public class ShoppingListController implements APIController
 		User user = userRepository.findUserByUserCode( userCode ).orElseThrow();
 
 		ShoppingListItem itemToSaveOrUpdate = convertToDbEntity( shoppingListItemDto, product, user );
+		itemToSaveOrUpdate.setUpdatedAt( Instant.now() );
 
 		ShoppingListItem saved = shoppingListItemRepository.save( itemToSaveOrUpdate );
 
@@ -112,6 +116,7 @@ public class ShoppingListController implements APIController
 		}
 
 		shoppingListItemOpt.get().setBought( !shoppingListItemOpt.get().getBought() );
+		shoppingListItemOpt.get().setUpdatedAt( Instant.now() );
 		ShoppingListItem saved = shoppingListItemRepository.save( shoppingListItemOpt.get() );
 
 		return ResponseEntity.ok( convertToDto( saved ) );
@@ -167,6 +172,7 @@ public class ShoppingListController implements APIController
 				.description( shoppingListItem.getDescription() )
 				.quantity( shoppingListItem.getQuantity() )
 				.bought( shoppingListItem.getBought() != null ? shoppingListItem.getBought() : false )
+				.updatedAt( Instant.now() )
 				.build();
 	}
 }

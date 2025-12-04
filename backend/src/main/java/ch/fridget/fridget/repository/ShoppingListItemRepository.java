@@ -4,6 +4,7 @@ import java.util.List;
 import java.util.Optional;
 import java.util.UUID;
 
+import org.springframework.data.domain.Sort;
 import org.springframework.data.jpa.repository.JpaRepository;
 import org.springframework.stereotype.Repository;
 
@@ -15,4 +16,6 @@ public interface ShoppingListItemRepository extends JpaRepository<ShoppingListIt
 	List<ShoppingListItem> findAllByUserUserCode ( String userUserCode );
 
 	Optional<ShoppingListItem> findByUserUserCodeAndId ( String userUserCode, UUID id );
+
+	List<ShoppingListItem> findAllByUserUserCode ( String userUserCode, Sort sort );
 }
