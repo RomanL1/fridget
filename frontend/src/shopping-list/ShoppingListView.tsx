@@ -1,6 +1,6 @@
 import { ReactElement, useEffect, useRef, useState } from 'react';
 import { PageShell } from '../shared/components/page/PageShell';
-import { Flex, Heading, Text } from '@radix-ui/themes';
+import { Flex, Heading } from '@radix-ui/themes';
 import CardSkeleton from './card/ShoppingListCardSkeleton';
 import ShoppingListCard from './card/ShoppingListCard';
 import { BottomSheet, BottomSheetRef } from '../shared/components/bottom-sheet/BottomSheet';
