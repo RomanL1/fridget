@@ -18,7 +18,7 @@ export function ProductNameInput({ onSubmit }: ProductNameInputProps) {
   }
 
   return (
-    <form className={styles.background} onSubmit={onProductNameEntered}>
+    <form className={styles.container} onSubmit={onProductNameEntered}>
       <TextField.Root
         size="3"
         placeholder="Produkt hinzufügen..."

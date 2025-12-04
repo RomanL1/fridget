@@ -6,3 +6,7 @@ export * from './inventory/remove-inventory-item';
 export * from './recipes/get-daily-recipes';
 export * from './recipes/get-recipes';
 export * from './products/filter-products';
+export * from './shopping-list/get-shopping-list-items';
+export * from './shopping-list/remove-shopping-list-item';
+export * from './shopping-list/set-shopping-list-item-bought';
+export * from './shopping-list/save-shopping-list-item';

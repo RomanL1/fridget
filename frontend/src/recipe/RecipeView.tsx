@@ -23,13 +23,17 @@ const RecipeView = (): ReactElement => {
   useEffect(() => {
     let alreadyFetched = false;
 
-    getDailyRecipes().then((fetchedItems) => {
-      if (!alreadyFetched) {
-        console.log(fetchedItems);
-        setRecipes(fetchedItems);
+    getDailyRecipes()
+      .then((fetchedItems) => {
+        if (!alreadyFetched) {
+          setRecipes(fetchedItems);
+          setLoading(false);
+        }
+      })
+      .catch(() => {
         setLoading(false);
-      }
-    });
+        setRecipes([]);
+      });
 
     return () => {
       alreadyFetched = true;
@@ -42,16 +46,25 @@ const RecipeView = (): ReactElement => {
     setLoading(true);
 
     if (recipeFilter.type === RecipeFilterType.DailyHits) {
-      getDailyRecipes().then((fetchedItems) => {
-        setRecipes(fetchedItems);
-        setLoading(false);
-      });
+      getDailyRecipes()
+        .then((fetchedItems) => {
+          setRecipes(fetchedItems);
+          setLoading(false);
+        })
+        .catch(() => {
+          setRecipes([]);
+          setLoading(false);
+        });
     } else {
-      getRecipes(recipeFilter.payload!).then((fetchedItems) => {
-        console.log(fetchedItems);
-        setRecipes(fetchedItems);
-        setLoading(false);
-      });
+      getRecipes(recipeFilter.payload!)
+        .then((fetchedItems) => {
+          setRecipes(fetchedItems);
+          setLoading(false);
+        })
+        .catch(() => {
+          setRecipes([]);
+          setLoading(false);
+        });
     }
   };
 

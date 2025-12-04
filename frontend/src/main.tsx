@@ -8,6 +8,7 @@ import './main.css';
 import RecipeView from './recipe/RecipeView';
 import MainLayout from './MainLayout';
 import { authenticate } from './shared/auth';
+import ShoppingListView from './shopping-list/ShoppingListView';
 
 ReactDOM.createRoot(document.getElementById('root') as HTMLElement).render(
   <ThemeProvider attribute="class">
@@ -16,7 +17,7 @@ ReactDOM.createRoot(document.getElementById('root') as HTMLElement).render(
         <Routes>
           <Route path="/" element={<MainLayout />}>
             <Route index element={<Inventory />} />
-            <Route path="grocery-list" />
+            <Route path="shopping-list" element={<ShoppingListView />} />
             <Route path="recipes" element={<RecipeView />} />
           </Route>
           <Route path="/scan" element={<BarcodeScanner />} />
