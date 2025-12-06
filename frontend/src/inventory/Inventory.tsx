@@ -6,7 +6,7 @@ import { BarcodeScannerToggle } from './barcode-scanner-toggle/BarcodeScannerTog
 import { InventoryItemDetail } from './detail/InventoryItemDetail';
 import { InventoryItem } from './inventory-items/card/inventory-item';
 import { InventoryItemGrid } from './inventory-items/InventoryItemGrid';
-import { ProductNameInput } from './product-name-input/ProductNameInput';
+import { ProductNameInput } from '../shared/components/floating-input/ProductNameInput';
 import { useSearchParams } from 'react-router';
 
 import styles from './Inventory.module.css';

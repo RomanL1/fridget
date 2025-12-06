@@ -42,3 +42,10 @@
 .navItem:active {
   color: inherit;
 }
+
+.themeSwitcher {
+  display: flex;
+  justify-content: center;
+  align-items: end;
+  flex: 1;
+}

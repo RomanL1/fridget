@@ -1,0 +1,14 @@
+:root {
+  --virtual-keyboard-offset: env(keyboard-inset-height, 0px);
+}
+
+.container {
+  border-radius: 0.25rem;
+  background: var(--color-panel-solid);
+  position: fixed;
+  right: 50%;
+  bottom: 8rem;
+  width: 32rem;
+  transform: translateX(50%);
+  margin-block-end: var(--virtual-keyboard-offset);
+}

@@ -26,14 +26,13 @@ const RecipeView = (): ReactElement => {
     getDailyRecipes()
       .then((fetchedItems) => {
         if (!alreadyFetched) {
-          console.log(fetchedItems);
           setRecipes(fetchedItems);
           setLoading(false);
         }
       })
-      .catch((e) => {
+      .catch(() => {
         setLoading(false);
-        console.log(e);
+        setRecipes([]);
       });
 
     return () => {
@@ -52,20 +51,19 @@ const RecipeView = (): ReactElement => {
           setRecipes(fetchedItems);
           setLoading(false);
         })
-        .catch((e) => {
+        .catch(() => {
+          setRecipes([]);
           setLoading(false);
-          console.log(e);
         });
     } else {
       getRecipes(recipeFilter.payload!)
         .then((fetchedItems) => {
-          console.log(fetchedItems);
           setRecipes(fetchedItems);
           setLoading(false);
         })
-        .catch((e) => {
+        .catch(() => {
+          setRecipes([]);
           setLoading(false);
-          console.log(e);
         });
     }
   };
