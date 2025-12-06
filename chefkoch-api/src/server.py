@@ -5,6 +5,7 @@ from pydantic import BaseModel
 from chefkoch.retrievers import DailyRecipeRetriever
 from chefkoch.retrievers import SearchRetriever
 from chefkoch.recipe import Recipe
+from traceback import print_exc
 
 app = FastAPI(title="Recipe API", description="HTTP server to interact with chefkoch api")
 
@@ -40,8 +41,8 @@ def getErrorResponse(message: str, code: int, status_code: int) -> dict:
     return {"error": message, "code": code, "status": status_code}
 
     
-def getRecipeResponse(recipes: list[Recipe], limit=10):
-    return [RecipeResponse(title=r.title, rating=r.rating, originURL=r.url, ratingCount=r.number_ratings, imageUrl=r.image_url) for r in recipes][:limit]  
+def getRecipeResponse(recipes: list[Recipe]):
+    return [RecipeResponse(title=r.title, rating=r.rating, originURL=r.url, ratingCount=r.number_ratings, imageUrl=r.image_url) for r in recipes]
     
 @app.post("/recipes")
 def get_recipes(req: RecipeRequest):
@@ -58,7 +59,7 @@ def get_recipes(req: RecipeRequest):
     
     try:
         retriever = SearchRetriever()
-        recipes = retriever.get_recipes(search_query=", ".join(req.ingredients))[:req.limit]
+        recipes = retriever.get_recipes(search_query=", ".join(req.ingredients), limit=req.limit)
         
         if not recipes or len(recipes) <= 0:
             raise HTTPException(
@@ -71,7 +72,7 @@ def get_recipes(req: RecipeRequest):
             )
             
     
-        return getRecipeResponse(recipes, req.limit)
+        return getRecipeResponse(recipes)
     except Exception as e:
         raise HTTPException(
             status_code=500,
@@ -96,7 +97,7 @@ def get_random_recipes(req: RandomRecipeRequest):
     
     try: 
         retriever = DailyRecipeRetriever()
-        recipes = retriever.get_recipes(type="kochen")
+        recipes = retriever.get_recipes(type="kochen", limit=req.limit)
         if not recipes or len(recipes) <= 0:
             raise HTTPException(
                 status_code=404,
@@ -107,7 +108,7 @@ def get_random_recipes(req: RandomRecipeRequest):
                 )
             )
         
-        return getRecipeResponse(recipes, req.limit)
+        return getRecipeResponse(recipes)
     except Exception as e:
         raise HTTPException(
             status_code=500,
