@@ -1,0 +1,16 @@
+meta {
+  name: inventoryItemList withIngredientName
+  type: http
+  seq: 8
+}
+
+get {
+  url: {{base_url}}/api/inventory-item/with-ingredient-name
+  body: json
+  auth: inherit
+}
+
+settings {
+  encodeUrl: true
+  timeout: 0
+}

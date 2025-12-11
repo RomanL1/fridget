@@ -18,4 +18,6 @@ public interface InventoryItemRepository extends JpaRepository<InventoryItem, UU
 	Optional<InventoryItem> findFirstByUserUserCodeAndId ( String userUserCode, UUID id );
 
 	List<InventoryItem> findAllByUserUserCodeAndIdIn ( String userUserCode, Collection<UUID> ids );
+
+	List<InventoryItem> findByUserUserCodeAndProductIngredientNameIsNotNull ( String userUserCode );
 }

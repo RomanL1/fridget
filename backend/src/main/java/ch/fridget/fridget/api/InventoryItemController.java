@@ -4,12 +4,12 @@ import static ch.fridget.fridget.common.Util.isEmptyString;
 
 import java.time.Instant;
 import java.time.temporal.ChronoUnit;
-import java.util.ArrayList;
 import java.util.Comparator;
 import java.util.List;
 import java.util.Optional;
 import java.util.UUID;
 
+import org.jspecify.annotations.NonNull;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.DeleteMapping;
 import org.springframework.web.bind.annotation.GetMapping;
@@ -163,6 +163,42 @@ public class InventoryItemController implements APIController
 			return ResponseEntity.ok( List.of() );
 		}
 
+		List<InventoryItem> activeInventoryItems = sortInventoryItems( inventoryItems );
+
+		List<InventoryItemDto> inventoryItemDtos = activeInventoryItems.stream()
+				.map( InventoryItemDto::of )
+				.toList();
+		return ResponseEntity.ok( inventoryItemDtos );
+	}
+
+	@GetMapping( PREFIX + "/with-ingredient-name" )
+	public ResponseEntity<List<InventoryItemDto>> listInventoryItemsWithIngredientName (
+			@RequestHeader( "userCode" ) String userCode )
+	{
+		List<InventoryItem> inventoryItems = inventoryItemRepository.findByUserUserCodeAndProductIngredientNameIsNotNull( userCode );
+
+		if ( inventoryItems.isEmpty() )
+		{
+			log.info( "No inventory items found for user with userCode: {}", userCode );
+			return ResponseEntity.ok( List.of() );
+		}
+
+		inventoryItems = inventoryItems.stream()
+				.filter( i -> i.getProduct().getIngredientName() != null )
+				.filter( i -> !i.getProduct().getIngredientName().isEmpty() )
+				.filter( i -> !"null".equals( i.getProduct().getIngredientName()) )
+				.toList();
+
+		List<InventoryItem> activeInventoryItems = sortInventoryItems( inventoryItems );
+
+		List<InventoryItemDto> inventoryItemDtos = activeInventoryItems.stream()
+				.map( InventoryItemDto::of )
+				.toList();
+		return ResponseEntity.ok( inventoryItemDtos );
+	}
+
+	private static @NonNull List<InventoryItem> sortInventoryItems ( List<InventoryItem> inventoryItems )
+	{
 		final long DAYS_BEFORE_EXPIRATION = 3;
 		Instant now = Instant.now().truncatedTo( ChronoUnit.DAYS );
 		Instant soon = now.plus(DAYS_BEFORE_EXPIRATION, ChronoUnit.DAYS);
@@ -173,7 +209,7 @@ public class InventoryItemController implements APIController
 		 * 2. Items expiring in the next 3 days
 		 * 3. Items not expiring anytime soon (or expiration date not specified)
 		 */
-		List<InventoryItem> activeInventoryItems = inventoryItems.stream()
+		return inventoryItems.stream()
 				.filter( item -> item.getDateConsumedAt() == null )
 				.sorted(Comparator
 						.comparingInt((InventoryItem item) -> {
@@ -193,11 +229,6 @@ public class InventoryItemController implements APIController
 						.thenComparing(Comparator.comparing(InventoryItem::getDateAddedAt).reversed())
 				)
 				.toList();
-
-		List<InventoryItemDto> inventoryItemDtos = activeInventoryItems.stream()
-				.map( InventoryItemDto::of )
-				.toList();
-		return ResponseEntity.ok( inventoryItemDtos );
 	}
 
 	@DeleteMapping( PREFIX )
