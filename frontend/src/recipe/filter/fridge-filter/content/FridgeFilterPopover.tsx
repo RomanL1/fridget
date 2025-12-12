@@ -49,7 +49,14 @@ const FridgeFilterPopover = ({
           Wähle Zutaten aus deinem Kühlschrank
         </Text>
         {selectableItems.length > 0 ? (
-          <InventoryItemGrid inventoryItems={selectableItems} onItemClick={onItemClick} />
+          <InventoryItemGrid
+            inventoryItems={selectableItems}
+            onItemClick={(e) => {
+              if (selectedIngredients.length < 3) {
+                onItemClick(e);
+              }
+            }}
+          />
         ) : (
           'Keine Zutaten im Kühlschrank vorhanden'
         )}
@@ -59,7 +66,7 @@ const FridgeFilterPopover = ({
 };
 
 const getInventoryItems = async (): Promise<InventoryItem[]> => {
-  const items = await api.getInventoryItems();
+  const items = await api.getInventoryItemsWithIngredients();
 
   return items.map<InventoryItem>((item) => ({
     inventoryItemId: item.inventoryItemId,

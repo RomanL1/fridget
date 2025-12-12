@@ -311,7 +311,7 @@ class SearchRetriever:
             str(lst).replace("[", "").replace("]", "").replace(" ", "").replace("'", "")
         )
 
-    def get_recipes(self, search_query: str, page: int = 1) -> Recipe:
+    def get_recipes(self, search_query: str, page: int = 1, limit: int = 10) -> Recipe:
         """
         Retrieves recipes based on the search query and filter options.
 
@@ -367,14 +367,14 @@ class SearchRetriever:
         )
 
         url = f"https://www.chefkoch.de/rs/s{page-1}{combined_string}p{prep_time}r{rating}o{sort}/{search_query}/Rezepte.html"
-
-        print("URL:" + url)
         result = self.session.get(url).text
         soup = bs4.BeautifulSoup(result, "html.parser")
 
         recipe_cards = soup.find_all("div", {"class": "ds-recipe-card"})
+        recipe_cards = recipe_cards[:limit]
         recipe_links = [card.find("a") for card in recipe_cards]
         recipes = [Recipe(url=link["href"], allow_premium=True) for link in recipe_links]
+        
         return [recipe for recipe in recipes if not recipe.is_premium]
 
     def close(self):
@@ -402,7 +402,7 @@ class DailyRecipeRetriever:
         """
         self.session = requests.Session()
 
-    def get_recipes(self, type: str) -> List[Recipe]:
+    def get_recipes(self, type: str, limit: int = 10) -> List[Recipe]:
         """
         Retrieves daily recipes based on the specified type.
 
@@ -431,6 +431,7 @@ class DailyRecipeRetriever:
             for link in recipe_links
             if link["href"].startswith("https://www.chefkoch.de/rezept")
         ]
+        recipe_links = recipe_links[:limit]
         recipes = [Recipe(url=link["href"], allow_premium=True) for link in recipe_links]
         return [recipe for recipe in recipes if not recipe.is_premium]
 

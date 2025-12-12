@@ -134,7 +134,12 @@ class Recipe:
         Raises:
             ValueError: If the image is not found.
         """
-        image: str = self.__soup.find("div", class_="ds-slider-image__image-wrap").find("img", class_="ds-teaser-link__image")["src"]
+        print("URL IN IAMGE", self.url)
+        imageClass = self.__soup.find("div", class_="ds-slider-image__image-wrap")
+        if(not imageClass):
+            return ""
+        
+        image: str = imageClass.find("img", class_="ds-teaser-link__image")["src"]
         if image:
             return image
         raise ValueError("Image not found")
