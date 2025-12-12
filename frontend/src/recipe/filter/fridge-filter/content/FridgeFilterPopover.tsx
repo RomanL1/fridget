@@ -66,7 +66,7 @@ const FridgeFilterPopover = ({
 };
 
 const getInventoryItems = async (): Promise<InventoryItem[]> => {
-  const items = await api.getInventoryItems();
+  const items = await api.getInventoryItemsWithIngredients();
 
   return items.map<InventoryItem>((item) => ({
     inventoryItemId: item.inventoryItemId,

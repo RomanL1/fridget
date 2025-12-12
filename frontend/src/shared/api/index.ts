@@ -10,3 +10,4 @@ export * from './shopping-list/get-shopping-list-items';
 export * from './shopping-list/remove-shopping-list-item';
 export * from './shopping-list/set-shopping-list-item-bought';
 export * from './shopping-list/save-shopping-list-item';
+export * from './inventory/get-inventory-items-with-ingredient';
