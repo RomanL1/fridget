@@ -14,7 +14,7 @@ services:
       - SPRING_DATASOURCE_PASSWORD=secret
       - OLLAMA_MODEL=llama3.3:70b-instruct-q4_K_M
       - OLLAMA_HOST=http://ollama:11434/
-      - OLLAMA_REQUEST_TIMEOUT_SECONDS=1200
+      - OLLAMA_REQUEST_TIMEOUT_SECONDS=60
       - OLLAMA_RUN_ENABLED=true
       - RECIPE_API_URL=http://chefkoch-api:5001
     depends_on:
